@@ -23,12 +23,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | Error>
 ) {
-  let days = 4, city = 'Mallorca', month = 'January'
+  let days = 4, city = 'Mallorca', month = 'March'
   if (req.body) {
     let body = JSON.parse(req.body)
     days = body.days
     city = body.city
-    month = body.month
+    //month = body.month
   }
 
   const parts = city.split(' ')
