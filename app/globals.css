@@ -100,11 +100,11 @@ body {
 
 a {
   text-decoration: none;
-  color: #c683ff;
+  color: #a955f1;
 }
 
 a p {
-  color: #c683ff;
+  color: #a955f1;
 }
 
 input {
@@ -118,8 +118,8 @@ input {
   padding: 14px 25px;
   cursor: pointer;
   background-color: #c683ff;
-  color: #230041;
-  font-weight: bold;
+  color: #fff;
+  /*font-weight: bold;*/
   border-radius: 50px;
   transition: all .35s;
   font-size: 18px;

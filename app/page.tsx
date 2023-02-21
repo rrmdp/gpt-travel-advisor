@@ -147,10 +147,11 @@ const styles = {
   header: {
     textAlign: 'center' as 'center',
     marginTop: '60px',
-    color: '#056987',
+    color: '#fff',
     fontWeight: '900',
     fontFamily: 'Poppins',
-    fontSize: '68px'
+    fontSize: '68px',
+    text-shadow: '0 0 3px #a5a5a5';
   },
   input: {
     padding: '10px 14px',
