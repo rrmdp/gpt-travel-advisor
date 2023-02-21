@@ -83,22 +83,22 @@ export default function Home() {
       <div className="app-container">
         <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
         <div style={styles.formContainer} className="form-container">
-         <input style={styles.input}  placeholder="City" onChange={e => setRequest(request => ({
+         <input style={styles.city}  placeholder="City" onChange={e => setRequest(request => ({
             ...request, city: e.target.value
           }))} />
           <select style={styles.input} onChange={e => setRequest(request => ({ ...request, month: e.target.value}))}>
-          <option value="01">January</option>
-        <option value="02">February</option>
-        <option value="03">March</option>
-        <option value="04">April</option>
-        <option value="05">May</option>
-        <option value="06">June</option>
-        <option value="07">July</option>
-        <option value="08">August</option>
-        <option value="09">September</option>
-        <option value="10">October</option>
-        <option value="11">November</option>
-        <option value="12">December</option>
+          <option value="january">January</option>
+        <option value="february">February</option>
+        <option value="march">March</option>
+        <option value="april">April</option>
+        <option value="may">May</option>
+        <option value="june">June</option>
+        <option value="july">July</option>
+        <option value="august">August</option>
+        <option value="september">September</option>
+        <option value="october">October</option>
+        <option value="november">November</option>
+        <option value="december">December</option>
           </select>
           <input style={styles.input} placeholder="Days" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
@@ -158,6 +158,9 @@ const styles = {
     fontSize: '16px',
     width: '100%',
     borderRadius: '8px'
+  },
+  city: {
+    display:'none'
   },
   formContainer: {
     display: 'flex',
