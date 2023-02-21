@@ -22,7 +22,7 @@ export default function Home() {
   const [message, setMessage] = useState('')
   async function hitAPI() {
     try {
-      if (!request.city || !request.days) return
+      if (/*!request.city ||*/ !request.days) return
       setMessage('Building itinerary...')
       setLoading(true)
       setItinerary('')
