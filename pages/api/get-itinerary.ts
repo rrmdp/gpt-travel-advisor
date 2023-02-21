@@ -42,7 +42,7 @@ export default async function handler(
   }
 
   let basePrompt = `what is an ideal itinerary for ${days} days in the month of ${month} in ${city}?`
-  console.log('Prompt', basePrompt);
+  console.log('Prompt', basePrompt)
   try {
     const response = await fetch('https://api.openai.com/v1/completions', {
       method: 'POST',
@@ -56,7 +56,7 @@ export default async function handler(
     })
     const itinerary = await response.json()
     const pointsOfInterestPrompt = 'Extract the points of interest out of this text, with no additional words, separated by commas: ' + itinerary.choices[0].text
-
+    console.log('pointsOfInterestPrompt', pointsOfInterestPrompt)
     res.status(200).json({
       message: 'success',
       pointsOfInterestPrompt,
