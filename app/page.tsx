@@ -82,9 +82,9 @@ export default function Home() {
   return (
     <main>
       <div className="app-container">
-        <div className="header"></div>
+        <div className="header">
           <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
-          <h2 style={styles.subheader}>by VillasMediterranean.com</h2>
+          <h2 style={styles.subheader} className="hero-subheader">by VillasMediterranean.com</h2>
         </div>
         <div style={styles.formContainer} className="form-container">
          <input style={styles.city}  placeholder="City" onChange={e => setRequest(request => ({
@@ -159,7 +159,6 @@ const styles = {
   },
   subheader:{
     right: '15px',
-    position: 'absolute',
     bottom: '-5px',
     color: '#fff',
     fontSize: '18px',

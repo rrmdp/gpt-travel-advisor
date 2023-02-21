@@ -148,6 +148,10 @@ input {
   background-color: #a955f1;
 }
 
+.hero-subheader {
+  position:absolute;
+}
+
 @media screen and (max-width: 500px) {
   .form-container {
     width: 100%;
