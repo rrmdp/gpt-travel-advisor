@@ -146,7 +146,7 @@ const styles = {
   header: {
     textAlign: 'center' as 'center',
     marginTop: '60px',
-    color: '#c683ff',
+    color: '#056987',
     fontWeight: '900',
     fontFamily: 'Poppins',
     fontSize: '68px'
