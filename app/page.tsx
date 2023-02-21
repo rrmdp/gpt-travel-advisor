@@ -167,7 +167,7 @@ const styles = {
     flexDirection: 'column' as 'column',
     margin: '20px auto 0px',
     padding: '20px',
-    boxShadow: '0px 0px 12px rgba(198, 131, 255, .2)',
+    boxShadow: '0px 0px 12px rgba(5, 105, 135, .5)',
     borderRadius: '10px'
   },
   result: {
