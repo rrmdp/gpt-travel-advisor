@@ -181,8 +181,14 @@ input {
 }
 
 @media screen and (max-width: 450px) {
-  .h1 {
+  h1 {
     margin-top:0 !important;
+    font-size: 55px !important;
+    line-height: 60px !important;
+  }
+  h2 {
+    bottom: -12px !important;
+    font-size: 14px !important;
   }
   /*.hero-header {
     line-height: 70px;
