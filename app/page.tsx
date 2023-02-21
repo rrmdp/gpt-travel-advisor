@@ -27,12 +27,13 @@ export default function Home() {
         if (!loading) return
         setMessage('Almost there ...')
       }, 15000)
-
+console.log(request.days, request.month);
+return;
       const response = await fetch('/api/get-itinerary', {
         method: 'POST',
         body: JSON.stringify({
           days: request.days,
-          city: 'mallorca',
+          city: 'Mallorca',
           month: request.month
         })
       })
@@ -99,7 +100,7 @@ export default function Home() {
           <input style={styles.input} placeholder="How many days are you staying?" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
           }))} />
-          <button className="input-button"  onClick={hitAPI}>Suggest things todo</button>
+          <button className="input-button"  onClick={hitAPI}>Suggest things to  do</button>
         </div>
         <div className="results-container">
         {
