@@ -108,7 +108,7 @@ export default function Home() {
           <input style={styles.input} placeholder="How many days are you staying ?" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
           }))} />
-          <button className="input-button"  onClick={hitAPI}>Sugest Itinerary</button>
+          <button className="input-button"  onClick={hitAPI}>Suggest Itinerary</button>
         </div>
         <div className="results-container">
         {
