@@ -86,7 +86,7 @@ export default function Home() {
          <input style={styles.input}  placeholder="City" onChange={e => setRequest(request => ({
             ...request, city: e.target.value
           }))} />
-          <select onChange={e => setRequest(request => ({ ...request, month: e.target.value}))}>
+          <select style={styles.input} onChange={e => setRequest(request => ({ ...request, month: e.target.value}))}>
           <option value="01">January</option>
         <option value="02">February</option>
         <option value="03">March</option>
