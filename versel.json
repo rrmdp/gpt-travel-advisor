@@ -2,6 +2,9 @@
     "functions": {
       "pages/api/**/*.ts": {
         "maxDuration": 60
+      },
+      "pages/api/get-itenerary.ts": {
+        "maxDuration": 60
       }
     }
   }
