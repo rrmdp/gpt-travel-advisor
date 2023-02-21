@@ -87,6 +87,7 @@ body {
   align-items: center;
   background-color: #00fffe;
   margin-top: 70px;
+  text-shadow: 0 0 1px #a5a5a5;
 }
 
 .footer p {
@@ -129,6 +130,7 @@ input {
   border-radius: 50px;
   transition: all .35s;
   font-size: 18px;
+  text-shadow: 0 0 1px #a5a5a5;
 }
 
 .app-container {
