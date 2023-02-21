@@ -83,6 +83,7 @@ export default function Home() {
     <main>
       <div className="app-container">
         <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
+        <h2>by VillasMediterranean.com</h2>
         <div style={styles.formContainer} className="form-container">
          <input style={styles.city}  placeholder="City" onChange={e => setRequest(request => ({
             ...request, city: e.target.value
