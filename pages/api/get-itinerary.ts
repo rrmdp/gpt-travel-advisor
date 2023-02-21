@@ -2,7 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Data = {
-  message: string,
+  messa
+  ge: string,
   pointsOfInterestPrompt: any,
   itinerary: any,
 }
@@ -41,6 +42,7 @@ export default async function handler(
   }
 
   let basePrompt = `what is an ideal itinerary for ${days} days in the month of ${month} in ${city}?`
+  console.log('Prompt', basePrompt);
   try {
     const response = await fetch('https://api.openai.com/v1/completions', {
       method: 'POST',
