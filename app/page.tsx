@@ -9,7 +9,7 @@ export default function Home() {
   let [itinerary, setItinerary] = useState<string>('')
 
   useEffect(() => {
-    checkRedirect()
+    //checkRedirect()
   }, [])
 
   function checkRedirect() {
@@ -83,9 +83,23 @@ export default function Home() {
       <div className="app-container">
         <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
         <div style={styles.formContainer} className="form-container">
-          <input style={styles.input}  placeholder="City" onChange={e => setRequest(request => ({
+         <input style={styles.input}  placeholder="City" onChange={e => setRequest(request => ({
             ...request, city: e.target.value
           }))} />
+          <select onChange={e => setRequest(request => ({ ...request, month: e.target.value}))}>
+          <option value="01">January</option>
+        <option value="02">February</option>
+        <option value="03">March</option>
+        <option value="04">April</option>
+        <option value="05">May</option>
+        <option value="06">June</option>
+        <option value="07">July</option>
+        <option value="08">August</option>
+        <option value="09">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+          </select>
           <input style={styles.input} placeholder="Days" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
           }))} />
