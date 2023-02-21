@@ -82,13 +82,16 @@ export default function Home() {
   return (
     <main>
       <div className="app-container">
-        <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
-        <h2>by VillasMediterranean.com</h2>
+        <div className="header"></div>
+          <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
+          <h2 style="{styles.subheader}">by VillasMediterranean.com</h2>
+        </div>
         <div style={styles.formContainer} className="form-container">
          <input style={styles.city}  placeholder="City" onChange={e => setRequest(request => ({
             ...request, city: e.target.value
           }))} />
           <select style={styles.input} onChange={e => setRequest(request => ({ ...request, month: e.target.value}))}>
+          <option value="">Your arrival month is?</option>
           <option value="january">January</option>
         <option value="february">February</option>
         <option value="march">March</option>
@@ -102,10 +105,10 @@ export default function Home() {
         <option value="november">November</option>
         <option value="december">December</option>
           </select>
-          <input style={styles.input} placeholder="Days" onChange={e => setRequest(request => ({
+          <input style={styles.input} placeholder="How many days are you staying ?" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
           }))} />
-          <button className="input-button"  onClick={hitAPI}>Build Itinerary</button>
+          <button className="input-button"  onClick={hitAPI}>Sugest Itinerary</button>
         </div>
         <div className="results-container">
         {
@@ -153,6 +156,14 @@ const styles = {
     fontFamily: 'Poppins',
     fontSize: '68px',
     textShadow: '0 0 3px #a5a5a5'
+  },
+  subheader:{
+    right: '15px',
+    position: 'absolute',
+    bottom: '-5px',
+    color: '#fff',
+    fontSize: '18px',
+    fontWeight: '500'
   },
   input: {
     padding: '10px 14px',

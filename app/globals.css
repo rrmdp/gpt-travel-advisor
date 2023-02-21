@@ -66,6 +66,10 @@ body {
   margin: 0;
 }
 
+.header {
+  position: relative;
+}
+
 .wrapper {
   min-height: calc(100% - 70px);
 
