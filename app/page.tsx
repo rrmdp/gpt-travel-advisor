@@ -151,7 +151,7 @@ const styles = {
     fontWeight: '900',
     fontFamily: 'Poppins',
     fontSize: '68px',
-    text-shadow: '0 0 3px #a5a5a5';
+    textShadow: '0 0 3px #a5a5a5'
   },
   input: {
     padding: '10px 14px',
