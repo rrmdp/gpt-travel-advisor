@@ -67,7 +67,9 @@ body {
 }
 
 .header {
+  max-width: 75%;
   position: relative;
+  margin: 0 auto;
 }
 
 .wrapper {

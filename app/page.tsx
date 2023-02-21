@@ -99,7 +99,7 @@ export default function Home() {
           <input style={styles.input} placeholder="How many days are you staying?" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
           }))} />
-          <button className="input-button"  onClick={hitAPI}>Suggest things to  do</button>
+          <button className="input-button"  onClick={hitAPI}>Suggest things to do 💡</button>
         </div>
         <div className="results-container">
         {
@@ -162,7 +162,8 @@ const styles = {
     fontSize: '16px',
     width: '100%',
     borderRadius: '8px',
-    border:'none'
+    border:'none',
+    color: '#727272'
   },
   city: {
     display:'none'
