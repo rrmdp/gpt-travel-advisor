@@ -8,28 +8,19 @@ export default function Home() {
   const [request, setRequest] = useState<{days?: string, city?: string, month?: string}>({})
   let [itinerary, setItinerary] = useState<string>('')
 
-  useEffect(() => {
-    //checkRedirect()
-  }, [])
-
-  function checkRedirect() {
-    if (window.location.hostname === 'gpt-travel-advisor.vercel.app') {
-      window.location.replace('https://www.roamaround.io/')
-    }
-  }
 
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   async function hitAPI() {
     try {
       if (/*!request.city ||*/ !request.days) return
-      setMessage('Building itinerary...')
+      setMessage('Getting suggestions...')
       setLoading(true)
       setItinerary('')
 
       setTimeout(() => {
         if (!loading) return
-        setMessage('Getting closer ...')
+        setMessage('Just a minute ...')
       }, 7000)
 
       setTimeout(() => {
@@ -60,7 +51,7 @@ export default function Home() {
 
       pointsOfInterest.map(point => {
         // itinerary = itinerary.replace(point, `<a target="_blank" rel="no-opener" href="https://www.google.com/search?q=${encodeURIComponent(point + ' ' + request.city)}">${point}</a>`)
-        itinerary = itinerary.replace(point, `[${point}](https://www.google.com/search?q=${encodeURIComponent(point + ' ' + request.city)})`)
+        itinerary = itinerary.replace(point, `[${point}](https://www.google.com/search?q=${encodeURIComponent(point + ' Mallorca' )})`)
       })
 
       setItinerary(itinerary)
@@ -105,10 +96,10 @@ export default function Home() {
         <option value="november">November</option>
         <option value="december">December</option>
           </select>
-          <input style={styles.input} placeholder="How many days are you staying ?" onChange={e => setRequest(request => ({
+          <input style={styles.input} placeholder="How many days are you staying?" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
           }))} />
-          <button className="input-button"  onClick={hitAPI}>Suggest Itinerary</button>
+          <button className="input-button"  onClick={hitAPI}>Suggest things todo</button>
         </div>
         <div className="results-container">
         {
