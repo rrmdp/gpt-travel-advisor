@@ -22,11 +22,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | Error>
 ) {
-  let days = 4, city = 'Rio'
+  let days = 4, city = 'Mallorca', month = 'January'
   if (req.body) {
     let body = JSON.parse(req.body)
     days = body.days
     city = body.city
+    month = body.month
   }
 
   const parts = city.split(' ')
@@ -39,7 +40,7 @@ export default async function handler(
     days = 10
   }
 
-  let basePrompt = `what is an ideal itinerary for ${days} days in ${city}?`
+  let basePrompt = `what is an ideal itinerary for ${days} days in the month of ${month} in ${city}?`
   try {
     const response = await fetch('https://api.openai.com/v1/completions', {
       method: 'POST',
