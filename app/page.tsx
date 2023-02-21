@@ -13,7 +13,7 @@ export default function Home() {
   const [message, setMessage] = useState('')
   async function hitAPI() {
     try {
-      if (/*!request.city ||*/ !request.days) return
+      if (!request.month ||!request.days) return
       setMessage('Getting suggestions...')
       setLoading(true)
       setItinerary('')
@@ -27,8 +27,7 @@ export default function Home() {
         if (!loading) return
         setMessage('Almost there ...')
       }, 15000)
-console.log(request.days, request.month);
-return;
+
       const response = await fetch('/api/get-itinerary', {
         method: 'POST',
         body: JSON.stringify({

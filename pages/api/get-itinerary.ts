@@ -27,8 +27,8 @@ export default async function handler(
   if (req.body) {
     let body = JSON.parse(req.body)
     days = body.days
-    city = body.city
-    //month = body.month
+    //city = body.city
+    month = body.month
   }
 
   const parts = city.split(' ')
