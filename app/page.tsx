@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
 export default function Home() {
-  const [request, setRequest] = useState<{days?: string, city?: string}>({})
+  const [request, setRequest] = useState<{days?: string, city?: string, month?: string}>({})
   let [itinerary, setItinerary] = useState<string>('')
 
   useEffect(() => {
@@ -41,7 +41,8 @@ export default function Home() {
         method: 'POST',
         body: JSON.stringify({
           days: request.days,
-          city: request.city
+          city: 'mallorca',
+          month: request.month
         })
       })
       const json = await response.json()
