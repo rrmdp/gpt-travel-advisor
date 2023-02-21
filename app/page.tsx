@@ -170,7 +170,8 @@ const styles = {
     outline: 'none',
     fontSize: '16px',
     width: '100%',
-    borderRadius: '8px'
+    borderRadius: '8px',
+    border:'none'
   },
   city: {
     display:'none'
