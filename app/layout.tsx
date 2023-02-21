@@ -24,7 +24,7 @@ export default function RootLayout({
            <Image style={{ marginTop: '2px'}} alt="code available on github" width="18" height="18" src="/github.svg" />
            </a>
             <p>
-            Built by <a target="_blank" rel="no-opener" href="https://twitter.com/rrmdp">@rrmdp</a> <a className="sponsor" target="_blank" rel="no-opener" href="https://www.villasmediterranean.com"> VillasMediterranean</a>
+            Built by <a target="_blank" rel="no-opener" href="https://twitter.com/rrmdp">@rrmdp</a> <a className="sponsor" target="_blank" rel="no-opener" href="https://www.villasmediterranean.com"> VillasMediterranean.com</a>
             </p>
         </footer>
       </body>
