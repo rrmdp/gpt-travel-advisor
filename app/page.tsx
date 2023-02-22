@@ -187,7 +187,7 @@ const styles = {
   formContainer: {
     display: 'flex',
     flexDirection: 'column' as 'column',
-    margin: '20px auto 0px',
+    margin: '35px auto 0px',
     padding: '20px',
     boxShadow: '0px 0px 12px rgba(5, 105, 135, .5)',
     borderRadius: '10px'

@@ -130,7 +130,7 @@ input {
   border-radius: 50px;
   transition: all .35s;
   font-size: 18px;
-  text-shadow: 0 0 1px #a5a5a5;
+  text-shadow: 0 0 4px #5a5a5a;
 }
 
 .app-container {
