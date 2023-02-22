@@ -13,7 +13,19 @@ export default function Home() {
   const [message, setMessage] = useState('')
   async function hitAPI() {
     try {
-      if (!request.month ||!request.days) return
+
+      if (!request.month) {
+        console.log('No month...');
+        setMessage('Please select an arrival month!')
+        return
+      }
+
+      if (!request.days) {
+        setMessage('Please your stay lenght')
+        return
+      }
+
+      // if (!request.month ||!request.days) return
       setMessage('Getting suggestions...')
       setLoading(true)
       setItinerary('')
@@ -78,23 +90,27 @@ export default function Home() {
           <h2 style={styles.subheader} className="hero-subheader">by VillasMediterranean.com</h2>
         </div>
         <div style={styles.formContainer} className="form-container">
-         <input style={styles.city}  placeholder="City" onChange={e => setRequest(request => ({
+         <input required style={styles.city}  placeholder="City" onChange={e => setRequest(request => ({
             ...request, city: e.target.value
           }))} />
           <select style={styles.input} onChange={e => setRequest(request => ({ ...request, month: e.target.value}))}>
-          <option value="">Your arrival month is?</option>
-          <option value="january">January</option>
-        <option value="february">February</option>
-        <option value="march">March</option>
-        <option value="april">April</option>
-        <option value="may">May</option>
-        <option value="june">June</option>
-        <option value="july">July</option>
-        <option value="august">August</option>
-        <option value="september">September</option>
-        <option value="october">October</option>
-        <option value="november">November</option>
-        <option value="december">December</option>
+          <option value="">When are you arriving?</option>
+          <option value="summer">Summer</option>
+          <option value="spring">Spring</option>
+          <option value="autumn">Autumn</option>
+          <option value="winter">Winter</option>
+          <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        <option value="April">April</option>
+        <option value="May">May</option>
+        <option value="June">June</option>
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
           </select>
           <input style={styles.input} placeholder="How many days are you staying?" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
@@ -103,7 +119,7 @@ export default function Home() {
         </div>
         <div className="results-container">
         {
-          loading && (
+          /*loading &&*/ (
             <p>{message}</p>
           )
         }

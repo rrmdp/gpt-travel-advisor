@@ -41,7 +41,9 @@ export default async function handler(
     days = 10
   }
 
-  let basePrompt = `what is an ideal itinerary for ${days} days in the month of ${month} in ${city}?`
+  let whenPromt = (month == 'winter' || month == 'summer' || month == 'spring' || month == 'autumn') ? `in ${month}` : `in the month of ${month}`
+
+  let basePrompt = `what is an ideal itinerary for ${days} days ${whenPromt} in ${city}?`
   console.log('Prompt', basePrompt)
   try {
     const response = await fetch('https://api.openai.com/v1/completions', {
