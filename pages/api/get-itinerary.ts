@@ -45,6 +45,7 @@ export default async function handler(
 
   let basePrompt = `what is an ideal itinerary for ${days} days ${whenPromt} in ${city}?`
   console.log('Prompt', basePrompt)
+  
   try {
     const response = await fetch('https://api.openai.com/v1/completions', {
       method: 'POST',
