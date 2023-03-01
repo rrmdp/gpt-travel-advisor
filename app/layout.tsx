@@ -1,5 +1,7 @@
 import './globals.css'
 //import { AnalyticsWrapper } from './components/analytics';
+//import { AnalyticsWrapper } from './components/GAnalytics';
+// import { AnalyticsWrapper } from './components/GAnalyticsLib';
 import Image from 'next/image'
 
 export default function RootLayout({
@@ -13,9 +15,9 @@ export default function RootLayout({
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
-
+      
       <head />
-     
+      
       <body>
         <div className="wrapper">
           {children}
