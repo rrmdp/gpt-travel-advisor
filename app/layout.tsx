@@ -25,7 +25,7 @@ export default function RootLayout({
         </div>
         <footer className="footer">
             <p>
-            Built by <a target="_blank" rel="no-opener" href="https://twitter.com/rrmdp">@rrmdp</a> • <a className="sponsor" target="_blank" rel="no-opener" href="https://www.villasmediterranean.com">VillasMediterranean.com</a>
+            Built by <a target="_blank" rel="no-opener" href="https://twitter.com/rrmdp">@rrmdp</a> • <a className="sponsor" target="_blank" rel="no-opener" href="https://www.villasmediterranean.com/?ref=whattodoinmallorca">VillasMediterranean.com</a>
             </p>
         </footer>
       </body>

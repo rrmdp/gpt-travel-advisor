@@ -85,7 +85,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #00fffe;
+  background-color: #2f88ee;
   margin-top: 70px;
   text-shadow: 0 0 1px #a5a5a5;
 }
@@ -95,10 +95,6 @@ body {
   margin: 0;
   text-align: center;
   margin-left: 10px;
-}
-
-.footer a {
-  color: #fff;
 }
 
 body {
@@ -114,6 +110,10 @@ a p {
   color: #00fffe;
 }
 
+.footer a,.hero-subheader a {
+  color: #fff;
+}
+
 input {
   color: black;
 }
@@ -124,7 +124,7 @@ input {
   outline: none;
   padding: 14px 25px;
   cursor: pointer;
-  background-color: #00fffe;
+  background-color: #2f88ee;
   color: #fff;
   /*font-weight: bold;*/
   border-radius: 50px;
