@@ -151,6 +151,8 @@ input {
   text-decoration: underline;
   text-decoration-style: dotted;
   text-underline-position: under;
+  font-weight: 500;
+  color:#1783ff;
 }
 
 .input-button:hover {
