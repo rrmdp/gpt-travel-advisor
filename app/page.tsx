@@ -66,6 +66,8 @@ export default function Home() {
         itinerary = itinerary.replace(point, `[${point}](https://www.google.com/search?q=${encodeURIComponent(point + ' Mallorca' )})`)
       })
 
+     //itinerary += "\r\n\r\n\r\nIf you are a family and would like to stay in a nice villa then check out [Villas Mediterranean](https://www.villasmediterranean.com)"
+
       setItinerary(itinerary)
       setLoading(false)
     } catch (err) {
@@ -112,14 +114,14 @@ export default function Home() {
         <option value="November">November</option>
         <option value="December">December</option>
           </select>
-          <input style={styles.input} placeholder="How many days are you staying?" onChange={e => setRequest(request => ({
+          <input type="number" style={styles.input} placeholder="How many days are you staying?" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
           }))} />
           <button className="input-button"  onClick={hitAPI}>Suggest things to do 💡</button>
         </div>
         <div className="results-container">
         {
-          /*loading &&*/ (
+      loading && (
             <p>{message}</p>
           )
         }
@@ -145,7 +147,13 @@ export default function Home() {
                 {`Day ${day}`}
                 </ReactMarkdown>
             </div>
-          ))
+          ))    
+        }
+          {itinerary && (<div
+            style={{marginBottom: '30px'}}
+          >
+          If you are a family and would like to stay in a nice villa then check out <a target="_blank" href="https://www.villasmediterranean.com" alt="Luxury villas in Majorca">Villas Mediterranean</a>
+          </div>)
         }
 
         </div>
