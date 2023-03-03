@@ -152,7 +152,7 @@ export default function Home() {
           {itinerary && (<div
             style={{marginBottom: '30px'}}
           >
-          If you are a family and would like to stay in a nice villa then check out <a target="_blank" href="https://www.villasmediterranean.com" alt="Luxury villas in Majorca">Villas Mediterranean</a>
+          If you are a family and would like to stay in a nice villa then check out <a target="_blank" href="https://www.villasmediterranean.com" >Villas Mediterranean</a>
           </div>)
         }
 
