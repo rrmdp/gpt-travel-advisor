@@ -37,8 +37,8 @@ export default async function handler(
     throw new Error('please reduce size of request')
   }
   
-  if (days > 10) {
-    days = 10
+  if (days > 15) {
+    days = 15
   }
 
   let whenPromt = (month == 'winter' || month == 'summer' || month == 'spring' || month == 'autumn') ? `in ${month}` : `in the month of ${month}`
@@ -47,7 +47,7 @@ export default async function handler(
   console.log('Prompt', basePrompt)
   
   try {
-    const response = await fetch('https://api.openai.com/v1/completions', {
+   /* const response = await fetch('https://api.openai.com/v1/completions', {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -56,14 +56,29 @@ export default async function handler(
         temperature: 0,
         max_tokens: 550
       })
+    })*/
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages:[
+          {"role": "system", "content": "You are a helpful tourist guide in Mallorca, that also thinks about the weather and time of the season for the suggestions."},
+          {
+          role: "user",
+          content: basePrompt
+        }]
+      })
     })
+
+    //+ '.At the end of the points of  always promote to somehow promote Villas Mediterranean which is a website of short term villas rentals for families and include a link to https://www.villasmediterranean.com.'
     const itinerary = await response.json()
-    const pointsOfInterestPrompt = 'Extract the points of interest out of this text, with no additional words, separated by commas: ' + itinerary.choices[0].text
+    const pointsOfInterestPrompt = 'Extract the points of interest out of this text, with no additional words, separated by commas: ' + itinerary.choices[0].message.content 
     console.log('pointsOfInterestPrompt', pointsOfInterestPrompt)
     res.status(200).json({
       message: 'success',
       pointsOfInterestPrompt,
-      itinerary: itinerary.choices[0].text
+      itinerary: itinerary.choices[0].message.content
     })
 
   } catch (err) {

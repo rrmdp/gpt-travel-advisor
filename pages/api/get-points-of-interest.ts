@@ -18,7 +18,7 @@ export default async function handler(
 ) {
   
   const { pointsOfInterestPrompt } = JSON.parse(req.body)
-  const response2 = await fetch('https://api.openai.com/v1/completions', {
+  /*const response2 = await fetch('https://api.openai.com/v1/completions', {
     method: 'POST',
     headers,
     body: JSON.stringify({
@@ -27,11 +27,25 @@ export default async function handler(
       temperature: 0,
       max_tokens: 300
     })
+  })*/
+
+  const response2 = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      model: 'gpt-3.5-turbo',
+      messages:[        
+        {
+        role: "user",
+        content: pointsOfInterestPrompt
+      }]
+
+    })
   })
 
   let pointsOfInterest = await response2.json()
 
-  pointsOfInterest = pointsOfInterest.choices[0].text.split('\n')
+  pointsOfInterest = pointsOfInterest.choices[0].message.content.split('\n')
   pointsOfInterest = pointsOfInterest[pointsOfInterest.length - 1]
   pointsOfInterest = pointsOfInterest.split(',')
   const pointsOfInterestArray = pointsOfInterest.map(i => i.trim())
