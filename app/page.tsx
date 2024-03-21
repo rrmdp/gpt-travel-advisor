@@ -11,6 +11,9 @@ export default function Home() {
 
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+
+  console.log('Developed by Rodrigo Rocco - @rrmdp on Tiwtter');
+
   async function hitAPI() {
     try {
 
@@ -89,7 +92,7 @@ export default function Home() {
       <div className="app-container">
         <div className="header">
           <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
-          <p style={styles.subheader} className="hero-subheader"><a target="_blank" rel="no-opener" href="https://www.villasmediterranean.com/?ref=whattodoinmallorca">by VillasMediterranean.com</a></p>
+          
         </div>
         <div style={styles.formContainer} className="form-container">
          <input required style={styles.city}  placeholder="City" onChange={e => setRequest(request => ({

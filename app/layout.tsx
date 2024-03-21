@@ -15,7 +15,7 @@ export default function RootLayout({
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
-      
+      <meta name="author" content="Rodrigo Rocco @rrmdp on Twitter"></meta>
       <head />
       
       <body>
@@ -25,7 +25,7 @@ export default function RootLayout({
         </div>
         <footer className="footer">
             <p>
-            Built by <a target="_blank" rel="no-opener" href="https://twitter.com/rrmdp">@rrmdp</a> • <a className="sponsor" target="_blank" rel="no-opener" href="https://www.villasmediterranean.com/?ref=whattodoinmallorca">VillasMediterranean.com</a>
+            By <a className="sponsor" target="_blank" rel="no-opener" href="https://www.villasmediterranean.com/?ref=whattodoinmallorca">VillasMediterranean.com</a>
             </p>
         </footer>
       </body>
