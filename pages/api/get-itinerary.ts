@@ -61,7 +61,7 @@ export default async function handler(
       method: 'POST',
       headers,
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o-mini',
         messages:[
           {"role": "system", "content": "You are a helpful tourist guide in Mallorca, that also thinks about the weather and time of the season for the suggestions."},
           {
