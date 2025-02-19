@@ -12,7 +12,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
 
-  console.log('Developed by Rodrigo Rocco - @rrmdp on Tiwtter');
+  console.log('Developed by Rodrigo Rocco - @rrmdp on Twitter');
 
   async function hitAPI() {
     try {
