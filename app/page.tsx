@@ -13,6 +13,15 @@ type ItinerarySummary = {
   created_at: string
 }
 
+function formatDateUTC(dateString: string) {
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(dateString))
+}
+
 export default function Home() {
   const router = useRouter()
   const [request, setRequest] = useState<{days?: string, city?: string, month?: string}>({})
@@ -171,7 +180,7 @@ export default function Home() {
               <a key={saved.id} href={`/itinerary/${saved.id}`} style={styles.previousLink}>
                 <span>{saved.days} days in {saved.city} ({saved.month})</span>
                 <span style={styles.previousDate}>
-                  {new Date(saved.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  {formatDateUTC(saved.created_at)}
                 </span>
               </a>
             ))}

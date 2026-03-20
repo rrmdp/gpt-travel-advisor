@@ -17,6 +17,15 @@ type StoredItinerary = {
   created_at: string
 }
 
+function formatDateUTC(dateString: string) {
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(dateString))
+}
+
 function CopyLinkButton() {
   const [copied, setCopied] = useState(false)
   function handleCopy() {
@@ -93,9 +102,7 @@ export default function ItineraryPage({ params }: Props) {
     )
   }
 
-  const formattedDate = new Date(data.created_at).toLocaleDateString('en-GB', {
-    day: 'numeric', month: 'long', year: 'numeric',
-  })
+  const formattedDate = formatDateUTC(data.created_at)
 
   return (
     <main style={styles.main}>

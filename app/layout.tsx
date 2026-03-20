@@ -9,21 +9,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       {/*
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
       <head />
       
-      <body>
+      <body suppressHydrationWarning>
         <div className="wrapper">
           {children}
           <AnalyticsWrapper />
         </div>
         <footer className="footer">
             <p>
-            By <a className="sponsor" target="_blank" rel="no-opener" href="https://www.villasmediterranean.com/?ref=whattodoinmallorca">VillasMediterranean.com</a>
+            By <a className="sponsor" target="_blank" rel="noopener" href="https://www.villasmediterranean.com/?ref=whattodoinmallorca">VillasMediterranean.com</a>
             </p>
         </footer>
       </body>
