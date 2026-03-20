@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { ItinerarySummary, listRecentItineraries } from '../../lib/db'
+import { StoredItinerary, listRecentStoredItineraries } from '../../lib/db'
 
 type ErrorResponse = {
   message: string
@@ -7,14 +7,14 @@ type ErrorResponse = {
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ItinerarySummary[] | ErrorResponse>
+  res: NextApiResponse<StoredItinerary[] | ErrorResponse>
 ) {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method not allowed' })
   }
 
   try {
-    const itineraries = listRecentItineraries(30)
+    const itineraries = listRecentStoredItineraries(30)
     return res.status(200).json(itineraries)
   } catch (error) {
     console.error('Unable to load itineraries:', error)

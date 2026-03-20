@@ -1,5 +1,6 @@
-import { getItineraryById } from '../../../lib/db'
-import { notFound } from 'next/navigation'
+ 'use client'
+
+import React, { useEffect, useMemo, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -7,18 +8,77 @@ interface Props {
   params: { id: string }
 }
 
-export default function ItineraryPage({ params }: Props) {
-  const data = getItineraryById(params.id)
+type StoredItinerary = {
+  id: string
+  city: string
+  days: number
+  month: string
+  itinerary: string
+  created_at: string
+}
 
-  if (!data) {
-    notFound()
+export default function ItineraryPage({ params }: Props) {
+  const [data, setData] = useState<StoredItinerary | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadItinerary() {
+      try {
+        const response = await fetch('/api/itineraries')
+        if (!response.ok) {
+          setData(null)
+          return
+        }
+
+        const itineraries: StoredItinerary[] = await response.json()
+        const match = itineraries.find((item) => item.id === params.id)
+        setData(match ?? null)
+      } catch (error) {
+        console.error('Unable to load itinerary:', error)
+        setData(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadItinerary()
+  }, [params.id])
+
+  const days = useMemo(() => {
+    if (!data) return []
+
+    const splitDays = data.itinerary.split('Day')
+    if (splitDays.length > 1) {
+      splitDays.shift()
+      return splitDays
+    }
+
+    return ['1' + splitDays[0]]
+  }, [data])
+
+  if (loading) {
+    return (
+      <main>
+        <div className="app-container">
+          <div className="results-container" style={{ marginTop: '80px' }}>
+            <p>Loading itinerary...</p>
+          </div>
+        </div>
+      </main>
+    )
   }
 
-  let days = data.itinerary.split('Day')
-  if (days.length > 1) {
-    days.shift()
-  } else {
-    days[0] = '1' + days[0]
+  if (!data) {
+    return (
+      <main>
+        <div className="app-container">
+          <div className="results-container" style={{ marginTop: '80px' }}>
+            <p>Itinerary not found.</p>
+            <a href="/" style={styles.backLink}>← Back to home</a>
+          </div>
+        </div>
+      </main>
+    )
   }
 
   return (
@@ -26,7 +86,7 @@ export default function ItineraryPage({ params }: Props) {
       <div className="app-container">
         <div className="header">
           <h1 style={styles.header} className="hero-header">
-            {data.days} days in {data.city} — {data.month}
+            {data.days} days in {data.city} - {data.month}
           </h1>
         </div>
         <div className="results-container" style={{ marginTop: '30px' }}>
