@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
+  const router = useRouter()
   const [request, setRequest] = useState<{days?: string, city?: string, month?: string}>({})
   let [itinerary, setItinerary] = useState<string>('')
 
@@ -73,6 +75,18 @@ export default function Home() {
 
       setItinerary(itinerary)
       setLoading(false)
+
+      const saveResponse = await fetch('/api/save-itinerary', {
+        method: 'POST',
+        body: JSON.stringify({
+          city: 'Mallorca',
+          days: request.days,
+          month: request.month,
+          itinerary,
+        })
+      })
+      const { id } = await saveResponse.json()
+      router.push(`/itinerary/${id}`)
     } catch (err) {
       console.log('error: ', err)
       setMessage('')
