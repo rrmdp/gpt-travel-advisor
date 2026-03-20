@@ -27,6 +27,37 @@ export default function Head() {
     url: siteUrl,
   }
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What are the best things to do in Mallorca?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Top things to do in Mallorca include Palma Old Town, Serra de Tramuntana villages like Valldemossa and Soller, beach days at Cala d Or and Alcudia, boat trips, local markets, and sunset viewpoints such as Cap de Formentor.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How many days do I need in Mallorca?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Most travelers enjoy Mallorca in 4 to 7 days. A shorter trip focuses on Palma and nearby beaches, while 7 days allows mountain villages, hidden coves, and day trips across the island.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'When is the best time to visit Mallorca?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Spring and early autumn are ideal for warm weather and fewer crowds. Summer is best for beaches and nightlife. Winter is quieter and great for city breaks, cycling, and hiking.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
       <title>{title}</title>
@@ -59,6 +90,10 @@ export default function Head() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(destinationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
     </>
   )
