@@ -5,14 +5,38 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useRouter } from 'next/navigation'
 
+type ItinerarySummary = {
+  id: string
+  city: string
+  days: number
+  month: string
+  created_at: string
+}
+
 export default function Home() {
   const router = useRouter()
   const [request, setRequest] = useState<{days?: string, city?: string, month?: string}>({})
   let [itinerary, setItinerary] = useState<string>('')
+  const [previousItineraries, setPreviousItineraries] = useState<ItinerarySummary[]>([])
 
 
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    async function loadPreviousItineraries() {
+      try {
+        const response = await fetch('/api/itineraries')
+        if (!response.ok) return
+        const data = await response.json()
+        setPreviousItineraries(data)
+      } catch (err) {
+        console.log('error loading itineraries: ', err)
+      }
+    }
+
+    loadPreviousItineraries()
+  }, [])
 
   console.log('Developed by Rodrigo Rocco - @rrmdp on Twitter');
 
@@ -136,6 +160,16 @@ export default function Home() {
           }))} />
           <button className="input-button"  onClick={hitAPI}>Suggest things to do 💡</button>
         </div>
+        {previousItineraries.length > 0 && (
+          <div style={styles.previousContainer}>
+            <h2 style={styles.previousTitle}>Previously generated itineraries</h2>
+            {previousItineraries.map((saved) => (
+              <a key={saved.id} href={`/itinerary/${saved.id}`} style={styles.previousLink}>
+                {saved.days} days in {saved.city} ({saved.month})
+              </a>
+            ))}
+          </div>
+        )}
         <div className="results-container">
         {
       loading && (
@@ -219,5 +253,26 @@ const styles = {
   },
   result: {
     color: 'white'
+  },
+  previousContainer: {
+    display: 'flex',
+    flexDirection: 'column' as 'column',
+    margin: '30px auto 0px',
+    maxWidth: '540px',
+    width: '100%',
+    gap: '8px',
+    padding: '16px',
+    borderRadius: '10px',
+    background: 'rgba(255, 255, 255, 0.12)'
+  },
+  previousTitle: {
+    color: '#fff',
+    fontSize: '18px',
+    marginBottom: '6px'
+  },
+  previousLink: {
+    color: '#fff',
+    textDecoration: 'underline',
+    lineHeight: '1.5'
   }
 }

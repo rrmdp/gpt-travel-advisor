@@ -30,6 +30,14 @@ export interface Itinerary {
   created_at: string
 }
 
+export interface ItinerarySummary {
+  id: string
+  city: string
+  days: number
+  month: string
+  created_at: string
+}
+
 export function saveItinerary(city: string, days: number, month: string, itinerary: string): string {
   const id = crypto.randomUUID()
   const db = getDb()
@@ -43,4 +51,15 @@ export function getItineraryById(id: string): Itinerary | null {
   const db = getDb()
   const row = db.prepare('SELECT * FROM itineraries WHERE id = ?').get(id)
   return (row as Itinerary) ?? null
+}
+
+export function listRecentItineraries(limit = 20): ItinerarySummary[] {
+  const db = getDb()
+  const rows = db
+    .prepare(
+      'SELECT id, city, days, month, created_at FROM itineraries ORDER BY datetime(created_at) DESC LIMIT ?'
+    )
+    .all(limit)
+
+  return rows as ItinerarySummary[]
 }
