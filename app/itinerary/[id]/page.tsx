@@ -17,6 +17,11 @@ type StoredItinerary = {
   created_at: string
 }
 
+type DayImage = {
+  query: string
+  url: string | null
+}
+
 function formatDateUTC(dateString: string) {
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
@@ -64,6 +69,7 @@ function LoadingSkeleton() {
 export default function ItineraryPage({ params }: Props) {
   const [data, setData] = useState<StoredItinerary | null>(null)
   const [loading, setLoading] = useState(true)
+  const [dayImages, setDayImages] = useState<DayImage[]>([])
 
   useEffect(() => {
     async function loadItinerary() {
@@ -88,6 +94,34 @@ export default function ItineraryPage({ params }: Props) {
     if (split.length > 1) { split.shift(); return split }
     return ['1' + split[0]]
   }, [data])
+
+  useEffect(() => {
+    async function loadImages() {
+      if (!data || days.length === 0) return
+      try {
+        const response = await fetch('/api/get-itinerary-images', {
+          method: 'POST',
+          body: JSON.stringify({
+            city: data.city,
+            days: days.map((day) => day.replace(/^\s*\d+\s*/, '')),
+          }),
+        })
+
+        if (!response.ok) {
+          setDayImages([])
+          return
+        }
+
+        const json = await response.json()
+        setDayImages(Array.isArray(json.images) ? json.images : [])
+      } catch (error) {
+        console.error('Unable to load itinerary images:', error)
+        setDayImages([])
+      }
+    }
+
+    loadImages()
+  }, [data, days])
 
   if (loading) return <LoadingSkeleton />
 
@@ -131,6 +165,17 @@ export default function ItineraryPage({ params }: Props) {
           <div key={index} style={styles.card}>
             <div style={styles.dayBadge}>Day {index + 1}</div>
             <div style={styles.cardBody}>
+              {dayImages[index]?.url && (
+                <div style={styles.dayImageWrap}>
+                  <img
+                    src={dayImages[index].url as string}
+                    alt={dayImages[index].query}
+                    style={styles.dayImage}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+              )}
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
@@ -290,6 +335,19 @@ const styles: Record<string, React.CSSProperties> = {
   },
   cardBody: {
     padding: '22px 26px 26px',
+  },
+  dayImageWrap: {
+    marginBottom: 16,
+    borderRadius: 12,
+    overflow: 'hidden',
+    boxShadow: '0 6px 18px rgba(0,0,0,0.14)',
+  },
+  dayImage: {
+    width: '100%',
+    height: 'auto',
+    display: 'block',
+    objectFit: 'cover',
+    maxHeight: 320,
   },
   /* ── Markdown elements ── */
   mdH2: {
