@@ -3,9 +3,23 @@ import path from 'path'
 
 let db: Database.Database | null = null
 
+function resolveDbPath(): string {
+  const configuredPath = process.env.SQLITE_DB_PATH?.trim()
+  if (configuredPath) {
+    return configuredPath
+  }
+
+  // Vercel runtime filesystem is writable only under /tmp.
+  if (process.env.VERCEL) {
+    return '/tmp/itineraries.db'
+  }
+
+  return path.join(process.cwd(), 'itineraries.db')
+}
+
 export function getDb(): Database.Database {
   if (!db) {
-    const dbPath = path.join(process.cwd(), 'itineraries.db')
+    const dbPath = resolveDbPath()
     db = new Database(dbPath)
     db.exec(`
       CREATE TABLE IF NOT EXISTS itineraries (

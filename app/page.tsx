@@ -109,6 +109,10 @@ export default function Home() {
           itinerary,
         })
       })
+      if (!saveResponse.ok) {
+        setMessage('Unable to save itinerary right now. Please try again.')
+        return
+      }
       const { id } = await saveResponse.json()
       router.push(`/itinerary/${id}`)
     } catch (err) {
