@@ -2,7 +2,6 @@ import './globals.css'
 import { AnalyticsWrapper } from './components/analytics';
 //import { AnalyticsWrapper } from './components/GAnalytics';
 // import { AnalyticsWrapper } from './components/GAnalyticsLib';
-import Image from 'next/image'
 
 export default function RootLayout({
   children,

@@ -1,5 +1,3 @@
-import { AnalyticsWrapper } from './components/GAnalyticsLib';
-
 export default function Head() {
   const title = 'Things to Do in Mallorca: AI Trip Planner and Day-by-Day Itineraries'
   const description = 'Plan the best things to do in Mallorca with an AI-powered itinerary builder. Get personalized day-by-day Mallorca travel plans by season, month, and trip length.'
@@ -67,7 +65,6 @@ export default function Head() {
       <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
       <meta name="googlebot" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
       <link rel="icon" href="/favicon.ico" /> 
-      <AnalyticsWrapper /> 
       <meta name="google-site-verification" content="BKOrUF74-QvCNriJNcT5bsRdJU_zMwrsZKTz97QSQaU" />        
       <meta name="author" content="Rodrigo Rocco @rrmdp on Twitter"></meta>
       <link rel="canonical" href={siteUrl} />
