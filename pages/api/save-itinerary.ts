@@ -9,7 +9,7 @@ type ErrorResponse = {
   message: string
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | ErrorResponse>
 ) {
@@ -25,7 +25,7 @@ export default function handler(
   }
 
   try {
-    const id = saveItinerary(city, Number(days), month, itinerary)
+    const id = await saveItinerary(city, Number(days), month, itinerary)
     return res.status(200).json({ id })
   } catch (error) {
     console.error('Unable to save itinerary:', error)

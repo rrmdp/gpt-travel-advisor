@@ -1,38 +1,9 @@
-import Database from 'better-sqlite3'
-import path from 'path'
+import { neon } from '@neondatabase/serverless'
 
-let db: Database.Database | null = null
-
-function resolveDbPath(): string {
-  const configuredPath = process.env.SQLITE_DB_PATH?.trim()
-  if (configuredPath) {
-    return configuredPath
-  }
-
-  // Vercel runtime filesystem is writable only under /tmp.
-  if (process.env.VERCEL) {
-    return '/tmp/itineraries.db'
-  }
-
-  return path.join(process.cwd(), 'itineraries.db')
-}
-
-export function getDb(): Database.Database {
-  if (!db) {
-    const dbPath = resolveDbPath()
-    db = new Database(dbPath)
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS itineraries (
-        id TEXT PRIMARY KEY,
-        city TEXT NOT NULL,
-        days INTEGER NOT NULL,
-        month TEXT NOT NULL,
-        itinerary TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `)
-  }
-  return db
+function getClient() {
+  const url = process.env.DATABASE_URL ?? process.env.POSTGRES_URL
+  if (!url) throw new Error('No database connection string set (DATABASE_URL or POSTGRES_URL)')
+  return neon(url)
 }
 
 export interface Itinerary {
@@ -56,39 +27,55 @@ export interface StoredItinerary extends ItinerarySummary {
   itinerary: string
 }
 
-export function saveItinerary(city: string, days: number, month: string, itinerary: string): string {
+async function ensureTable(): Promise<void> {
+  const sql = getClient()
+  await sql`
+    CREATE TABLE IF NOT EXISTS itineraries (
+      id TEXT PRIMARY KEY,
+      city TEXT NOT NULL,
+      days INTEGER NOT NULL,
+      month TEXT NOT NULL,
+      itinerary TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `
+}
+
+export async function saveItinerary(
+  city: string,
+  days: number,
+  month: string,
+  itinerary: string
+): Promise<string> {
+  const sql = getClient()
   const id = crypto.randomUUID()
-  const db = getDb()
-  db.prepare(
-    'INSERT INTO itineraries (id, city, days, month, itinerary) VALUES (?, ?, ?, ?, ?)'
-  ).run(id, city, days, month, itinerary)
+  await ensureTable()
+  await sql`
+    INSERT INTO itineraries (id, city, days, month, itinerary)
+    VALUES (${id}, ${city}, ${days}, ${month}, ${itinerary})
+  `
   return id
 }
 
-export function getItineraryById(id: string): Itinerary | null {
-  const db = getDb()
-  const row = db.prepare('SELECT * FROM itineraries WHERE id = ?').get(id)
-  return (row as Itinerary) ?? null
+export async function getItineraryById(id: string): Promise<Itinerary | null> {
+  const sql = getClient()
+  await ensureTable()
+  const rows = await sql`
+    SELECT * FROM itineraries WHERE id = ${id}
+  `
+  return (rows[0] as Itinerary) ?? null
 }
 
-export function listRecentItineraries(limit = 20): ItinerarySummary[] {
-  const db = getDb()
-  const rows = db
-    .prepare(
-      'SELECT id, city, days, month, created_at FROM itineraries ORDER BY datetime(created_at) DESC LIMIT ?'
-    )
-    .all(limit)
-
-  return rows as ItinerarySummary[]
-}
-
-export function listRecentStoredItineraries(limit = 30): StoredItinerary[] {
-  const db = getDb()
-  const rows = db
-    .prepare(
-      'SELECT id, city, days, month, itinerary, created_at FROM itineraries ORDER BY datetime(created_at) DESC LIMIT ?'
-    )
-    .all(limit)
-
+export async function listRecentStoredItineraries(
+  limit = 30
+): Promise<StoredItinerary[]> {
+  const sql = getClient()
+  await ensureTable()
+  const rows = await sql`
+    SELECT id, city, days, month, itinerary, created_at
+    FROM itineraries
+    ORDER BY created_at DESC
+    LIMIT ${limit}
+  `
   return rows as StoredItinerary[]
 }

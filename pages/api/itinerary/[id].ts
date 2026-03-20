@@ -5,7 +5,7 @@ type ErrorResponse = {
   message: string
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Itinerary | ErrorResponse>
 ) {
@@ -18,10 +18,14 @@ export default function handler(
     return res.status(400).json({ message: 'Invalid id' })
   }
 
-  const itinerary = getItineraryById(id)
-  if (!itinerary) {
-    return res.status(404).json({ message: 'Itinerary not found' })
+  try {
+    const itinerary = await getItineraryById(id)
+    if (!itinerary) {
+      return res.status(404).json({ message: 'Itinerary not found' })
+    }
+    return res.status(200).json(itinerary)
+  } catch (error) {
+    console.error('Unable to fetch itinerary:', error)
+    return res.status(500).json({ message: 'Unable to fetch itinerary' })
   }
-
-  res.status(200).json(itinerary)
 }

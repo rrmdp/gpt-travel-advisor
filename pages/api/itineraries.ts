@@ -5,7 +5,7 @@ type ErrorResponse = {
   message: string
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<StoredItinerary[] | ErrorResponse>
 ) {
@@ -14,7 +14,7 @@ export default function handler(
   }
 
   try {
-    const itineraries = listRecentStoredItineraries(30)
+    const itineraries = await listRecentStoredItineraries(30)
     return res.status(200).json(itineraries)
   } catch (error) {
     console.error('Unable to load itineraries:', error)
