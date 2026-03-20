@@ -169,7 +169,10 @@ export default function Home() {
             <h2 style={styles.previousTitle}>Previously generated itineraries</h2>
             {previousItineraries.map((saved) => (
               <a key={saved.id} href={`/itinerary/${saved.id}`} style={styles.previousLink}>
-                {saved.days} days in {saved.city} ({saved.month})
+                <span>{saved.days} days in {saved.city} ({saved.month})</span>
+                <span style={styles.previousDate}>
+                  {new Date(saved.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </span>
               </a>
             ))}
           </div>
@@ -275,8 +278,20 @@ const styles = {
     marginBottom: '6px'
   },
   previousLink: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    gap: '12px',
     color: '#fff',
     textDecoration: 'underline',
-    lineHeight: '1.5'
+    lineHeight: '1.7',
+    fontSize: '14px',
+  },
+  previousDate: {
+    color: 'rgba(255, 255, 255, 0.55)',
+    fontSize: '12px',
+    textDecoration: 'none',
+    whiteSpace: 'nowrap' as 'nowrap',
+    flexShrink: 0,
   }
 }
