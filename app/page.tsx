@@ -22,6 +22,36 @@ export default function Home() {
 
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What are the best things to do in Mallorca?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Top things to do in Mallorca include Palma Old Town, Serra de Tramuntana villages like Valldemossa and Soller, beach days at Cala d Or and Alcudia, boat trips, local markets, and sunset viewpoints such as Cap de Formentor.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How many days do I need in Mallorca?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Most travelers enjoy Mallorca in 4 to 7 days. A shorter trip focuses on Palma and nearby beaches, while 7 days allows mountain villages, hidden coves, and day trips across the island.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'When is the best time to visit Mallorca?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Spring and early autumn are ideal for warm weather and fewer crowds. Summer is best for beaches and nightlife. Winter is quieter and great for city breaks, cycling, and hiking.',
+        },
+      },
+    ],
+  }
 
   useEffect(() => {
     async function loadPreviousItineraries() {
@@ -177,6 +207,46 @@ export default function Home() {
             ))}
           </div>
         )}
+        <section style={styles.seoSection}>
+          <h2 style={styles.seoTitle}>Best things to do in Mallorca</h2>
+          <p style={styles.seoText}>
+            Looking for the best things to do in Mallorca? This AI Mallorca itinerary
+            planner creates day-by-day travel plans based on your arrival month and
+            trip length. Explore beaches, mountain villages, old town walks, local
+            markets, family activities, and hidden gems across Majorca.
+          </p>
+          <h3 style={styles.seoSubTitle}>Popular Mallorca trip ideas</h3>
+          <ul style={styles.seoList}>
+            <li style={styles.seoListItem}>4-day Mallorca itinerary for first-time visitors</li>
+            <li style={styles.seoListItem}>Family-friendly things to do in Mallorca</li>
+            <li style={styles.seoListItem}>Best beaches and calas in Majorca</li>
+            <li style={styles.seoListItem}>Scenic day trips: Soller, Valldemossa, and Deia</li>
+          </ul>
+
+          <h3 style={styles.seoSubTitle}>Mallorca travel FAQ</h3>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>What are the best things to do in Mallorca?</h4>
+            <p style={styles.faqAnswer}>
+              Popular choices include Palma Cathedral, old town tapas routes,
+              beaches around Alcudia and Cala d Or, mountain drives in Serra de
+              Tramuntana, and boat excursions along the coast.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>How many days should I spend in Mallorca?</h4>
+            <p style={styles.faqAnswer}>
+              Four to seven days gives enough time to combine city highlights,
+              beaches, and at least one mountain-village day trip.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>Is Mallorca good for families?</h4>
+            <p style={styles.faqAnswer}>
+              Yes. Mallorca offers calm beaches, walkable towns, short transfers,
+              and many villa and apartment options for family stays.
+            </p>
+          </div>
+        </section>
         <div className="results-container">
         {
       loading && (
@@ -216,6 +286,10 @@ export default function Home() {
 
         </div>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
     </main>
   )
 }
@@ -293,5 +367,53 @@ const styles = {
     textDecoration: 'none',
     whiteSpace: 'nowrap' as 'nowrap',
     flexShrink: 0,
+  },
+  seoSection: {
+    maxWidth: '760px',
+    margin: '36px auto 0px',
+    background: 'rgba(255, 255, 255, 0.12)',
+    borderRadius: '10px',
+    padding: '18px 18px 14px',
+  },
+  seoTitle: {
+    color: '#fff',
+    fontSize: '28px',
+    marginBottom: '10px',
+    fontFamily: 'Poppins',
+  },
+  seoText: {
+    color: 'rgba(255,255,255,0.95)',
+    fontSize: '14px',
+    lineHeight: '1.7',
+    marginBottom: '14px',
+  },
+  seoSubTitle: {
+    color: '#fff',
+    fontSize: '18px',
+    marginBottom: '8px',
+    marginTop: '10px',
+  },
+  seoList: {
+    paddingLeft: '18px',
+    marginBottom: '14px',
+  },
+  seoListItem: {
+    color: 'rgba(255,255,255,0.9)',
+    marginBottom: '5px',
+    fontSize: '14px',
+    lineHeight: '1.5',
+  },
+  faqItem: {
+    marginBottom: '10px',
+  },
+  faqQuestion: {
+    color: '#fff',
+    fontSize: '15px',
+    marginBottom: '2px',
+  },
+  faqAnswer: {
+    color: 'rgba(255,255,255,0.85)',
+    fontSize: '13px',
+    lineHeight: '1.6',
   }
 }
