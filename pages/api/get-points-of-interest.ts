@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { enforceRateLimit } from '../../lib/rate-limit'
 
 type Data = {
   pointsOfInterest: string
@@ -108,6 +109,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   if (!GPT_KEY) {
     return res.status(500).json({ pointsOfInterest: EMPTY_POINTS })
+  }
+
+  try {
+    const limit = await enforceRateLimit(req, {
+      bucket: 'get-points-of-interest',
+      maxRequests: 20,
+      windowMs: 60 * 60 * 1000,
+    })
+
+    res.setHeader('X-RateLimit-Limit', String(limit.limit))
+    res.setHeader('X-RateLimit-Remaining', String(limit.remaining))
+
+    if (!limit.allowed) {
+      res.setHeader('Retry-After', String(limit.retryAfterSeconds))
+      return res.status(429).json({ pointsOfInterest: EMPTY_POINTS })
+    }
+  } catch {
+    // Fail open to avoid blocking valid users when DB is temporarily unavailable.
   }
 
   let body: Record<string, unknown>

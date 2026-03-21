@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { enforceRateLimit } from '../../lib/rate-limit'
 
 type Data = {
   message: string
@@ -82,6 +83,26 @@ export default async function handler(
 
   if (!GPT_KEY) {
     return res.status(500).json({ message: 'Server is missing GPT_API_KEY' })
+  }
+
+  try {
+    const limit = await enforceRateLimit(req, {
+      bucket: 'get-itinerary',
+      maxRequests: 8,
+      windowMs: 60 * 60 * 1000,
+    })
+
+    res.setHeader('X-RateLimit-Limit', String(limit.limit))
+    res.setHeader('X-RateLimit-Remaining', String(limit.remaining))
+
+    if (!limit.allowed) {
+      res.setHeader('Retry-After', String(limit.retryAfterSeconds))
+      return res.status(429).json({
+        message: `Too many itinerary requests. Please try again in about ${Math.ceil(limit.retryAfterSeconds / 60)} minute(s).`,
+      })
+    }
+  } catch {
+    // Fail open to avoid blocking valid users when DB is temporarily unavailable.
   }
 
   let body: Record<string, unknown>

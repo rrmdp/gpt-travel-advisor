@@ -88,6 +88,13 @@ export default function Home() {
         })
       })
       const json = await response.json()
+
+      if (!response.ok) {
+        const serverMessage = typeof json?.message === 'string' ? json.message : 'Unable to generate itinerary right now.'
+        setMessage(serverMessage)
+        setLoading(false)
+        return
+      }
       
       const response2 = await fetch('/api/get-points-of-interest', {
         method: 'POST',
@@ -96,6 +103,12 @@ export default function Home() {
         })
       })
       const json2 = await response2.json()
+
+      if (!response2.ok) {
+        setMessage('Too many requests right now. Please wait a bit and try again.')
+        setLoading(false)
+        return
+      }
 
       let pointsOfInterest = JSON.parse(json2.pointsOfInterest)
       let itinerary = json.itinerary
