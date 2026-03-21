@@ -132,6 +132,10 @@ function isHighQualityImageResult(image?: GoogleImageMetadata) {
   return width >= MIN_IMAGE_WIDTH && height >= MIN_IMAGE_HEIGHT
 }
 
+function hasKnownImageDimensions(image?: GoogleImageMetadata) {
+  return typeof image?.width === 'number' && typeof image?.height === 'number'
+}
+
 async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise<FetchResult> {
   let response: Response
   try {
@@ -155,11 +159,12 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise
   }
 
   const items = Array.isArray(json.items) ? json.items : []
-  for (const item of items) {
-    if (!isHighQualityImageResult(item.image)) {
-      continue
-    }
+  const rankedItems = [
+    ...items.filter((item) => isHighQualityImageResult(item.image)),
+    ...items.filter((item) => !isHighQualityImageResult(item.image) && !hasKnownImageDimensions(item.image)),
+  ]
 
+  for (const item of rankedItems) {
     const candidate = item.link
     if (typeof candidate !== 'string' || !/^https?:\/\//i.test(candidate) || isBlockedImageHost(candidate)) {
       continue
