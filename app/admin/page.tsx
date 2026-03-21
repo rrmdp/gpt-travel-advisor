@@ -25,6 +25,10 @@ type DashboardResponse = {
   itineraries: StoredItinerary[]
 }
 
+function isDashboardResponse(value: DashboardResponse | { message: string }): value is DashboardResponse {
+  return 'errors' in value && 'itineraries' in value
+}
+
 function toBasicAuth(password: string) {
   return `Basic ${btoa(`admin:${password}`)}`
 }
@@ -94,6 +98,13 @@ export default function AdminDashboardPage() {
         setErrors([])
         setItineraries([])
         setMessage('message' in json ? json.message : 'Unable to load admin data')
+        return
+      }
+
+      if (!isDashboardResponse(json)) {
+        setErrors([])
+        setItineraries([])
+        setMessage('Unable to load admin data')
         return
       }
 
