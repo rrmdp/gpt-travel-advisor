@@ -87,6 +87,39 @@ type PreflightResult =
   | { ok: true }
   | { ok: false; message: string; statusCode: number }
 
+async function validateImageCandidate(candidateUrl: string): Promise<boolean> {
+  const requestHeaders = {
+    Accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+    'User-Agent': 'Mozilla/5.0 (compatible; GPTTravelAdvisorImageBot/1.0)',
+  }
+
+  for (const method of ['HEAD', 'GET'] as const) {
+    try {
+      const response = await fetch(candidateUrl, {
+        method,
+        headers: requestHeaders,
+        redirect: 'follow',
+      })
+
+      const contentType = response.headers.get('content-type')?.toLowerCase() ?? ''
+      if (response.ok && contentType.startsWith('image/')) {
+        if (method === 'GET') {
+          await response.body?.cancel().catch(() => undefined)
+        }
+        return true
+      }
+
+      if (method === 'GET') {
+        await response.body?.cancel().catch(() => undefined)
+      }
+    } catch {
+      // Try the fallback method before giving up on this candidate.
+    }
+  }
+
+  return false
+}
+
 async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise<FetchResult> {
   let response: Response
   try {
@@ -111,13 +144,16 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise
 
   const items = Array.isArray(json.items) ? json.items : []
   for (const item of items) {
-    if (typeof item.link === 'string' && /^https?:\/\//i.test(item.link) && !isBlockedImageHost(item.link)) {
-      return { url: item.link }
-    }
+    const candidates = [item.link, item.image?.thumbnailLink]
 
-    const thumbnail = item.image?.thumbnailLink
-    if (typeof thumbnail === 'string' && /^https?:\/\//i.test(thumbnail) && !isBlockedImageHost(thumbnail)) {
-      return { url: thumbnail }
+    for (const candidate of candidates) {
+      if (typeof candidate !== 'string' || !/^https?:\/\//i.test(candidate) || isBlockedImageHost(candidate)) {
+        continue
+      }
+
+      if (await validateImageCandidate(candidate)) {
+        return { url: candidate }
+      }
     }
   }
 
