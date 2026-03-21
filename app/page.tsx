@@ -182,6 +182,15 @@ export default function Home() {
           >
             {loading ? 'Generating itinerary...' : 'Suggest things to do 💡'}
           </button>
+          {message && (
+            <p
+              role="status"
+              aria-live="polite"
+              style={loading ? styles.formMessageInfo : styles.formMessageError}
+            >
+              {message}
+            </p>
+          )}
         </div>
         {previousItineraries.length > 0 && (
           <div style={styles.previousContainer}>
@@ -237,9 +246,6 @@ export default function Home() {
           </div>
         </section>
         <div className="results-container">
-        {message && (
-          <p role="status" aria-live="polite">{message}</p>
-        )}
         {
           itinerary && days.map((day, index) => (
             // <p
@@ -314,6 +320,29 @@ const styles = {
     padding: '20px',
     boxShadow: '0px 0px 12px rgba(5, 105, 135, .5)',
     borderRadius: '10px'
+  },
+  formMessageInfo: {
+    marginTop: '10px',
+    marginBottom: '0',
+    padding: '10px 12px',
+    borderRadius: '8px',
+    border: '1px solid #91d5ff',
+    background: '#e6f7ff',
+    color: '#003a8c',
+    fontSize: '14px',
+    lineHeight: '1.4',
+  },
+  formMessageError: {
+    marginTop: '10px',
+    marginBottom: '0',
+    padding: '10px 12px',
+    borderRadius: '8px',
+    border: '1px solid #ffa39e',
+    background: '#fff1f0',
+    color: '#a8071a',
+    fontSize: '14px',
+    lineHeight: '1.4',
+    fontWeight: 600,
   },
   result: {
     color: 'white'
