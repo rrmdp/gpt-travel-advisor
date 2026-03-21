@@ -111,12 +111,13 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise
 
   const items = Array.isArray(json.items) ? json.items : []
   for (const item of items) {
+    if (typeof item.link === 'string' && /^https?:\/\//i.test(item.link) && !isBlockedImageHost(item.link)) {
+      return { url: item.link }
+    }
+
     const thumbnail = item.image?.thumbnailLink
     if (typeof thumbnail === 'string' && /^https?:\/\//i.test(thumbnail) && !isBlockedImageHost(thumbnail)) {
       return { url: thumbnail }
-    }
-    if (typeof item.link === 'string' && /^https?:\/\//i.test(item.link) && !isBlockedImageHost(item.link)) {
-      return { url: item.link }
     }
   }
 
