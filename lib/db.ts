@@ -94,13 +94,25 @@ export async function listRecentStoredItineraries(
 ): Promise<StoredItinerary[]> {
   const sql = getClient()
   await ensureTable()
+  const safeLimit = Math.max(1, Math.min(500, Math.round(limit)))
   const rows = await sql`
     SELECT id, city, days, month, itinerary, created_at
     FROM itineraries
     ORDER BY created_at DESC
-    LIMIT ${limit}
+    LIMIT ${safeLimit}
   `
   return rows as StoredItinerary[]
+}
+
+export async function deleteStoredItinerary(id: string): Promise<boolean> {
+  const sql = getClient()
+  await ensureTable()
+  const rows = await sql`
+    DELETE FROM itineraries
+    WHERE id = ${id}
+    RETURNING id
+  `
+  return rows.length > 0
 }
 
 export async function listAllItinerarySummaries(): Promise<ItinerarySummary[]> {
