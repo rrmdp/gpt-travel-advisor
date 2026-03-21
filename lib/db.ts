@@ -27,6 +27,15 @@ export interface StoredItinerary extends ItinerarySummary {
   itinerary: string
 }
 
+export interface ApiErrorLog {
+  id: string
+  endpoint: string
+  status_code: number
+  error_message: string
+  context: string | null
+  created_at: string
+}
+
 async function ensureTable(): Promise<void> {
   const sql = getClient()
   await sql`
@@ -36,6 +45,20 @@ async function ensureTable(): Promise<void> {
       days INTEGER NOT NULL,
       month TEXT NOT NULL,
       itinerary TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `
+}
+
+async function ensureApiErrorLogTable(): Promise<void> {
+  const sql = getClient()
+  await sql`
+    CREATE TABLE IF NOT EXISTS api_error_logs (
+      id TEXT PRIMARY KEY,
+      endpoint TEXT NOT NULL,
+      status_code INTEGER NOT NULL,
+      error_message TEXT NOT NULL,
+      context TEXT,
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `
@@ -78,4 +101,32 @@ export async function listRecentStoredItineraries(
     LIMIT ${limit}
   `
   return rows as StoredItinerary[]
+}
+
+export async function logApiError(
+  endpoint: string,
+  statusCode: number,
+  errorMessage: string,
+  context: string | null = null
+): Promise<void> {
+  const sql = getClient()
+  const id = crypto.randomUUID()
+  await ensureApiErrorLogTable()
+  await sql`
+    INSERT INTO api_error_logs (id, endpoint, status_code, error_message, context)
+    VALUES (${id}, ${endpoint}, ${statusCode}, ${errorMessage}, ${context})
+  `
+}
+
+export async function listRecentApiErrors(limit = 50): Promise<ApiErrorLog[]> {
+  const sql = getClient()
+  await ensureApiErrorLogTable()
+  const safeLimit = Math.max(1, Math.min(200, Math.round(limit)))
+  const rows = await sql`
+    SELECT id, endpoint, status_code, error_message, context, created_at
+    FROM api_error_logs
+    ORDER BY created_at DESC
+    LIMIT ${safeLimit}
+  `
+  return rows as ApiErrorLog[]
 }
