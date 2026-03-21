@@ -42,6 +42,7 @@ const ENDPOINT_NAME = '/api/get-itinerary-images'
 const BLOCKED_IMAGE_HOSTS = new Set(['unsplash.com', 'images.unsplash.com', 'source.unsplash.com'])
 const MIN_IMAGE_WIDTH = 1200
 const MIN_IMAGE_HEIGHT = 800
+const GOOGLE_FETCH_TIMEOUT_MS = 4500
 
 // Google CSE error reasons that indicate a permanent configuration/credential failure,
 // as opposed to per-query issues (no results, safe-search filtered, etc.)
@@ -89,41 +90,8 @@ type FetchResult =
   | { url: string | null; error?: undefined }
   | { url: null; error: string; fatal: boolean }
 
-type PreflightResult =
-  | { ok: true }
-  | { ok: false; message: string; statusCode: number }
-
-async function validateImageCandidate(candidateUrl: string): Promise<boolean> {
-  const requestHeaders = {
-    Accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
-    'User-Agent': 'Mozilla/5.0 (compatible; GPTTravelAdvisorImageBot/1.0)',
-  }
-
-  for (const method of ['HEAD', 'GET'] as const) {
-    try {
-      const response = await fetch(candidateUrl, {
-        method,
-        headers: requestHeaders,
-        redirect: 'follow',
-      })
-
-      const contentType = response.headers.get('content-type')?.toLowerCase() ?? ''
-      if (response.ok && contentType.startsWith('image/')) {
-        if (method === 'GET') {
-          await response.body?.cancel().catch(() => undefined)
-        }
-        return true
-      }
-
-      if (method === 'GET') {
-        await response.body?.cancel().catch(() => undefined)
-      }
-    } catch {
-      // Try the fallback method before giving up on this candidate.
-    }
-  }
-
-  return false
+function isErrorFetchResult(result: FetchResult): result is Extract<FetchResult, { error: string }> {
+  return typeof (result as { error?: unknown }).error === 'string'
 }
 
 function isHighQualityImageResult(image?: GoogleImageMetadata) {
@@ -149,7 +117,13 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise
   let response: Response
   try {
     const url = `${GOOGLE_CSE_URL}?q=${encodeURIComponent(query)}&key=${encodeURIComponent(apiKey)}&cx=${encodeURIComponent(cx)}&searchType=image&num=10&safe=active`
-    response = await fetch(url)
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), GOOGLE_FETCH_TIMEOUT_MS)
+    try {
+      response = await fetch(url, { signal: controller.signal })
+    } finally {
+      clearTimeout(timeout)
+    }
   } catch (networkError) {
     const msg = networkError instanceof Error ? networkError.message : 'Network error reaching Google CSE'
     return { url: null, error: msg, fatal: false }
@@ -173,57 +147,23 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise
     ...items.filter((item) => !isHighQualityImageResult(item.image) && !hasKnownImageDimensions(item.image)),
   ]
 
-  let fallbackCandidate: string | null = null
+  const candidatePool = rankedItems
+    .map((item) => item.link)
+    .filter((candidate): candidate is string => (
+      typeof candidate === 'string' && /^https?:\/\//i.test(candidate) && !isBlockedImageHost(candidate)
+    ))
 
-  for (const item of rankedItems) {
-    const candidate = item.link
-    if (typeof candidate !== 'string' || !/^https?:\/\//i.test(candidate) || isBlockedImageHost(candidate)) {
-      continue
-    }
-
-    if (!fallbackCandidate && hasImageLikeExtension(candidate)) {
-      fallbackCandidate = candidate
-    }
-
-    if (await validateImageCandidate(candidate)) {
+  for (const candidate of candidatePool) {
+    if (hasImageLikeExtension(candidate)) {
       return { url: candidate }
     }
   }
 
-  if (fallbackCandidate) {
-    return { url: fallbackCandidate }
+  if (candidatePool.length > 0) {
+    return { url: candidatePool[0] }
   }
 
   return { url: null }
-}
-
-async function preflightGoogleAccess(apiKey: string, cx: string): Promise<PreflightResult> {
-  const probeQuery = 'Mallorca travel'
-  const result = await fetchImageUrl(apiKey, cx, probeQuery)
-
-  if (!result.error) {
-    return { ok: true }
-  }
-
-  const lower = result.error.toLowerCase()
-  if (result.fatal && lower.includes('ip address restriction')) {
-    return {
-      ok: false,
-      statusCode: 403,
-      message:
-        'Google image API key is blocked by IP restriction. This app runs on changing serverless egress IPs, so either remove IP restriction from this key or use static egress and allowlist those IPs. Keep API restriction to Custom Search API.',
-    }
-  }
-
-  if (result.fatal) {
-    return {
-      ok: false,
-      statusCode: 403,
-      message: `Google image API configuration error: ${result.error}`,
-    }
-  }
-
-  return { ok: true }
 }
 
 export default async function handler(
@@ -255,18 +195,6 @@ export default async function handler(
     const city = typeof body?.city === 'string' && body.city.trim() ? body.city.trim() : 'Mallorca'
     const limitedDays = days.slice(0, 8)
 
-    const preflight = await preflightGoogleAccess(apiKey, cx)
-    if (!preflight.ok) {
-      await logApiError(
-        ENDPOINT_NAME,
-        preflight.statusCode,
-        truncateText(preflight.message),
-        JSON.stringify({ city, daysCount: limitedDays.length, cx })
-      ).catch(() => undefined)
-      res.status(502).json({ message: preflight.message })
-      return
-    }
-
     if (limitedDays.length === 0) {
       await logApiError(
         ENDPOINT_NAME,
@@ -278,39 +206,46 @@ export default async function handler(
       return
     }
 
-    const images: ImageResult[] = []
-    let fatalError = ''
+    const queries = limitedDays.map((day) => normalizeQuery(day, city))
+    const results = await Promise.all(queries.map((query) => fetchImageUrl(apiKey, cx, query)))
 
-    for (const day of limitedDays) {
-      const query = normalizeQuery(day, city)
-      const result = await fetchImageUrl(apiKey, cx, query)
+    const images: ImageResult[] = results.map((result, index) => ({
+      query: queries[index],
+      url: result.url,
+    }))
 
-      if (result.error) {
-        await logApiError(
+    const logTasks: Array<Promise<void>> = []
+    let fatalResult: Extract<FetchResult, { error: string }> | null = null
+
+    for (let index = 0; index < results.length; index += 1) {
+      const result = results[index]
+      if (!isErrorFetchResult(result)) continue
+
+      if (result.fatal && !fatalResult) {
+        fatalResult = result
+      }
+
+      logTasks.push(
+        logApiError(
           ENDPOINT_NAME,
           result.fatal ? 403 : 502,
           truncateText(result.error),
-          JSON.stringify({ query, city, cx, fatal: result.fatal })
+          JSON.stringify({ query: queries[index], city, cx, fatal: result.fatal })
         ).catch(() => undefined)
-
-        // A fatal error (bad key, API not enabled) will affect every day — bail early
-        if (result.fatal && !fatalError) {
-          fatalError = result.error
-        }
-      }
-
-      images.push({ query, url: result.url })
+      )
     }
 
+    await Promise.all(logTasks)
+
     // Only hard-fail if there was a credential/config level error
-    if (fatalError) {
+    if (fatalResult?.error) {
       await logApiError(
         ENDPOINT_NAME,
         403,
-        truncateText(`Fatal Google CSE error: ${fatalError}`),
+        truncateText(`Fatal Google CSE error: ${fatalResult.error}`),
         JSON.stringify({ city, daysCount: limitedDays.length, cx })
       ).catch(() => undefined)
-      res.status(502).json({ message: `Google image API configuration error: ${fatalError}` })
+      res.status(502).json({ message: `Google image API configuration error: ${fatalResult.error}` })
       return
     }
 
