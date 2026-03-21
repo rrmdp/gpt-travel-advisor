@@ -100,6 +100,7 @@ export default function ItineraryClientPage({ params }: Props) {
   const [loading, setLoading] = useState(true)
   const [dayImages, setDayImages] = useState<DayImage[]>([])
   const [hiddenImageIndexes, setHiddenImageIndexes] = useState<number[]>([])
+  const [loadedImageIndexes, setLoadedImageIndexes] = useState<number[]>([])
 
   useEffect(() => {
     async function loadItinerary() {
@@ -128,6 +129,7 @@ export default function ItineraryClientPage({ params }: Props) {
       if (!data || days.length === 0) return
       try {
         setHiddenImageIndexes([])
+        setLoadedImageIndexes([])
         const response = await fetch('/api/get-itinerary-images', {
           method: 'POST',
           headers: {
@@ -141,16 +143,19 @@ export default function ItineraryClientPage({ params }: Props) {
 
         if (!response.ok) {
           setHiddenImageIndexes([])
+          setLoadedImageIndexes([])
           setDayImages([])
           return
         }
 
         const json = await response.json()
         setHiddenImageIndexes([])
+        setLoadedImageIndexes([])
         setDayImages(Array.isArray(json.images) ? json.images : [])
       } catch (error) {
         console.error('Unable to load itinerary images:', error)
         setHiddenImageIndexes([])
+        setLoadedImageIndexes([])
         setDayImages([])
       }
     }
@@ -202,12 +207,23 @@ export default function ItineraryClientPage({ params }: Props) {
             <div style={styles.cardBody}>
               {dayImages[index]?.url && !hiddenImageIndexes.includes(index) && (
                 <div style={styles.dayImageWrap}>
+                  {!loadedImageIndexes.includes(index) && (
+                    <div style={styles.dayImageSkeleton} aria-hidden="true" />
+                  )}
                   <img
                     src={dayImages[index].url as string}
                     alt={dayImages[index].query}
-                    style={styles.dayImage}
+                    style={{
+                      ...styles.dayImage,
+                      opacity: loadedImageIndexes.includes(index) ? 1 : 0,
+                    }}
                     loading="lazy"
                     referrerPolicy="no-referrer"
+                    onLoad={() => {
+                      setLoadedImageIndexes((current) => (
+                        current.includes(index) ? current : [...current, index]
+                      ))
+                    }}
                     onError={() => {
                       setHiddenImageIndexes((current) => (
                         current.includes(index) ? current : [...current, index]
@@ -380,14 +396,26 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
+    position: 'relative',
+    aspectRatio: '16 / 9',
+    maxHeight: 320,
+    background: '#d6e4f5',
     boxShadow: '0 6px 18px rgba(0,0,0,0.14)',
   },
   dayImage: {
     width: '100%',
-    height: 'auto',
+    height: '100%',
     display: 'block',
     objectFit: 'cover',
-    maxHeight: 320,
+    transition: 'opacity 0.35s ease',
+  },
+  dayImageSkeleton: {
+    position: 'absolute',
+    inset: 0,
+    background:
+      'linear-gradient(100deg, rgba(255,255,255,0.35) 10%, rgba(255,255,255,0.72) 45%, rgba(255,255,255,0.35) 80%) #c8dcf4',
+    backgroundSize: '220% 100%',
+    animation: 'itineraryImageShimmer 1.3s ease-in-out infinite',
   },
   /* ── Markdown elements ── */
   mdH2: {

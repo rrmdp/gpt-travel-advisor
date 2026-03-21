@@ -134,9 +134,9 @@ body::after {
 
 body {
   color: rgb(var(--foreground-rgb));
-}
   position: relative;
   z-index: 1;
+}
 
 a {
   text-decoration: none;
@@ -230,4 +230,13 @@ input {
   /*.hero-header {
     line-height: 70px;
   }*/
+}
+
+@keyframes itineraryImageShimmer {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
 }
