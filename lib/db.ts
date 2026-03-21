@@ -103,6 +103,17 @@ export async function listRecentStoredItineraries(
   return rows as StoredItinerary[]
 }
 
+export async function listAllItinerarySummaries(): Promise<ItinerarySummary[]> {
+  const sql = getClient()
+  await ensureTable()
+  const rows = await sql`
+    SELECT id, city, days, month, created_at
+    FROM itineraries
+    ORDER BY created_at DESC
+  `
+  return rows as ItinerarySummary[]
+}
+
 export async function logApiError(
   endpoint: string,
   statusCode: number,
