@@ -37,6 +37,16 @@ const DEFAULT_CX = 'b2fe726dc3f3d4348'
 const ENDPOINT_NAME = '/api/get-itinerary-images'
 const BLOCKED_IMAGE_HOSTS = new Set(['unsplash.com', 'images.unsplash.com', 'source.unsplash.com'])
 
+// Google CSE error reasons that indicate a permanent configuration/credential failure,
+// as opposed to per-query issues (no results, safe-search filtered, etc.)
+const FATAL_GOOGLE_REASONS = new Set([
+  'keyInvalid',
+  'accessNotConfigured',
+  'forbidden',
+  'badRequest',
+  'invalidArgument',
+])
+
 function truncateText(value: string, max = 1500) {
   return value.length > max ? `${value.slice(0, max)}...` : value
 }
@@ -69,33 +79,44 @@ function isBlockedImageHost(candidateUrl: string) {
   }
 }
 
-async function fetchImageUrl(apiKey: string, cx: string, query: string) {
-  const url = `${GOOGLE_CSE_URL}?q=${encodeURIComponent(query)}&key=${encodeURIComponent(apiKey)}&cx=${encodeURIComponent(cx)}&searchType=image&num=10&safe=active`
-  const response = await fetch(url)
+type FetchResult =
+  | { url: string | null; error?: undefined }
+  | { url: null; error: string; fatal: boolean }
+
+async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise<FetchResult> {
+  let response: Response
+  try {
+    const url = `${GOOGLE_CSE_URL}?q=${encodeURIComponent(query)}&key=${encodeURIComponent(apiKey)}&cx=${encodeURIComponent(cx)}&searchType=image&num=10&safe=active`
+    response = await fetch(url)
+  } catch (networkError) {
+    const msg = networkError instanceof Error ? networkError.message : 'Network error reaching Google CSE'
+    return { url: null, error: msg, fatal: false }
+  }
+
   const json = (await response.json().catch(() => ({}))) as GoogleSearchResponse
 
   if (!response.ok) {
-    const reason = json?.error?.errors?.[0]?.reason
+    const reason = json?.error?.errors?.[0]?.reason ?? ''
     const message =
       json?.error?.message ||
       json?.error?.errors?.[0]?.message ||
-      `Google CSE request failed with status ${response.status}`
-    throw new Error(reason ? `${reason}: ${message}` : message)
+      `Google CSE request failed with HTTP ${response.status}`
+    const isFatal = FATAL_GOOGLE_REASONS.has(reason) || response.status === 400 || response.status === 403
+    return { url: null, error: reason ? `${reason}: ${message}` : message, fatal: isFatal }
   }
 
   const items = Array.isArray(json.items) ? json.items : []
   for (const item of items) {
     const thumbnail = item.image?.thumbnailLink
     if (typeof thumbnail === 'string' && /^https?:\/\//i.test(thumbnail) && !isBlockedImageHost(thumbnail)) {
-      return thumbnail
+      return { url: thumbnail }
     }
-
     if (typeof item.link === 'string' && /^https?:\/\//i.test(item.link) && !isBlockedImageHost(item.link)) {
-      return item.link
+      return { url: item.link }
     }
   }
 
-  return null
+  return { url: null }
 }
 
 export default async function handler(
@@ -139,54 +160,42 @@ export default async function handler(
     }
 
     const images: ImageResult[] = []
-    let firstGoogleError = ''
+    let fatalError = ''
+
     for (const day of limitedDays) {
       const query = normalizeQuery(day, city)
-      let imageUrl: string | null = null
+      const result = await fetchImageUrl(apiKey, cx, query)
 
-      try {
-        imageUrl = await fetchImageUrl(apiKey, cx, query)
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'Unknown Google CSE error'
+      if (result.error) {
         await logApiError(
           ENDPOINT_NAME,
-          502,
-          truncateText(message),
-          JSON.stringify({ query, city, cx })
+          result.fatal ? 403 : 502,
+          truncateText(result.error),
+          JSON.stringify({ query, city, cx, fatal: result.fatal })
         ).catch(() => undefined)
-        if (!firstGoogleError) {
-          firstGoogleError = message
+
+        // A fatal error (bad key, API not enabled) will affect every day — bail early
+        if (result.fatal && !fatalError) {
+          fatalError = result.error
         }
       }
 
-      images.push({ query, url: imageUrl })
+      images.push({ query, url: result.url })
     }
 
-    if (firstGoogleError) {
+    // Only hard-fail if there was a credential/config level error
+    if (fatalError) {
       await logApiError(
         ENDPOINT_NAME,
-        502,
-        truncateText(`Google image lookup failed: ${firstGoogleError}`),
+        403,
+        truncateText(`Fatal Google CSE error: ${fatalError}`),
         JSON.stringify({ city, daysCount: limitedDays.length, cx })
       ).catch(() => undefined)
-      res.status(502).json({ message: `Google image lookup failed: ${firstGoogleError}` })
+      res.status(502).json({ message: `Google image API configuration error: ${fatalError}` })
       return
     }
 
-    if (!images.some((image) => image.url)) {
-      await logApiError(
-        ENDPOINT_NAME,
-        502,
-        'Google image lookup returned no results',
-        JSON.stringify({ city, daysCount: limitedDays.length, cx })
-      ).catch(() => undefined)
-      res.status(502).json({
-        message:
-          'Google image lookup returned no results. Verify GOOGLE_CSE_CX points to a valid Programmable Search Engine with Image Search enabled and that your API key has Custom Search API access.',
-      })
-      return
-    }
-
+    // Return whatever we got — some urls may be null (no Google result for that day)
     res.status(200).json({ message: 'success', images })
   } catch (error) {
     console.error('get-itinerary-images error:', error)
