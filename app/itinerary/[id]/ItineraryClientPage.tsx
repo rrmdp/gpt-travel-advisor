@@ -393,7 +393,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '22px 26px 26px',
   },
   dayImageWrap: {
-    marginBottom: 16,
+    margin: '0 auto 16px',
     borderRadius: 12,
     overflow: 'hidden',
     position: 'relative',
