@@ -43,6 +43,11 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string) {
   return first.link
 }
 
+function fallbackImageUrl(query: string) {
+  // No-key fallback so day cards still get images when Google CSE is unavailable.
+  return `https://source.unsplash.com/1600x900/?${encodeURIComponent(query)}`
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Success | ErrorResponse>
@@ -52,11 +57,11 @@ export default async function handler(
     return
   }
 
-  const apiKey = process.env.GOOGLE_API_KEY
+  const apiKey = process.env.GOOGLE_API_KEY || process.env.GS_KEY
   const cx = process.env.GOOGLE_CSE_CX || DEFAULT_CX
 
   if (!apiKey) {
-    res.status(500).json({ message: 'Missing GOOGLE_API_KEY' })
+    res.status(500).json({ message: 'Missing Google API key. Set GOOGLE_API_KEY or GS_KEY.' })
     return
   }
 
@@ -73,7 +78,12 @@ export default async function handler(
       images.push({ query, url: imageUrl })
     }
 
-    res.status(200).json({ message: 'success', images })
+    const withFallback = images.map((image) => ({
+      query: image.query,
+      url: image.url ?? fallbackImageUrl(image.query),
+    }))
+
+    res.status(200).json({ message: 'success', images: withFallback })
   } catch (error) {
     console.error('get-itinerary-images error:', error)
     res.status(500).json({ message: 'Unable to fetch itinerary images' })
