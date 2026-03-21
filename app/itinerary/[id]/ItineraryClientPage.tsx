@@ -22,6 +22,35 @@ type DayImage = {
   url: string | null
 }
 
+function stripTitlePreamble(text: string) {
+  return text
+    .replace(/^\s*(?:#{1,6}\s*)?(?:holiday\s+itinerary|travel\s+itinerary|itinerary)[^\n]*\n+/i, '')
+    .trim()
+}
+
+function parseItineraryDays(itinerary: string) {
+  const normalized = itinerary.replace(/\r\n/g, '\n').trim()
+  const headingRegex = /^#{0,6}\s*Day\s+\d+\s*[:\-]?\s*/gim
+  const matches = Array.from(normalized.matchAll(headingRegex))
+
+  if (matches.length === 0) {
+    const cleaned = stripTitlePreamble(normalized)
+    return cleaned ? [cleaned] : []
+  }
+
+  const sections = matches
+    .map((match, index) => {
+      const start = match.index ?? 0
+      const end = index + 1 < matches.length ? (matches[index + 1].index ?? normalized.length) : normalized.length
+      return normalized.slice(start, end).trim()
+    })
+    .map((section) => section.replace(/^#{0,6}\s*Day\s+\d+\s*[:\-]?\s*/i, '').trim())
+    .map((section, index) => (index === 0 ? stripTitlePreamble(section) : section))
+    .filter(Boolean)
+
+  return sections
+}
+
 function formatDateUTC(dateString: string) {
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
@@ -90,9 +119,7 @@ export default function ItineraryClientPage({ params }: Props) {
 
   const days = useMemo(() => {
     if (!data) return []
-    const split = data.itinerary.split('Day')
-    if (split.length > 1) { split.shift(); return split }
-    return ['1' + split[0]]
+    return parseItineraryDays(data.itinerary)
   }, [data])
 
   useEffect(() => {
@@ -106,7 +133,7 @@ export default function ItineraryClientPage({ params }: Props) {
           },
           body: JSON.stringify({
             city: data.city,
-            days: days.map((day) => day.replace(/^\s*\d+\s*/, '')),
+            days,
           }),
         })
 

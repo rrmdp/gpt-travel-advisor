@@ -60,11 +60,15 @@ function normalizeDayHeadings(markdown: string): string {
     .replace(/^Day\s*(\d+)\s*-\s*/gim, 'Day $1: ')
     .trim()
 
-  if (/^Day\s+1:/im.test(cleaned)) {
-    return cleaned
+  const withoutTitlePreamble = cleaned
+    .replace(/^\s*(?:#{1,6}\s*)?(?:holiday\s+itinerary|travel\s+itinerary|itinerary)[^\n]*\n+/i, '')
+    .trim()
+
+  if (/^Day\s+1:/im.test(withoutTitlePreamble)) {
+    return withoutTitlePreamble
   }
 
-  return `Day 1:\n${cleaned}`
+  return `Day 1:\n${withoutTitlePreamble}`
 }
 
 export default async function handler(
