@@ -35,6 +35,7 @@ type GoogleSearchResponse = {
 const GOOGLE_CSE_URL = 'https://www.googleapis.com/customsearch/v1'
 const DEFAULT_CX = 'b2fe726dc3f3d4348'
 const ENDPOINT_NAME = '/api/get-itinerary-images'
+const BLOCKED_IMAGE_HOSTS = new Set(['unsplash.com', 'images.unsplash.com', 'source.unsplash.com'])
 
 function truncateText(value: string, max = 1500) {
   return value.length > max ? `${value.slice(0, max)}...` : value
@@ -55,8 +56,21 @@ function normalizeQuery(dayText: string, city: string) {
   return `${short} ${city}`.trim()
 }
 
+function isBlockedImageHost(candidateUrl: string) {
+  try {
+    const host = new URL(candidateUrl).hostname.toLowerCase()
+    if (BLOCKED_IMAGE_HOSTS.has(host)) return true
+    for (const blockedHost of Array.from(BLOCKED_IMAGE_HOSTS)) {
+      if (host.endsWith(`.${blockedHost}`)) return true
+    }
+    return false
+  } catch {
+    return true
+  }
+}
+
 async function fetchImageUrl(apiKey: string, cx: string, query: string) {
-  const url = `${GOOGLE_CSE_URL}?q=${encodeURIComponent(query)}&key=${encodeURIComponent(apiKey)}&cx=${encodeURIComponent(cx)}&searchType=image&num=1&safe=active`
+  const url = `${GOOGLE_CSE_URL}?q=${encodeURIComponent(query)}&key=${encodeURIComponent(apiKey)}&cx=${encodeURIComponent(cx)}&searchType=image&num=10&safe=active`
   const response = await fetch(url)
   const json = (await response.json().catch(() => ({}))) as GoogleSearchResponse
 
@@ -69,16 +83,16 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string) {
     throw new Error(reason ? `${reason}: ${message}` : message)
   }
 
-  const first = Array.isArray(json.items) && json.items.length > 0 ? json.items[0] : null
-  if (!first) return null
+  const items = Array.isArray(json.items) ? json.items : []
+  for (const item of items) {
+    const thumbnail = item.image?.thumbnailLink
+    if (typeof thumbnail === 'string' && /^https?:\/\//i.test(thumbnail) && !isBlockedImageHost(thumbnail)) {
+      return thumbnail
+    }
 
-  const thumbnail = first.image?.thumbnailLink
-  if (typeof thumbnail === 'string' && /^https?:\/\//i.test(thumbnail)) {
-    return thumbnail
-  }
-
-  if (typeof first.link === 'string' && /^https?:\/\//i.test(first.link)) {
-    return first.link
+    if (typeof item.link === 'string' && /^https?:\/\//i.test(item.link) && !isBlockedImageHost(item.link)) {
+      return item.link
+    }
   }
 
   return null
