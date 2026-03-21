@@ -70,6 +70,7 @@ export default function ItineraryPage({ params }: Props) {
   const [data, setData] = useState<StoredItinerary | null>(null)
   const [loading, setLoading] = useState(true)
   const [dayImages, setDayImages] = useState<DayImage[]>([])
+  const [imagesError, setImagesError] = useState<string>('')
 
   useEffect(() => {
     async function loadItinerary() {
@@ -99,8 +100,12 @@ export default function ItineraryPage({ params }: Props) {
     async function loadImages() {
       if (!data || days.length === 0) return
       try {
+        setImagesError('')
         const response = await fetch('/api/get-itinerary-images', {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify({
             city: data.city,
             days: days.map((day) => day.replace(/^\s*\d+\s*/, '')),
@@ -108,6 +113,8 @@ export default function ItineraryPage({ params }: Props) {
         })
 
         if (!response.ok) {
+          const error = await response.json().catch(() => ({ message: 'Unable to load images' }))
+          setImagesError(error.message || 'Unable to load images')
           setDayImages([])
           return
         }
@@ -116,6 +123,7 @@ export default function ItineraryPage({ params }: Props) {
         setDayImages(Array.isArray(json.images) ? json.images : [])
       } catch (error) {
         console.error('Unable to load itinerary images:', error)
+        setImagesError('Unable to load images')
         setDayImages([])
       }
     }
@@ -161,6 +169,7 @@ export default function ItineraryPage({ params }: Props) {
 
       {/* Day cards */}
       <div style={styles.content}>
+        {imagesError && <p style={styles.imagesError}>{imagesError}</p>}
         {days.map((day, index) => (
           <div key={index} style={styles.card}>
             <div style={styles.dayBadge}>Day {index + 1}</div>
@@ -431,5 +440,14 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'rgba(255,255,255,0.2)',
     borderRadius: 8,
     display: 'block',
+  },
+  imagesError: {
+    color: '#fff',
+    background: 'rgba(0,0,0,0.18)',
+    border: '1px solid rgba(255,255,255,0.22)',
+    borderRadius: 10,
+    padding: '10px 12px',
+    marginBottom: 16,
+    fontSize: 13,
   },
 }

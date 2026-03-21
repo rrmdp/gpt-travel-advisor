@@ -51,6 +51,7 @@ export default function Home() {
 
   async function hitAPI() {
     try {
+      if (loading) return
 
       if (!request.month) {
         console.log('No month...');
@@ -127,6 +128,7 @@ export default function Home() {
     } catch (err) {
       console.log('error: ', err)
       setMessage('')
+      setLoading(false)
     }
   }
   
@@ -171,7 +173,15 @@ export default function Home() {
           <input type="number" style={styles.input} placeholder="How many days are you staying?" onChange={e => setRequest(request => ({
             ...request, days: e.target.value
           }))} />
-          <button className="input-button"  onClick={hitAPI}>Suggest things to do 💡</button>
+          <button
+            className="input-button"
+            onClick={hitAPI}
+            disabled={loading}
+            aria-disabled={loading}
+            style={{ opacity: loading ? 0.7 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
+          >
+            {loading ? 'Generating itinerary...' : 'Suggest things to do 💡'}
+          </button>
         </div>
         {previousItineraries.length > 0 && (
           <div style={styles.previousContainer}>
