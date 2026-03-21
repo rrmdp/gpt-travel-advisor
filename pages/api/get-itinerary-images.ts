@@ -15,12 +15,16 @@ type ErrorResponse = {
   message: string
 }
 
+type GoogleImageMetadata = {
+  width?: number
+  height?: number
+  thumbnailLink?: string
+}
+
 type GoogleSearchResponse = {
   items?: Array<{
     link?: string
-    image?: {
-      thumbnailLink?: string
-    }
+    image?: GoogleImageMetadata
   }>
   error?: {
     code?: number
@@ -36,6 +40,8 @@ const GOOGLE_CSE_URL = 'https://www.googleapis.com/customsearch/v1'
 const DEFAULT_CX = 'b2fe726dc3f3d4348'
 const ENDPOINT_NAME = '/api/get-itinerary-images'
 const BLOCKED_IMAGE_HOSTS = new Set(['unsplash.com', 'images.unsplash.com', 'source.unsplash.com'])
+const MIN_IMAGE_WIDTH = 1200
+const MIN_IMAGE_HEIGHT = 800
 
 // Google CSE error reasons that indicate a permanent configuration/credential failure,
 // as opposed to per-query issues (no results, safe-search filtered, etc.)
@@ -120,6 +126,12 @@ async function validateImageCandidate(candidateUrl: string): Promise<boolean> {
   return false
 }
 
+function isHighQualityImageResult(image?: GoogleImageMetadata) {
+  const width = typeof image?.width === 'number' ? image.width : 0
+  const height = typeof image?.height === 'number' ? image.height : 0
+  return width >= MIN_IMAGE_WIDTH && height >= MIN_IMAGE_HEIGHT
+}
+
 async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise<FetchResult> {
   let response: Response
   try {
@@ -144,16 +156,17 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise
 
   const items = Array.isArray(json.items) ? json.items : []
   for (const item of items) {
-    const candidates = [item.link, item.image?.thumbnailLink]
+    if (!isHighQualityImageResult(item.image)) {
+      continue
+    }
 
-    for (const candidate of candidates) {
-      if (typeof candidate !== 'string' || !/^https?:\/\//i.test(candidate) || isBlockedImageHost(candidate)) {
-        continue
-      }
+    const candidate = item.link
+    if (typeof candidate !== 'string' || !/^https?:\/\//i.test(candidate) || isBlockedImageHost(candidate)) {
+      continue
+    }
 
-      if (await validateImageCandidate(candidate)) {
-        return { url: candidate }
-      }
+    if (await validateImageCandidate(candidate)) {
+      return { url: candidate }
     }
   }
 
