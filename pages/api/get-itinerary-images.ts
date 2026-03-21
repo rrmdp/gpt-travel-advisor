@@ -83,6 +83,10 @@ type FetchResult =
   | { url: string | null; error?: undefined }
   | { url: null; error: string; fatal: boolean }
 
+type PreflightResult =
+  | { ok: true }
+  | { ok: false; message: string; statusCode: number }
+
 async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise<FetchResult> {
   let response: Response
   try {
@@ -119,6 +123,35 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise
   return { url: null }
 }
 
+async function preflightGoogleAccess(apiKey: string, cx: string): Promise<PreflightResult> {
+  const probeQuery = 'Mallorca travel'
+  const result = await fetchImageUrl(apiKey, cx, probeQuery)
+
+  if (!result.error) {
+    return { ok: true }
+  }
+
+  const lower = result.error.toLowerCase()
+  if (result.fatal && lower.includes('ip address restriction')) {
+    return {
+      ok: false,
+      statusCode: 403,
+      message:
+        'Google image API key is blocked by IP restriction. This app runs on changing serverless egress IPs, so either remove IP restriction from this key or use static egress and allowlist those IPs. Keep API restriction to Custom Search API.',
+    }
+  }
+
+  if (result.fatal) {
+    return {
+      ok: false,
+      statusCode: 403,
+      message: `Google image API configuration error: ${result.error}`,
+    }
+  }
+
+  return { ok: true }
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Success | ErrorResponse>
@@ -147,6 +180,18 @@ export default async function handler(
     const days: string[] = Array.isArray(body?.days) ? body.days : []
     const city = typeof body?.city === 'string' && body.city.trim() ? body.city.trim() : 'Mallorca'
     const limitedDays = days.slice(0, 8)
+
+    const preflight = await preflightGoogleAccess(apiKey, cx)
+    if (!preflight.ok) {
+      await logApiError(
+        ENDPOINT_NAME,
+        preflight.statusCode,
+        truncateText(preflight.message),
+        JSON.stringify({ city, daysCount: limitedDays.length, cx })
+      ).catch(() => undefined)
+      res.status(502).json({ message: preflight.message })
+      return
+    }
 
     if (limitedDays.length === 0) {
       await logApiError(
