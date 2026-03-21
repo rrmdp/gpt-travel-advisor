@@ -29,12 +29,12 @@ export function getAdminPassword() {
   return process.env.IMAGE_ERRORS_PASSWORD || process.env.ADMIN_PASSWORD || null
 }
 
-export function unauthorized(res: NextApiResponse<ErrorResponse | unknown>) {
+export function unauthorized<T>(res: NextApiResponse<T | ErrorResponse>) {
   res.setHeader('WWW-Authenticate', `Basic realm="${REALM}", charset="UTF-8"`)
   res.status(401).json({ message: 'Unauthorized' })
 }
 
-export function requireAdminAuth(req: NextApiRequest, res: NextApiResponse<ErrorResponse | unknown>) {
+export function requireAdminAuth<T>(req: NextApiRequest, res: NextApiResponse<T | ErrorResponse>) {
   const requiredPassword = getAdminPassword()
   if (!requiredPassword) {
     res.status(500).json({ message: 'Missing IMAGE_ERRORS_PASSWORD (or ADMIN_PASSWORD) configuration' })
