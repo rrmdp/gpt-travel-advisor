@@ -237,11 +237,9 @@ export default function Home() {
           </div>
         </section>
         <div className="results-container">
-        {
-      loading && (
-            <p>{message}</p>
-          )
-        }
+        {message && (
+          <p role="status" aria-live="polite">{message}</p>
+        )}
         {
           itinerary && days.map((day, index) => (
             // <p
