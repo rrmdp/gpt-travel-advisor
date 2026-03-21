@@ -99,6 +99,7 @@ export default function ItineraryClientPage({ params }: Props) {
   const [data, setData] = useState<StoredItinerary | null>(null)
   const [loading, setLoading] = useState(true)
   const [dayImages, setDayImages] = useState<DayImage[]>([])
+  const [hiddenImageIndexes, setHiddenImageIndexes] = useState<number[]>([])
 
   useEffect(() => {
     async function loadItinerary() {
@@ -126,6 +127,7 @@ export default function ItineraryClientPage({ params }: Props) {
     async function loadImages() {
       if (!data || days.length === 0) return
       try {
+        setHiddenImageIndexes([])
         const response = await fetch('/api/get-itinerary-images', {
           method: 'POST',
           headers: {
@@ -138,14 +140,17 @@ export default function ItineraryClientPage({ params }: Props) {
         })
 
         if (!response.ok) {
+          setHiddenImageIndexes([])
           setDayImages([])
           return
         }
 
         const json = await response.json()
+        setHiddenImageIndexes([])
         setDayImages(Array.isArray(json.images) ? json.images : [])
       } catch (error) {
         console.error('Unable to load itinerary images:', error)
+        setHiddenImageIndexes([])
         setDayImages([])
       }
     }
@@ -195,7 +200,7 @@ export default function ItineraryClientPage({ params }: Props) {
           <div key={index} style={styles.card}>
             <div style={styles.dayBadge}>Day {index + 1}</div>
             <div style={styles.cardBody}>
-              {dayImages[index]?.url && (
+              {dayImages[index]?.url && !hiddenImageIndexes.includes(index) && (
                 <div style={styles.dayImageWrap}>
                   <img
                     src={dayImages[index].url as string}
@@ -203,6 +208,11 @@ export default function ItineraryClientPage({ params }: Props) {
                     style={styles.dayImage}
                     loading="lazy"
                     referrerPolicy="no-referrer"
+                    onError={() => {
+                      setHiddenImageIndexes((current) => (
+                        current.includes(index) ? current : [...current, index]
+                      ))
+                    }}
                   />
                 </div>
               )}
