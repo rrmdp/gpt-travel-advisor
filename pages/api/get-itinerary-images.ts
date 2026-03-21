@@ -136,6 +136,15 @@ function hasKnownImageDimensions(image?: GoogleImageMetadata) {
   return typeof image?.width === 'number' && typeof image?.height === 'number'
 }
 
+function hasImageLikeExtension(candidateUrl: string) {
+  try {
+    const pathname = new URL(candidateUrl).pathname.toLowerCase()
+    return /\.(avif|gif|jpe?g|png|svg|webp)$/i.test(pathname)
+  } catch {
+    return false
+  }
+}
+
 async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise<FetchResult> {
   let response: Response
   try {
@@ -164,15 +173,25 @@ async function fetchImageUrl(apiKey: string, cx: string, query: string): Promise
     ...items.filter((item) => !isHighQualityImageResult(item.image) && !hasKnownImageDimensions(item.image)),
   ]
 
+  let fallbackCandidate: string | null = null
+
   for (const item of rankedItems) {
     const candidate = item.link
     if (typeof candidate !== 'string' || !/^https?:\/\//i.test(candidate) || isBlockedImageHost(candidate)) {
       continue
     }
 
+    if (!fallbackCandidate && hasImageLikeExtension(candidate)) {
+      fallbackCandidate = candidate
+    }
+
     if (await validateImageCandidate(candidate)) {
       return { url: candidate }
     }
+  }
+
+  if (fallbackCandidate) {
+    return { url: fallbackCandidate }
   }
 
   return { url: null }
