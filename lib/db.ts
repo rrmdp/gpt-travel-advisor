@@ -36,6 +36,13 @@ export interface ApiErrorLog {
   created_at: string
 }
 
+export interface CachedImageQueryRow {
+  query: string
+  url: string | null
+  expires_at: string
+  updated_at: string
+}
+
 async function ensureTable(): Promise<void> {
   const sql = getClient()
   await sql`
@@ -61,6 +68,23 @@ async function ensureApiErrorLogTable(): Promise<void> {
       context TEXT,
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
+  `
+}
+
+async function ensureImageQueryCacheTable(): Promise<void> {
+  const sql = getClient()
+  await sql`
+    CREATE TABLE IF NOT EXISTS image_query_cache (
+      query TEXT PRIMARY KEY,
+      url TEXT,
+      expires_at TIMESTAMPTZ NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `
+
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_image_query_cache_expires_at
+    ON image_query_cache (expires_at)
   `
 }
 
@@ -152,4 +176,64 @@ export async function listRecentApiErrors(limit = 50): Promise<ApiErrorLog[]> {
     LIMIT ${safeLimit}
   `
   return rows as ApiErrorLog[]
+}
+
+export async function getCachedImageUrls(
+  queries: string[]
+): Promise<Map<string, string | null>> {
+  const sql = getClient()
+  await ensureImageQueryCacheTable()
+
+  const cleaned = Array.from(new Set(queries.map((value) => value.trim()).filter(Boolean)))
+  if (cleaned.length === 0) return new Map()
+
+  await sql`
+    DELETE FROM image_query_cache
+    WHERE expires_at < NOW()
+  `
+
+  const rows = await sql`
+    SELECT query, url
+    FROM image_query_cache
+    WHERE query = ANY(${cleaned})
+      AND expires_at >= NOW()
+  `
+
+  const result = new Map<string, string | null>()
+  for (const row of rows as Array<{ query: string; url: string | null }>) {
+    result.set(row.query, row.url)
+  }
+
+  return result
+}
+
+export async function upsertCachedImageUrls(
+  entries: Array<{ query: string; url: string | null }>,
+  ttlSeconds: number
+): Promise<void> {
+  const sql = getClient()
+  await ensureImageQueryCacheTable()
+
+  const safeTtlSeconds = Math.max(60, Math.min(60 * 60 * 24 * 30, Math.round(ttlSeconds)))
+  const expiresAt = new Date(Date.now() + safeTtlSeconds * 1000)
+
+  const cleaned = entries
+    .map((entry) => ({ query: entry.query.trim(), url: entry.url }))
+    .filter((entry) => Boolean(entry.query))
+
+  if (cleaned.length === 0) return
+
+  await Promise.all(
+    cleaned.map((entry) => (
+      sql`
+        INSERT INTO image_query_cache (query, url, expires_at, updated_at)
+        VALUES (${entry.query}, ${entry.url}, ${expiresAt}, NOW())
+        ON CONFLICT (query)
+        DO UPDATE
+          SET url = EXCLUDED.url,
+              expires_at = EXCLUDED.expires_at,
+              updated_at = NOW()
+      `
+    ))
+  )
 }

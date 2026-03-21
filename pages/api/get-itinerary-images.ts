@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { logApiError } from '../../lib/db'
+import { getCachedImageUrls, logApiError, upsertCachedImageUrls } from '../../lib/db'
 
 type ImageResult = {
   query: string
@@ -43,6 +43,8 @@ const BLOCKED_IMAGE_HOSTS = new Set(['unsplash.com', 'images.unsplash.com', 'sou
 const MIN_IMAGE_WIDTH = 1200
 const MIN_IMAGE_HEIGHT = 800
 const GOOGLE_FETCH_TIMEOUT_MS = 4500
+const IMAGE_CACHE_TTL_SECONDS = 60 * 60 * 24 * 7
+const EMPTY_IMAGE_CACHE_TTL_SECONDS = 60 * 60 * 12
 
 // Google CSE error reasons that indicate a permanent configuration/credential failure,
 // as opposed to per-query issues (no results, safe-search filtered, etc.)
@@ -207,7 +209,55 @@ export default async function handler(
     }
 
     const queries = limitedDays.map((day) => normalizeQuery(day, city))
-    const results = await Promise.all(queries.map((query) => fetchImageUrl(apiKey, cx, query)))
+
+    let cachedByQuery = new Map<string, string | null>()
+    try {
+      cachedByQuery = await getCachedImageUrls(queries)
+    } catch {
+      // Fail open if cache storage is temporarily unavailable.
+    }
+
+    const missingQueries = queries.filter((query) => !cachedByQuery.has(query))
+
+    const fetchedByQuery = new Map<string, FetchResult>()
+    if (missingQueries.length > 0) {
+      const fetchedResults = await Promise.all(missingQueries.map((query) => fetchImageUrl(apiKey, cx, query)))
+      for (let index = 0; index < missingQueries.length; index += 1) {
+        fetchedByQuery.set(missingQueries[index], fetchedResults[index])
+      }
+
+      const cacheableWithUrl: Array<{ query: string; url: string | null }> = []
+      const cacheableEmpty: Array<{ query: string; url: string | null }> = []
+
+      for (let index = 0; index < missingQueries.length; index += 1) {
+        const query = missingQueries[index]
+        const result = fetchedResults[index]
+        if (isErrorFetchResult(result)) continue
+
+        if (result.url) {
+          cacheableWithUrl.push({ query, url: result.url })
+        } else {
+          cacheableEmpty.push({ query, url: null })
+        }
+      }
+
+      try {
+        await Promise.all([
+          upsertCachedImageUrls(cacheableWithUrl, IMAGE_CACHE_TTL_SECONDS),
+          upsertCachedImageUrls(cacheableEmpty, EMPTY_IMAGE_CACHE_TTL_SECONDS),
+        ])
+      } catch {
+        // Fail open if cache write fails.
+      }
+    }
+
+    const results: FetchResult[] = queries.map((query) => {
+      if (cachedByQuery.has(query)) {
+        return { url: cachedByQuery.get(query) ?? null }
+      }
+
+      return fetchedByQuery.get(query) ?? { url: null }
+    })
 
     const images: ImageResult[] = results.map((result, index) => ({
       query: queries[index],
