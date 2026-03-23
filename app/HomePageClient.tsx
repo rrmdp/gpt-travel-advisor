@@ -403,6 +403,66 @@ export default function HomePageClient() {
             <li style={styles.seoListItem}>Scenic day trips: Soller, Valldemossa, and Deia</li>
           </ul>
 
+          <h3 style={styles.seoSubTitle}>Where to stay in Mallorca by holiday type</h3>
+          <p style={styles.seoText}>
+            Choosing the right base can make a big difference in Mallorca. Some
+            areas are better for beaches and families, some for nightlife, and
+            others for scenic mountain views or a walkable city break.
+          </p>
+          <div style={styles.areaGrid}>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Palma</h4>
+              <p style={styles.areaText}>
+                Best for short breaks, food lovers, shopping, culture, and visitors
+                who want to explore Mallorca without relying heavily on a car.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Alcudia and Playa de Muro</h4>
+              <p style={styles.areaText}>
+                Strong choice for families, long sandy beaches, shallow water,
+                bike-friendly routes, and easy resort-style holidays.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Port de Soller</h4>
+              <p style={styles.areaText}>
+                Ideal for scenic stays, couples, mountain views, hiking access,
+                and a slower pace near the Serra de Tramuntana.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Cala d&apos;Or</h4>
+              <p style={styles.areaText}>
+                Good for pretty coves, boat days, marina restaurants, and relaxed
+                east-coast beach holidays with easy swimming spots.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Santa Ponsa and Palmanova</h4>
+              <p style={styles.areaText}>
+                Practical for families and mixed groups who want beaches,
+                restaurants, golf nearby, and quick transfers from the airport.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Deia and Valldemossa</h4>
+              <p style={styles.areaText}>
+                Better for romantic trips, boutique stays, mountain villages,
+                viewpoints, and a more premium, quieter Mallorca experience.
+              </p>
+            </div>
+          </div>
+
+          <h3 style={styles.seoSubTitle}>Mallorca holiday planning tips</h3>
+          <ul style={styles.seoList}>
+            <li style={styles.seoListItem}>Renting a car gives the most flexibility for beaches, villages, and scenic drives, especially outside Palma.</li>
+            <li style={styles.seoListItem}>May, June, September, and early October are often the best months for warm weather without the peak-summer intensity.</li>
+            <li style={styles.seoListItem}>Popular restaurants, boat trips, and beach clubs should be booked ahead in summer.</li>
+            <li style={styles.seoListItem}>If you stay in Palma, you can cover a lot by foot, train, bus, and organised day trips.</li>
+            <li style={styles.seoListItem}>For family holidays, look for areas with calm water and shorter transfer times such as Playa de Muro, Alcudia, and Santa Ponsa.</li>
+          </ul>
+
           <h3 style={styles.seoSubTitle}>Mallorca travel FAQ</h3>
           <div style={styles.faqItem}>
             <h4 style={styles.faqQuestion}>What are the best things to do in Mallorca?</h4>
@@ -773,6 +833,30 @@ const styles = {
     marginBottom: '5px',
     fontSize: '14px',
     lineHeight: '1.5',
+  },
+  areaGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+    gap: '12px',
+    marginBottom: '16px',
+  },
+  areaCard: {
+    padding: '14px',
+    borderRadius: '10px',
+    background: 'rgba(255, 255, 255, 0.08)',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+  },
+  areaTitle: {
+    color: '#fff',
+    fontSize: '16px',
+    marginTop: 0,
+    marginBottom: '6px',
+  },
+  areaText: {
+    margin: 0,
+    color: 'rgba(255,255,255,0.88)',
+    fontSize: '13px',
+    lineHeight: '1.6',
   },
   faqItem: {
     marginBottom: '10px',
