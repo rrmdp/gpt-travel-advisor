@@ -319,6 +319,86 @@ export default function Home() {
               and many villa and apartment options for family stays.
             </p>
           </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>Where should I stay in Mallorca for a beach holiday?</h4>
+            <p style={styles.faqAnswer}>
+              Alcudia, Playa de Muro, Cala d Or, Palmanova, and Santa Ponsa are
+              popular for easy beach access, plenty of restaurants, and a wide
+              choice of hotels and apartments.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>Which part of Mallorca is best without a car?</h4>
+            <p style={styles.faqAnswer}>
+              Palma is the easiest base without a car because you can walk to
+              restaurants, shops, and sights, then use buses, trains, and guided
+              tours for day trips around the island.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>What is the best area in Mallorca for couples?</h4>
+            <p style={styles.faqAnswer}>
+              Couples often choose Palma Old Town, Port de Soller, Deia, or
+              Valldemossa for scenic stays, boutique hotels, sunset dinners, and
+              a more relaxed atmosphere.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>Which part of Mallorca is best for nightlife?</h4>
+            <p style={styles.faqAnswer}>
+              Palma offers the broadest nightlife mix, while Magaluf suits
+              travellers looking for late bars and clubs. For a more polished
+              evening scene, many visitors prefer Santa Catalina in Palma.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>Is Mallorca good for hiking and outdoor trips?</h4>
+            <p style={styles.faqAnswer}>
+              Yes. The Serra de Tramuntana is one of the island&apos;s biggest draws,
+              with routes around Soller, Deia, Lluc, and Pollensa offering sea
+              views, mountain villages, and excellent spring and autumn walking.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>What are the best beaches in Mallorca?</h4>
+            <p style={styles.faqAnswer}>
+              Frequently recommended beaches include Playa de Muro for families,
+              Cala Agulla for clear water, Cala Mondrago for nature, Es Trenc for
+              long white sand, and Cala Llombards for a classic cala setting.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>When is the best time to visit Mallorca?</h4>
+            <p style={styles.faqAnswer}>
+              May, June, September, and early October are ideal for many holiday
+              makers because the weather is warm, the sea is pleasant, and the
+              island is usually less intense than peak summer.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>Is Mallorca better for luxury trips or budget travel?</h4>
+            <p style={styles.faqAnswer}>
+              It works for both. Mallorca has luxury fincas, boutique hotels, and
+              beach clubs, but also affordable resorts, self-catering apartments,
+              local bakeries, and public beaches that keep costs manageable.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>What can food lovers do in Mallorca?</h4>
+            <p style={styles.faqAnswer}>
+              Food-focused visitors usually enjoy Palma tapas bars, seaside rice
+              dishes, winery visits, village markets, and local specialities such
+              as ensaimada, tumbet, sobrasada, and fresh seafood.
+            </p>
+          </div>
+          <div style={styles.faqItem}>
+            <h4 style={styles.faqQuestion}>What are good Mallorca day trips for first-time visitors?</h4>
+            <p style={styles.faqAnswer}>
+              First-timers often choose Palma, Valldemossa, Deia, Soller, Sa
+              Calobra, Cap de Formentor, and Alcudia Old Town to combine beaches,
+              scenery, and cultural highlights in one trip.
+            </p>
+          </div>
         </section>
         <div className="results-container">
         {
