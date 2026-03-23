@@ -280,6 +280,21 @@ export default function Home() {
             })}
           </div>
         )}
+        <div style={styles.promoCard}>
+          <span style={styles.promoEmoji}>🏡</span>
+          <p style={styles.promoText}>
+            Travelling as a family? Check out{' '}
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
+              style={styles.promoLink}
+            >
+              Villas Mediterranean
+            </a>{' '}
+            for beautiful short-term villa rentals.
+          </p>
+        </div>
         <section style={styles.seoSection}>
           <h2 style={styles.seoTitle}>Best things to do in Mallorca</h2>
           <p style={styles.seoText}>
@@ -559,6 +574,31 @@ const styles = {
     textDecoration: 'none',
     whiteSpace: 'nowrap' as 'nowrap',
     flexShrink: 0,
+  },
+  promoCard: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '12px',
+    maxWidth: '760px',
+    margin: '24px auto 0px',
+    padding: '16px 18px',
+    borderRadius: '10px',
+    background: 'rgba(255, 255, 255, 0.12)',
+  },
+  promoEmoji: {
+    fontSize: '24px',
+    lineHeight: 1,
+  },
+  promoText: {
+    margin: 0,
+    color: 'rgba(255,255,255,0.95)',
+    fontSize: '14px',
+    lineHeight: '1.6',
+  },
+  promoLink: {
+    color: '#fff',
+    fontWeight: 700,
+    textDecoration: 'underline',
   },
   seoSection: {
     maxWidth: '760px',
