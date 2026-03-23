@@ -11,6 +11,8 @@ export interface Itinerary {
   city: string
   days: number
   month: string
+  travel_style?: string
+  interests?: string
   itinerary: string
   created_at: string
 }
@@ -20,6 +22,8 @@ export interface ItinerarySummary {
   city: string
   days: number
   month: string
+  travel_style?: string
+  interests?: string
   created_at: string
 }
 
@@ -51,6 +55,8 @@ async function ensureTable(): Promise<void> {
       city TEXT NOT NULL,
       days INTEGER NOT NULL,
       month TEXT NOT NULL,
+      travel_style TEXT,
+      interests TEXT,
       itinerary TEXT NOT NULL,
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
@@ -92,14 +98,16 @@ export async function saveItinerary(
   city: string,
   days: number,
   month: string,
+  travelStyle: string = '',
+  interests: string = '',
   itinerary: string
 ): Promise<string> {
   const sql = getClient()
   const id = crypto.randomUUID()
   await ensureTable()
   await sql`
-    INSERT INTO itineraries (id, city, days, month, itinerary)
-    VALUES (${id}, ${city}, ${days}, ${month}, ${itinerary})
+    INSERT INTO itineraries (id, city, days, month, travel_style, interests, itinerary)
+    VALUES (${id}, ${city}, ${days}, ${month}, ${travelStyle}, ${interests}, ${itinerary})
   `
   return id
 }

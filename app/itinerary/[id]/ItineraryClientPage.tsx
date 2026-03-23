@@ -13,6 +13,8 @@ type StoredItinerary = {
   city: string
   days: number
   month: string
+  travel_style?: string
+  interests?: string
   itinerary: string
   created_at: string
 }
@@ -191,8 +193,19 @@ export default function ItineraryClientPage({ params }: Props) {
           <span style={styles.dot}>·</span>
           <span style={styles.heroMetaText}>{data.days} days</span>
           <span style={styles.dot}>·</span>
+          {data.travel_style && (
+            <>
+              <span style={styles.heroMetaText}>{data.travel_style}</span>
+              <span style={styles.dot}>·</span>
+            </>
+          )}
           <span style={styles.heroMetaText}>Created {formattedDate}</span>
         </p>
+        {data.interests && (
+          <p style={styles.heroSubtext}>
+            <strong>Interests:</strong> {data.interests}
+          </p>
+        )}
         <div style={styles.heroActions}>
           <CopyLinkButton />
           <a href="/" style={styles.newTripBtn}>+ New itinerary</a>
@@ -332,6 +345,12 @@ const styles: Record<string, React.CSSProperties> = {
   },
   dot: {
     color: 'rgba(255,255,255,0.4)',
+      heroSubtext: {
+        color: 'rgba(255,255,255,0.75)',
+        fontSize: 14,
+        marginTop: 12,
+        marginBottom: 0,
+      },
     fontSize: 14,
   },
   heroActions: {

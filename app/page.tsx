@@ -10,6 +10,8 @@ type ItinerarySummary = {
   city: string
   days: number
   month: string
+  travel_style?: string
+  interests?: string
   created_at: string
 }
 
@@ -24,7 +26,8 @@ function formatDateUTC(dateString: string) {
 
 export default function Home() {
   const router = useRouter()
-  const [request, setRequest] = useState<{days?: string, city?: string, month?: string}>({})
+  const [request, setRequest] = useState<{days?: string, city?: string, month?: string, travel_style?: string}>({})
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([])
   let [itinerary, setItinerary] = useState<string>('')
   const [previousItineraries, setPreviousItineraries] = useState<ItinerarySummary[]>([])
 
@@ -60,11 +63,15 @@ export default function Home() {
       }
 
       if (!request.days) {
-        setMessage('Please your stay lenght')
+        setMessage('Please enter your stay length!')
         return
       }
 
-      // if (!request.month ||!request.days) return
+      if (!request.travel_style) {
+        setMessage('Please select a travel style!')
+        return
+      }
+
       setMessage('Getting suggestions...')
       setLoading(true)
       setItinerary('')
@@ -84,7 +91,9 @@ export default function Home() {
         body: JSON.stringify({
           days: request.days,
           city: 'Mallorca',
-          month: request.month
+          month: request.month,
+          travel_style: request.travel_style,
+          interests: selectedInterests,
         })
       })
       const json = await response.json()
@@ -129,6 +138,8 @@ export default function Home() {
           city: 'Mallorca',
           days: request.days,
           month: request.month,
+          travel_style: request.travel_style,
+          interests: selectedInterests.join(', '),
           itinerary,
         })
       })
@@ -161,6 +172,50 @@ export default function Home() {
           
         </div>
         <div style={styles.formContainer} className="form-container">
+          <select 
+            style={styles.input} 
+            onChange={e => setRequest(request => ({ ...request, travel_style: e.target.value }))}
+            value={request.travel_style || ''}
+          >
+            <option value="">What's your travel style?</option>
+            <option value="Relaxation & Beaches">Relaxation & Beaches</option>
+            <option value="Adventure & Hiking">Adventure & Hiking</option>
+            <option value="Culture & History">Culture & History</option>
+            <option value="Food & Wine">Food & Wine</option>
+            <option value="Family-Friendly">Family-Friendly</option>
+          </select>
+
+          <div style={styles.interestsContainer}>
+            <p style={styles.interestsLabel}>Interests (optional):</p>
+            <div style={styles.checkboxGroup}>
+              {[
+                'Water sports',
+                'Local food tours',
+                'Budget travel',
+                'Luxury experiences',
+                'Off-the-beaten-path',
+                'Shopping',
+                'Nightlife',
+              ].map(interest => (
+                <label key={interest} style={styles.checkboxLabel}>
+                  <input
+                    type="checkbox"
+                    checked={selectedInterests.includes(interest)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedInterests([...selectedInterests, interest])
+                      } else {
+                        setSelectedInterests(selectedInterests.filter(i => i !== interest))
+                      }
+                    }}
+                    style={styles.checkbox}
+                  />
+                  {interest}
+                </label>
+              ))}
+            </div>
+          </div>
+ 
          <input required style={styles.city}  placeholder="City" onChange={e => setRequest(request => ({
             ...request, city: e.target.value
           }))} />
@@ -356,6 +411,31 @@ const styles = {
     fontSize: '14px',
     lineHeight: '1.4',
     fontWeight: 600,
+  },
+  interestsContainer: {
+    width: '100%',
+    marginBottom: '16px',
+  },
+  interestsLabel: {
+    marginBottom: '8px',
+    fontSize: '14px',
+    color: '#666',
+  },
+  checkboxGroup: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+    gap: '8px',
+  },
+  checkboxLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '14px',
+    cursor: 'pointer',
+    color: '#666',
+  },
+  checkbox: {
+    marginRight: '6px',
+    cursor: 'pointer',
   },
   result: {
     color: 'white'

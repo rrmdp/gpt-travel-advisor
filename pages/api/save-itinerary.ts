@@ -18,14 +18,21 @@ export default async function handler(
   }
 
   const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-  const { city, days, month, itinerary } = body
+  const { city, days, month, travel_style, interests, itinerary } = body
 
   if (!city || !days || !month || !itinerary) {
     return res.status(400).json({ message: 'Missing required fields' })
   }
 
   try {
-    const id = await saveItinerary(city, Number(days), month, itinerary)
+    const id = await saveItinerary(
+      city,
+      Number(days),
+      month,
+      travel_style || '',
+      interests || '',
+      itinerary
+    )
     return res.status(200).json({ id })
   } catch (error) {
     console.error('Unable to save itinerary:', error)

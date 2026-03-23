@@ -118,6 +118,10 @@ export default async function handler(
 
   const month = toSafeString(body.month, 'March', 30)
   const days = toSafeDays(body.days, 4)
+  const travelStyle = toSafeString(body.travel_style, 'Relaxation & Beaches', 50)
+  const interests = Array.isArray(body.interests)
+    ? body.interests.filter(i => typeof i === 'string').join(', ')
+    : toSafeString(body.interests, '', 200)
 
   const monthLower = month.toLowerCase()
   const seasonWords = new Set(['winter', 'spring', 'summer', 'autumn', 'fall'])
@@ -125,8 +129,13 @@ export default async function handler(
     ? `in ${month}`
     : `in the month of ${month}`
 
+  const preferencesContext = interests
+    ? `with interests in: ${interests}`
+    : ''
+
   const userPrompt = [
     `Create a practical, high-quality ${days}-day holiday itinerary ${whenPrompt} in ${city}.`,
+    `Travel style: ${travelStyle} ${preferencesContext}`,
     '',
     'Formatting requirements (strict):',
     '- Markdown-friendly output only.',
@@ -139,7 +148,8 @@ export default async function handler(
     '- Add reservation notes for popular places and indicate when to book ahead.',
     '- Make recommendations season-aware for Mallorca weather and daylight.',
     '- Provide indoor backup alternatives for poor weather.',
-    '- Include family-friendly choices and budget-conscious alternatives.',
+    `- Prioritize ${travelStyle.toLowerCase()} activities and experiences.`,
+    preferencesContext ? `- Include recommendations for: ${interests}.` : '- Include family-friendly choices and budget-conscious alternatives.',
     '- Include local food suggestions and practical travel/safety tips each day.',
     '- Prefer accurate, specific advice over generic wording.',
   ].join('\n')
