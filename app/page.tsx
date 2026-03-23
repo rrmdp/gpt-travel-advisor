@@ -30,6 +30,23 @@ const travelStyles = [
   'Slow Travel & Villages',
 ]
 
+const interestOptions = [
+  'Water sports',
+  'Boat trips',
+  'Local food tours',
+  'Budget travel',
+  'Luxury experiences',
+  'Off-the-beaten-path',
+  'Shopping',
+  'Nightlife',
+  'Beach clubs',
+  'Scenic villages',
+  'Sunset spots',
+  'Art & museums',
+  'Family attractions',
+  'Wellness',
+]
+
 function formatDateUTC(dateString: string) {
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
@@ -41,11 +58,19 @@ function formatDateUTC(dateString: string) {
 
 export default function Home() {
   const router = useRouter()
-  const [request, setRequest] = useState<{days?: string, city?: string, month?: string, travel_style?: string}>({})
+  const [request, setRequest] = useState<{
+    days?: string
+    city?: string
+    month?: string
+    travel_style?: string
+    trip_pace?: string
+    transport_mode?: string
+  }>({})
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
   let [itinerary, setItinerary] = useState<string>('')
   const [previousItineraries, setPreviousItineraries] = useState<ItinerarySummary[]>([])
   const [visibleItineraryCount, setVisibleItineraryCount] = useState(10)
+  const [showOptionalPreferences, setShowOptionalPreferences] = useState(false)
 
 
   const [loading, setLoading] = useState(false)
@@ -67,6 +92,12 @@ export default function Home() {
   }, [])
 
   console.log('Developed by Rodrigo Rocco - @rrmdp on Twitter');
+
+  const tripPreferences = [
+    ...selectedInterests,
+    request.trip_pace ? `Trip pace: ${request.trip_pace}` : '',
+    request.transport_mode ? `Transport: ${request.transport_mode}` : '',
+  ].filter(Boolean)
 
   async function hitAPI() {
     try {
@@ -109,7 +140,7 @@ export default function Home() {
           city: 'Mallorca',
           month: request.month,
           travel_style: request.travel_style,
-          interests: selectedInterests,
+          interests: tripPreferences,
         })
       })
       const json = await response.json()
@@ -155,7 +186,7 @@ export default function Home() {
           days: request.days,
           month: request.month,
           travel_style: request.travel_style,
-          interests: selectedInterests.join(', '),
+          interests: tripPreferences.join(', '),
           itinerary,
         })
       })
@@ -199,35 +230,78 @@ export default function Home() {
             ))}
           </select>
 
-          <div style={styles.interestsContainer}>
-            <p style={styles.interestsLabel}>Interests (optional):</p>
-            <div style={styles.checkboxGroup}>
-              {[
-                'Water sports',
-                'Local food tours',
-                'Budget travel',
-                'Luxury experiences',
-                'Off-the-beaten-path',
-                'Shopping',
-                'Nightlife',
-              ].map(interest => (
-                <label key={interest} style={styles.checkboxLabel}>
-                  <input
-                    type="checkbox"
-                    checked={selectedInterests.includes(interest)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedInterests([...selectedInterests, interest])
-                      } else {
-                        setSelectedInterests(selectedInterests.filter(i => i !== interest))
-                      }
-                    }}
-                    style={styles.checkbox}
-                  />
-                  {interest}
-                </label>
-              ))}
-            </div>
+          <div style={styles.optionalPanel}>
+            <button
+              type="button"
+              onClick={() => setShowOptionalPreferences((open) => !open)}
+              style={styles.optionalToggle}
+              aria-expanded={showOptionalPreferences}
+              aria-controls="optional-preferences"
+            >
+              <span>Optional preferences</span>
+              <span style={styles.optionalToggleMeta}>
+                {tripPreferences.length > 0 ? `${tripPreferences.length} selected` : 'Add extra filters'}
+              </span>
+            </button>
+
+            {showOptionalPreferences && (
+              <div id="optional-preferences" style={styles.optionalContent}>
+                <div style={styles.interestsContainer}>
+                  <p style={styles.interestsLabel}>Interests</p>
+                  <div style={styles.checkboxGroup}>
+                    {interestOptions.map((interest) => (
+                      <label key={interest} style={styles.checkboxLabel}>
+                        <input
+                          type="checkbox"
+                          checked={selectedInterests.includes(interest)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedInterests((current) => [...current, interest])
+                            } else {
+                              setSelectedInterests((current) => current.filter((item) => item !== interest))
+                            }
+                          }}
+                          style={styles.checkbox}
+                        />
+                        {interest}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={styles.optionalFieldGrid}>
+                  <div style={styles.optionalField}>
+                    <label style={styles.optionalLabel} htmlFor="trip-pace">Trip pace</label>
+                    <select
+                      id="trip-pace"
+                      style={styles.input}
+                      value={request.trip_pace || ''}
+                      onChange={(e) => setRequest((current) => ({ ...current, trip_pace: e.target.value }))}
+                    >
+                      <option value="">No preference</option>
+                      <option value="Relaxed">Relaxed</option>
+                      <option value="Balanced">Balanced</option>
+                      <option value="Packed with sightseeing">Packed with sightseeing</option>
+                    </select>
+                  </div>
+
+                  <div style={styles.optionalField}>
+                    <label style={styles.optionalLabel} htmlFor="transport-mode">Getting around</label>
+                    <select
+                      id="transport-mode"
+                      style={styles.input}
+                      value={request.transport_mode || ''}
+                      onChange={(e) => setRequest((current) => ({ ...current, transport_mode: e.target.value }))}
+                    >
+                      <option value="">No preference</option>
+                      <option value="Rental car">Rental car</option>
+                      <option value="Public transport">Public transport</option>
+                      <option value="Mostly walkable areas">Mostly walkable areas</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
  
          <input required style={styles.city}  placeholder="City" onChange={e => setRequest(request => ({
@@ -537,14 +611,43 @@ const styles = {
     lineHeight: '1.4',
     fontWeight: 600,
   },
+  optionalPanel: {
+    width: '100%',
+    marginBottom: '16px',
+    borderRadius: '10px',
+    background: 'rgba(255, 255, 255, 0.12)',
+  },
+  optionalToggle: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '12px 14px',
+    border: 'none',
+    background: 'transparent',
+    color: '#fff',
+    fontSize: '15px',
+    fontWeight: 700,
+    cursor: 'pointer',
+  },
+  optionalToggleMeta: {
+    color: 'rgba(255, 255, 255, 0.72)',
+    fontSize: '13px',
+    fontWeight: 500,
+  },
+  optionalContent: {
+    padding: '0 14px 14px',
+  },
   interestsContainer: {
     width: '100%',
     marginBottom: '16px',
   },
   interestsLabel: {
     marginBottom: '8px',
+    marginTop: 0,
     fontSize: '14px',
-    color: '#666',
+    color: 'rgba(255, 255, 255, 0.9)',
   },
   checkboxGroup: {
     display: 'grid',
@@ -556,11 +659,26 @@ const styles = {
     alignItems: 'center',
     fontSize: '14px',
     cursor: 'pointer',
-    color: '#666',
+    color: 'rgba(255, 255, 255, 0.88)',
   },
   checkbox: {
     marginRight: '6px',
     cursor: 'pointer',
+  },
+  optionalFieldGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+    gap: '12px',
+  },
+  optionalField: {
+    display: 'flex',
+    flexDirection: 'column' as 'column',
+  },
+  optionalLabel: {
+    marginBottom: '6px',
+    color: 'rgba(255, 255, 255, 0.9)',
+    fontSize: '13px',
+    fontWeight: 600,
   },
   result: {
     color: 'white'
