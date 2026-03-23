@@ -177,7 +177,7 @@ export default function Home() {
             onChange={e => setRequest(request => ({ ...request, travel_style: e.target.value }))}
             value={request.travel_style || ''}
           >
-            <option value="">What's your travel style?</option>
+            <option value="">What&apos;s your travel style?</option>
             <option value="Relaxation & Beaches">Relaxation & Beaches</option>
             <option value="Adventure & Hiking">Adventure & Hiking</option>
             <option value="Culture & History">Culture & History</option>

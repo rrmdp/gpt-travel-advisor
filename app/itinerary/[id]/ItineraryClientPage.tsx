@@ -345,13 +345,13 @@ const styles: Record<string, React.CSSProperties> = {
   },
   dot: {
     color: 'rgba(255,255,255,0.4)',
-      heroSubtext: {
-        color: 'rgba(255,255,255,0.75)',
-        fontSize: 14,
-        marginTop: 12,
-        marginBottom: 0,
-      },
     fontSize: 14,
+  },
+  heroSubtext: {
+    color: 'rgba(255,255,255,0.75)',
+    fontSize: 14,
+    marginTop: 12,
+    marginBottom: 0,
   },
   heroActions: {
     display: 'flex',

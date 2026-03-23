@@ -61,6 +61,16 @@ async function ensureTable(): Promise<void> {
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `
+
+  await sql`
+    ALTER TABLE itineraries
+    ADD COLUMN IF NOT EXISTS travel_style TEXT
+  `
+
+  await sql`
+    ALTER TABLE itineraries
+    ADD COLUMN IF NOT EXISTS interests TEXT
+  `
 }
 
 async function ensureApiErrorLogTable(): Promise<void> {
