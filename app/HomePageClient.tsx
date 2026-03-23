@@ -212,6 +212,10 @@ export default function HomePageClient() {
       <div className="app-container">
         <div className="header">
           <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
+          <p style={styles.heroIntro}>
+            Wondering what to do in Mallorca (Majorca) for beaches, villages, food, or family days out? Use this planner to find the
+            best things to do in Mallorca based on your month, trip style, and how many days you have.
+          </p>
         </div>
         <div style={styles.formContainer} className="form-container">
           <select
@@ -390,12 +394,13 @@ export default function HomePageClient() {
         <section style={styles.seoSection}>
           <h2 style={styles.seoTitle}>Best things to do in Mallorca</h2>
           <p style={styles.seoText}>
-            Looking for the best things to do in Mallorca? This AI Mallorca itinerary
-            planner creates day-by-day travel plans based on your arrival month and
-            trip length. Explore beaches, mountain villages, old town walks, local
-            markets, family activities, and hidden gems across Majorca.
+            Looking for the best things to do in Mallorca or asking yourself what to
+            do in Mallorca first? This AI Mallorca itinerary planner creates
+            day-by-day travel plans based on your arrival month and trip length.
+            Explore beaches, mountain villages, old town walks, local markets,
+            family activities, and hidden gems across Majorca.
           </p>
-          <h3 style={styles.seoSubTitle}>Popular Mallorca trip ideas</h3>
+          <h3 style={styles.seoSubTitle}>Popular Mallorca (Majorca) trip ideas</h3>
           <ul style={styles.seoList}>
             <li style={styles.seoListItem}>4-day Mallorca itinerary for first-time visitors</li>
             <li style={styles.seoListItem}>Family-friendly things to do in Mallorca</li>
@@ -453,6 +458,64 @@ export default function HomePageClient() {
               </p>
             </div>
           </div>
+
+          <h3 style={styles.seoSubTitle}>The South West of Mallorca (Majorca)</h3>
+          <p style={styles.seoText}>
+            The south west of Mallorca is one of the easiest areas for beach days,
+            marina evenings, and short scenic drives. It mixes family-friendly
+            resorts, upscale ports, and small coves, with many restaurants and easy
+            access from Palma airport.
+          </p>
+          <div style={styles.areaGrid}>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Santa Ponsa</h4>
+              <p style={styles.areaText}>
+                Popular for families and groups thanks to practical beaches,
+                walkable services, golf nearby, and straightforward logistics.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Palmanova and Magaluf</h4>
+              <p style={styles.areaText}>
+                Good for travellers who want sandy beaches, resort facilities, and
+                a wider nightlife range close to Palma.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Port d&apos;Andratx and Camp de Mar</h4>
+              <p style={styles.areaText}>
+                Better for a more polished atmosphere, marina dining, sunset views,
+                and a quieter premium-style base.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Portals Nous and Puerto Portals</h4>
+              <p style={styles.areaText}>
+                Strong option for couples and luxury-focused stays, with stylish
+                beach clubs, yacht marina walks, and quick access to Palma.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>Cala Vinyes</h4>
+              <p style={styles.areaText}>
+                Calm cove-style beach area that works well for relaxed sun-and-sea
+                days, especially if you want a quieter base near larger resorts.
+              </p>
+            </div>
+            <div style={styles.areaCard}>
+              <h4 style={styles.areaTitle}>El Toro / Port Adriano</h4>
+              <p style={styles.areaText}>
+                Great for modern marina vibes, waterfront dining, and easy access
+                to nearby beaches and boat-focused activities in the south west.
+              </p>
+            </div>
+          </div>
+          <ul style={styles.seoList}>
+            <li style={styles.seoListItem}>Best for mixed trips where you want beach time by day and restaurants or bars in the evening.</li>
+            <li style={styles.seoListItem}>Many south-west beaches are easy to access, making this area practical for short stays.</li>
+            <li style={styles.seoListItem}>Boat trips, coastal viewpoints, and golf are some of the most popular things to do here.</li>
+            <li style={styles.seoListItem}>If you prefer quieter coves, go early in summer and keep a few alternative beaches planned.</li>
+          </ul>
 
           <h3 style={styles.seoSubTitle}>Mallorca holiday planning tips</h3>
           <ul style={styles.seoList}>
@@ -552,9 +615,9 @@ export default function HomePageClient() {
             <li style={styles.seoListItem}>Look for accommodation with parking if you plan to explore different calas and villages by car.</li>
           </ul>
 
-          <h3 style={styles.seoSubTitle}>Mallorca travel FAQ</h3>
+          <h3 style={styles.seoSubTitle}>Mallorca (Majorca) travel FAQ</h3>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>What are the best things to do in Mallorca?</h4>
+            <h4 style={styles.faqQuestion}>What are the best things to do in Mallorca (Majorca)?</h4>
             <p style={styles.faqAnswer}>
               Popular choices include Palma Cathedral, old town tapas routes,
               beaches around Alcudia and Cala d Or, mountain drives in Serra de
@@ -562,21 +625,21 @@ export default function HomePageClient() {
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>How many days should I spend in Mallorca?</h4>
+            <h4 style={styles.faqQuestion}>How many days should I spend in Mallorca (Majorca)?</h4>
             <p style={styles.faqAnswer}>
               Four to seven days gives enough time to combine city highlights,
               beaches, and at least one mountain-village day trip.
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>Is Mallorca good for families?</h4>
+            <h4 style={styles.faqQuestion}>Is Mallorca (Majorca) good for families?</h4>
             <p style={styles.faqAnswer}>
               Yes. Mallorca offers calm beaches, walkable towns, short transfers,
               and many villa and apartment options for family stays.
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>Where should I stay in Mallorca for a beach holiday?</h4>
+            <h4 style={styles.faqQuestion}>Where should I stay in Mallorca (Majorca) for a beach holiday?</h4>
             <p style={styles.faqAnswer}>
               Alcudia, Playa de Muro, Cala d Or, Palmanova, and Santa Ponsa are
               popular for easy beach access, plenty of restaurants, and a wide
@@ -584,7 +647,7 @@ export default function HomePageClient() {
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>Which part of Mallorca is best without a car?</h4>
+            <h4 style={styles.faqQuestion}>Which part of Mallorca (Majorca) is best without a car?</h4>
             <p style={styles.faqAnswer}>
               Palma is the easiest base without a car because you can walk to
               restaurants, shops, and sights, then use buses, trains, and guided
@@ -600,7 +663,7 @@ export default function HomePageClient() {
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>Which part of Mallorca is best for nightlife?</h4>
+            <h4 style={styles.faqQuestion}>Which part of Mallorca (Majorca) is best for nightlife?</h4>
             <p style={styles.faqAnswer}>
               Palma offers the broadest nightlife mix, while Magaluf suits
               travellers looking for late bars and clubs. For a more polished
@@ -608,7 +671,7 @@ export default function HomePageClient() {
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>Is Mallorca good for hiking and outdoor trips?</h4>
+            <h4 style={styles.faqQuestion}>Is Mallorca (Majorca) good for hiking and outdoor trips?</h4>
             <p style={styles.faqAnswer}>
               Yes. The Serra de Tramuntana is one of the island&apos;s biggest draws,
               with routes around Soller, Deia, Lluc, and Pollensa offering sea
@@ -616,7 +679,7 @@ export default function HomePageClient() {
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>What are the best beaches in Mallorca?</h4>
+            <h4 style={styles.faqQuestion}>What are the best beaches in Mallorca (Majorca)?</h4>
             <p style={styles.faqAnswer}>
               Frequently recommended beaches include Playa de Muro for families,
               Cala Agulla for clear water, Cala Mondrago for nature, Es Trenc for
@@ -624,7 +687,7 @@ export default function HomePageClient() {
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>When is the best time to visit Mallorca?</h4>
+            <h4 style={styles.faqQuestion}>When is the best time to visit Mallorca (Majorca)?</h4>
             <p style={styles.faqAnswer}>
               May, June, September, and early October are ideal for many holiday
               makers because the weather is warm, the sea is pleasant, and the
@@ -632,7 +695,7 @@ export default function HomePageClient() {
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>Is Mallorca better for luxury trips or budget travel?</h4>
+            <h4 style={styles.faqQuestion}>Is Mallorca (Majorca) better for luxury trips or budget travel?</h4>
             <p style={styles.faqAnswer}>
               It works for both. Mallorca has luxury fincas, boutique hotels, and
               beach clubs, but also affordable resorts, self-catering apartments,
@@ -640,7 +703,7 @@ export default function HomePageClient() {
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>What can food lovers do in Mallorca?</h4>
+            <h4 style={styles.faqQuestion}>What can food lovers do in Mallorca (Majorca)?</h4>
             <p style={styles.faqAnswer}>
               Food-focused visitors usually enjoy Palma tapas bars, seaside rice
               dishes, winery visits, village markets, and local specialities such
@@ -648,7 +711,7 @@ export default function HomePageClient() {
             </p>
           </div>
           <div style={styles.faqItem}>
-            <h4 style={styles.faqQuestion}>What are good Mallorca day trips for first-time visitors?</h4>
+            <h4 style={styles.faqQuestion}>What are good Mallorca (Majorca) day trips for first-time visitors?</h4>
             <p style={styles.faqAnswer}>
               First-timers often choose Palma, Valldemossa, Deia, Soller, Sa
               Calobra, Cap de Formentor, and Alcudia Old Town to combine beaches,
@@ -694,6 +757,15 @@ const styles = {
     fontFamily: 'Poppins',
     fontSize: '68px',
     textShadow: '0 0 3px #a5a5a5'
+  },
+  heroIntro: {
+    maxWidth: '760px',
+    margin: '12px auto 0px',
+    color: 'rgba(255,255,255,0.94)',
+    fontSize: '16px',
+    lineHeight: '1.6',
+    textAlign: 'center' as 'center',
+    padding: '0 14px',
   },
   subheader: {
     right: '15px',

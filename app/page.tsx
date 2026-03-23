@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import HomePageClient from './HomePageClient'
 
 const siteUrl = 'https://www.whattodoinmallorca.com'
-const pageTitle = 'Things to Do in Mallorca: AI Trip Planner, Day Trips and Holiday Itineraries'
-const pageDescription = 'Plan the best things to do in Mallorca with personalized AI itineraries, family holiday ideas, beach days, scenic drives, hiking routes, food stops, and practical trip planning by month.'
+const pageTitle = 'What to Do in Mallorca: Things to Do in Mallorca, AI Trip Planner and Itineraries'
+const pageDescription = 'Discover what to do in Mallorca with personalized ideas for the best things to do in Mallorca, including beaches, day trips, hiking routes, food spots, and practical holiday planning by month.'
 
 export const metadata: Metadata = {
   title: pageTitle,
