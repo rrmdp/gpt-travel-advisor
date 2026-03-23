@@ -30,6 +30,7 @@ export default function Home() {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
   let [itinerary, setItinerary] = useState<string>('')
   const [previousItineraries, setPreviousItineraries] = useState<ItinerarySummary[]>([])
+  const [visibleItineraryCount, setVisibleItineraryCount] = useState(10)
 
 
   const [loading, setLoading] = useState(false)
@@ -263,7 +264,7 @@ export default function Home() {
         {previousItineraries.length > 0 && (
           <div style={styles.previousContainer}>
             <h2 style={styles.previousTitle}>Previously generated itineraries</h2>
-            {previousItineraries.map((saved) => {
+            {previousItineraries.slice(0, visibleItineraryCount).map((saved) => {
               const linkText = [
                 `${saved.days} days in ${saved.city}`,
                 saved.travel_style || 'itinerary',
@@ -278,6 +279,15 @@ export default function Home() {
                 </a>
               )
             })}
+            {visibleItineraryCount < previousItineraries.length && (
+              <button
+                type="button"
+                onClick={() => setVisibleItineraryCount((count) => count + 10)}
+                style={styles.loadMoreButton}
+              >
+                Load more itineraries
+              </button>
+            )}
           </div>
         )}
         <div style={styles.promoCard}>
@@ -574,6 +584,18 @@ const styles = {
     textDecoration: 'none',
     whiteSpace: 'nowrap' as 'nowrap',
     flexShrink: 0,
+  },
+  loadMoreButton: {
+    marginTop: '10px',
+    alignSelf: 'center',
+    padding: '10px 14px',
+    borderRadius: '999px',
+    border: '1px solid rgba(255, 255, 255, 0.35)',
+    background: 'transparent',
+    color: '#fff',
+    fontSize: '14px',
+    fontWeight: 600,
+    cursor: 'pointer',
   },
   promoCard: {
     display: 'flex',
