@@ -15,6 +15,21 @@ type ItinerarySummary = {
   created_at: string
 }
 
+const travelStyles = [
+  'Relaxation & Beaches',
+  'Adventure & Hiking',
+  'Culture & History',
+  'Food & Wine',
+  'Family-Friendly',
+  'Luxury Escape',
+  'Romantic Getaway',
+  'Nightlife & Beach Clubs',
+  'Road Trip & Scenic Drives',
+  'Wellness & Spa',
+  'Cycling & Outdoor Sport',
+  'Slow Travel & Villages',
+]
+
 function formatDateUTC(dateString: string) {
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
@@ -179,11 +194,9 @@ export default function Home() {
             value={request.travel_style || ''}
           >
             <option value="">What&apos;s your travel style?</option>
-            <option value="Relaxation & Beaches">Relaxation & Beaches</option>
-            <option value="Adventure & Hiking">Adventure & Hiking</option>
-            <option value="Culture & History">Culture & History</option>
-            <option value="Food & Wine">Food & Wine</option>
-            <option value="Family-Friendly">Family-Friendly</option>
+            {travelStyles.map((style) => (
+              <option key={style} value={style}>{style}</option>
+            ))}
           </select>
 
           <div style={styles.interestsContainer}>
