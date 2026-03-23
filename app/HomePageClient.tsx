@@ -463,6 +463,95 @@ export default function HomePageClient() {
             <li style={styles.seoListItem}>For family holidays, look for areas with calm water and shorter transfer times such as Playa de Muro, Alcudia, and Santa Ponsa.</li>
           </ul>
 
+          <h3 style={styles.seoSubTitle}>Mallorca month by month</h3>
+          <p style={styles.seoText}>
+            Mallorca changes a lot through the year. Beach weather, hiking
+            conditions, prices, family demand, and how far ahead you need to book
+            all depend on the month you travel.
+          </p>
+          <div style={styles.monthGrid}>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>January</h4>
+              <p style={styles.monthText}>Quiet island atmosphere, city breaks, scenic walks, and cooler weather.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>February</h4>
+              <p style={styles.monthText}>Good for almond blossom views, cycling, hiking, and lower hotel rates.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>March</h4>
+              <p style={styles.monthText}>Spring starts to arrive, with pleasant sightseeing weather and greener landscapes.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>April</h4>
+              <p style={styles.monthText}>One of the best months for hiking, road trips, villages, and active holidays.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>May</h4>
+              <p style={styles.monthText}>Warm, bright, and less crowded than summer, making it ideal for mixed trips.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>June</h4>
+              <p style={styles.monthText}>Excellent for beaches, boat trips, and family holidays before peak summer pressure.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>July</h4>
+              <p style={styles.monthText}>Hot, busy, and best for sea days, resort stays, and nightlife-focused trips.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>August</h4>
+              <p style={styles.monthText}>Peak beach season with the warmest sea, highest demand, and busiest resorts.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>September</h4>
+              <p style={styles.monthText}>A favourite month for many visitors: warm sea, sunny weather, and fewer crowds.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>October</h4>
+              <p style={styles.monthText}>Great for scenic drives, food trips, city breaks, and comfortable outdoor exploring.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>November</h4>
+              <p style={styles.monthText}>Quieter and cooler, better for relaxed stays, Palma visits, and low-key walking.</p>
+            </div>
+            <div style={styles.monthCard}>
+              <h4 style={styles.monthTitle}>December</h4>
+              <p style={styles.monthText}>Best for winter city breaks, festive Palma, and peaceful off-season Mallorca.</p>
+            </div>
+          </div>
+
+          <h3 style={styles.seoSubTitle}>Mallorca with kids</h3>
+          <p style={styles.seoText}>
+            Mallorca is one of the easiest Mediterranean islands for family
+            holidays because transfers are short, beaches are varied, and there
+            are plenty of calm resorts, villas, and day trips that work well with
+            younger children.
+          </p>
+          <div style={styles.familyGrid}>
+            <div style={styles.familyCard}>
+              <h4 style={styles.familyTitle}>Best family areas</h4>
+              <p style={styles.familyText}>Playa de Muro, Alcudia, Santa Ponsa, and Palmanova are often the easiest bases for family stays.</p>
+            </div>
+            <div style={styles.familyCard}>
+              <h4 style={styles.familyTitle}>Calm beaches</h4>
+              <p style={styles.familyText}>Families usually look for shallow water, easy parking, toilets, and nearby food, which makes Playa de Muro especially popular.</p>
+            </div>
+            <div style={styles.familyCard}>
+              <h4 style={styles.familyTitle}>Good day trips</h4>
+              <p style={styles.familyText}>Boat trips, Palma Aquarium, Alcudia Old Town, Sóller train rides, and easy beach-hopping days work well for mixed ages.</p>
+            </div>
+            <div style={styles.familyCard}>
+              <h4 style={styles.familyTitle}>Where villas help</h4>
+              <p style={styles.familyText}>For longer stays, many families prefer villas or apartments for extra space, kitchens, nap flexibility, and pool time.</p>
+            </div>
+          </div>
+          <ul style={styles.seoList}>
+            <li style={styles.seoListItem}>Choose one main base rather than changing hotels too often if you are travelling with young children.</li>
+            <li style={styles.seoListItem}>In high summer, plan beaches early in the day and keep shaded or indoor options for the hottest afternoon hours.</li>
+            <li style={styles.seoListItem}>If you want easier logistics, stay within a reasonable transfer distance of Palma airport.</li>
+            <li style={styles.seoListItem}>Look for accommodation with parking if you plan to explore different calas and villages by car.</li>
+          </ul>
+
           <h3 style={styles.seoSubTitle}>Mallorca travel FAQ</h3>
           <div style={styles.faqItem}>
             <h4 style={styles.faqQuestion}>What are the best things to do in Mallorca?</h4>
@@ -853,6 +942,54 @@ const styles = {
     marginBottom: '6px',
   },
   areaText: {
+    margin: 0,
+    color: 'rgba(255,255,255,0.88)',
+    fontSize: '13px',
+    lineHeight: '1.6',
+  },
+  monthGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
+    gap: '10px',
+    marginBottom: '16px',
+  },
+  monthCard: {
+    padding: '12px',
+    borderRadius: '10px',
+    background: 'rgba(255, 255, 255, 0.08)',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+  },
+  monthTitle: {
+    color: '#fff',
+    fontSize: '15px',
+    marginTop: 0,
+    marginBottom: '6px',
+  },
+  monthText: {
+    margin: 0,
+    color: 'rgba(255,255,255,0.86)',
+    fontSize: '12px',
+    lineHeight: '1.5',
+  },
+  familyGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+    gap: '12px',
+    marginBottom: '14px',
+  },
+  familyCard: {
+    padding: '14px',
+    borderRadius: '10px',
+    background: 'rgba(255, 255, 255, 0.08)',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+  },
+  familyTitle: {
+    color: '#fff',
+    fontSize: '16px',
+    marginTop: 0,
+    marginBottom: '6px',
+  },
+  familyText: {
     margin: 0,
     color: 'rgba(255,255,255,0.88)',
     fontSize: '13px',
