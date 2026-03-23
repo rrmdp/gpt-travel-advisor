@@ -13,17 +13,19 @@ function toPlainText(value: string): string {
     .trim()
 }
 
-function buildDescription(itineraryText: string, city: string, days: number, month: string): string {
-  const summary = toPlainText(itineraryText).slice(0, 150)
+function buildDescription(itineraryText: string, city: string, days: number, month: string, travelStyle?: string, interests?: string): string {
+  const summary = toPlainText(itineraryText).slice(0, 120)
+  const styleText = travelStyle ? ` for ${travelStyle.toLowerCase()}` : ''
+  const interestsText = interests ? ` with ${interests.toLowerCase()}` : ''
   if (!summary) {
-    return `Explore a ${days}-day ${city} itinerary for ${month} with practical day-by-day plans, highlights, and local tips.`
+    return `Explore a ${days}-day ${city} itinerary for ${month}${styleText}${interestsText}. Practical day-by-day plans, highlights, and local tips.`
   }
-  return `${summary}. Plan your ${days}-day ${city} trip for ${month} with curated daily recommendations.`
+  return `${summary}. ${days}-day ${city} trip${styleText}${interestsText} for ${month} with curated recommendations.`
 }
 
 function buildJsonLd(itinerary: Itinerary) {
   const canonicalUrl = `${SITE_URL}/itinerary/${itinerary.id}`
-  const description = buildDescription(itinerary.itinerary, itinerary.city, itinerary.days, itinerary.month)
+  const description = buildDescription(itinerary.itinerary, itinerary.city, itinerary.days, itinerary.month, itinerary.travel_style, itinerary.interests)
 
   // Split the itinerary into per-day chunks and build itinerary steps
   const dayChunks = itinerary.itinerary.split(/(?=^Day\s+\d+)/im).filter(Boolean)
@@ -39,10 +41,12 @@ function buildJsonLd(itinerary: Itinerary) {
     }
   })
 
+  const headlineStylePart = itinerary.travel_style ? ` – ${itinerary.travel_style}` : ''
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: `${itinerary.days}-Day ${itinerary.city} Itinerary for ${itinerary.month}`,
+    headline: `${itinerary.days}-Day ${itinerary.city} Itinerary for ${itinerary.month}${headlineStylePart}`,
     description,
     url: canonicalUrl,
     datePublished: itinerary.created_at,
@@ -95,8 +99,9 @@ export async function generateMetadata({
     }
   }
 
-  const title = `${itinerary.days}-Day ${itinerary.city} Itinerary for ${itinerary.month} | ${SITE_NAME}`
-  const description = buildDescription(itinerary.itinerary, itinerary.city, itinerary.days, itinerary.month)
+  const styleInTitle = itinerary.travel_style ? ` (${itinerary.travel_style})` : ''
+  const title = `${itinerary.days}-Day ${itinerary.city} Itinerary for ${itinerary.month}${styleInTitle} | ${SITE_NAME}`
+  const description = buildDescription(itinerary.itinerary, itinerary.city, itinerary.days, itinerary.month, itinerary.travel_style, itinerary.interests)
   const canonicalUrl = `${SITE_URL}/itinerary/${itinerary.id}`
 
   return {

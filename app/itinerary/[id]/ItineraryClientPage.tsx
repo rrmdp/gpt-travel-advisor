@@ -182,11 +182,12 @@ export default function ItineraryClientPage({ params }: Props) {
 
   return (
     <main style={styles.main}>
-      {/* Hero header */}
-      <div style={styles.hero}>
-        <p style={styles.heroEyebrow}>Your Mallorca itinerary</p>
+        {/* Hero header */}
+        <div style={styles.hero}>
+          <p style={styles.heroEyebrow}>Your Mallorca itinerary</p>
         <h1 style={styles.heroTitle}>
           {data.days} days in {data.city}
+          {data.travel_style && <span style={{ fontSize: '0.7em', opacity: 0.9 }}> · {data.travel_style}</span>}
         </h1>
         <p style={styles.heroMeta}>
           <span style={styles.badge}>{data.month}</span>

@@ -263,14 +263,21 @@ export default function Home() {
         {previousItineraries.length > 0 && (
           <div style={styles.previousContainer}>
             <h2 style={styles.previousTitle}>Previously generated itineraries</h2>
-            {previousItineraries.map((saved) => (
-              <a key={saved.id} href={`/itinerary/${saved.id}`} style={styles.previousLink}>
-                <span>{saved.days} days in {saved.city} ({saved.month})</span>
-                <span style={styles.previousDate}>
-                  {formatDateUTC(saved.created_at)}
-                </span>
-              </a>
-            ))}
+            {previousItineraries.map((saved) => {
+              const linkText = [
+                `${saved.days} days in ${saved.city}`,
+                saved.travel_style || 'itinerary',
+                saved.month
+              ].filter(Boolean).join(' · ')
+              return (
+                <a key={saved.id} href={`/itinerary/${saved.id}`} style={styles.previousLink}>
+                  <span>{linkText}</span>
+                  <span style={styles.previousDate}>
+                    {formatDateUTC(saved.created_at)}
+                  </span>
+                </a>
+              )
+            })}
           </div>
         )}
         <section style={styles.seoSection}>
