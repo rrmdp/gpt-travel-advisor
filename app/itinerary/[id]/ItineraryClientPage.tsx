@@ -25,6 +25,11 @@ type DayImage = {
   url: string | null
 }
 
+type HeroOption = {
+  label: string
+  value: string
+}
+
 function stripTitlePreamble(text: string) {
   return text
     .replace(/^\s*(?:#{1,6}\s*)?(?:holiday\s+itinerary|travel\s+itinerary|itinerary)[^\n]*\n+/i, '')
@@ -61,6 +66,15 @@ function formatDateUTC(dateString: string) {
     year: 'numeric',
     timeZone: 'UTC',
   }).format(new Date(dateString))
+}
+
+function splitInterests(interests?: string) {
+  if (!interests) return []
+
+  return interests
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean)
 }
 
 function CopyLinkButton() {
@@ -345,6 +359,13 @@ export default function ItineraryClientPage({ params }: Props) {
   }
 
   const formattedDate = formatDateUTC(data.created_at)
+  const interestList = splitInterests(data.interests)
+  const heroOptions: HeroOption[] = [
+    { label: 'Destination', value: data.city },
+    { label: 'Trip length', value: `${data.days} days` },
+    { label: 'Travel month', value: data.month },
+    ...(data.travel_style ? [{ label: 'Travel style', value: data.travel_style }] : []),
+  ]
 
   return (
     <main style={styles.main}>
@@ -368,11 +389,27 @@ export default function ItineraryClientPage({ params }: Props) {
           )}
           <span style={styles.heroMetaText}>Created {formattedDate}</span>
         </p>
-        {data.interests && (
-          <p style={styles.heroSubtext}>
-            <strong>Interests:</strong> {data.interests}
-          </p>
-        )}
+        <div style={styles.heroOptionsPanel}>
+          <p style={styles.heroOptionsIntro}>Built from the trip options you selected</p>
+          <div style={styles.heroOptionsGrid}>
+            {heroOptions.map((option) => (
+              <div key={option.label} style={styles.heroOptionCard}>
+                <span style={styles.heroOptionLabel}>{option.label}</span>
+                <span style={styles.heroOptionValue}>{option.value}</span>
+              </div>
+            ))}
+          </div>
+          {interestList.length > 0 && (
+            <div style={styles.heroInterestSection}>
+              <span style={styles.heroInterestLabel}>Interests added</span>
+              <div style={styles.heroInterestList}>
+                {interestList.map((interest) => (
+                  <span key={interest} style={styles.heroInterestChip}>{interest}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
         <div style={styles.heroActions}>
           <CopyLinkButton />
           <PDFDownloadButton
@@ -524,6 +561,78 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 14,
     marginTop: 12,
     marginBottom: 0,
+  },
+  heroOptionsPanel: {
+    maxWidth: 880,
+    margin: '0 auto 28px',
+    padding: '18px 18px 16px',
+    background: 'rgba(255,255,255,0.12)',
+    border: '1px solid rgba(255,255,255,0.18)',
+    borderRadius: 20,
+    backdropFilter: 'blur(8px)',
+  },
+  heroOptionsIntro: {
+    color: 'rgba(255,255,255,0.82)',
+    fontSize: 14,
+    margin: '0 0 14px',
+  },
+  heroOptionsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+    gap: 12,
+  },
+  heroOptionCard: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 4,
+    padding: '12px 14px',
+    borderRadius: 16,
+    background: 'rgba(8, 34, 58, 0.22)',
+    border: '1px solid rgba(255,255,255,0.12)',
+    textAlign: 'left',
+  },
+  heroOptionLabel: {
+    color: 'rgba(255,255,255,0.62)',
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+  },
+  heroOptionValue: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 700,
+    lineHeight: 1.35,
+  },
+  heroInterestSection: {
+    marginTop: 16,
+    paddingTop: 14,
+    borderTop: '1px solid rgba(255,255,255,0.12)',
+  },
+  heroInterestLabel: {
+    display: 'block',
+    color: 'rgba(255,255,255,0.68)',
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    marginBottom: 10,
+  },
+  heroInterestList: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: 10,
+    flexWrap: 'wrap',
+  },
+  heroInterestChip: {
+    background: 'rgba(255,255,255,0.16)',
+    color: '#fff',
+    border: '1px solid rgba(255,255,255,0.22)',
+    borderRadius: 999,
+    padding: '7px 12px',
+    fontSize: 13,
+    fontWeight: 600,
   },
   heroActions: {
     display: 'flex',
