@@ -1,8 +1,10 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 
 interface Props {
   params: { id: string }
@@ -76,6 +78,58 @@ function CopyLinkButton() {
   )
 }
 
+function PDFDownloadButton({ contentRef, fileName }: { contentRef: React.RefObject<HTMLDivElement>; fileName: string }) {
+  const [isDownloading, setIsDownloading] = useState(false)
+
+  const handleDownloadPDF = async () => {
+    if (!contentRef.current) return
+    
+    setIsDownloading(true)
+    try {
+      const canvas = await html2canvas(contentRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+      })
+
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      })
+
+      const imgWidth = 210 - 20 // A4 width minus margins
+      const imgHeight = (canvas.height * imgWidth) / canvas.width
+      let heightLeft = imgHeight
+      let position = 10 // Top margin
+
+      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
+      heightLeft -= 297 - 20 // A4 height minus margins
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight
+        pdf.addPage()
+        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
+        heightLeft -= 297 - 20
+      }
+
+      pdf.save(`${fileName}.pdf`)
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+    } finally {
+      setIsDownloading(false)
+    }
+  }
+
+  return (
+    <button onClick={handleDownloadPDF} disabled={isDownloading} style={styles.downloadBtn}>
+      {isDownloading ? '⏳ Generating...' : '📥 Download PDF'}
+    </button>
+  )
+}
+
 function LoadingSkeleton() {
   return (
     <main style={styles.main}>
@@ -103,6 +157,7 @@ export default function ItineraryClientPage({ params }: Props) {
   const [dayImages, setDayImages] = useState<DayImage[]>([])
   const [hiddenImageIndexes, setHiddenImageIndexes] = useState<number[]>([])
   const [loadedImageIndexes, setLoadedImageIndexes] = useState<number[]>([])
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     async function loadItinerary() {
@@ -209,12 +264,13 @@ export default function ItineraryClientPage({ params }: Props) {
         )}
         <div style={styles.heroActions}>
           <CopyLinkButton />
+          <PDFDownloadButton contentRef={contentRef} fileName={`${data.city}-itinerary-${data.days}days-by-VillasMediterranean.com`} />
           <a href="/" style={styles.newTripBtn}>+ New itinerary</a>
         </div>
       </div>
 
       {/* Day cards */}
-      <div style={styles.content}>
+      <div style={styles.content} ref={contentRef}>
         {days.map((day, index) => (
           <div key={index} style={styles.card}>
             <div style={styles.dayBadge}>Day {index + 1}</div>
@@ -373,6 +429,21 @@ const styles: Record<string, React.CSSProperties> = {
     transition: 'background 0.2s',
     fontFamily: 'Roboto Mono, monospace',
   },
+  downloadBtn: {
+    background: 'linear-gradient(135deg, #2f88ee 0%, #00c6ff 100%)',
+    color: '#fff',
+    border: 'none',
+    borderRadius: 50,
+    padding: '9px 22px',
+    fontSize: 14,
+    fontWeight: 700,
+    cursor: 'pointer',
+    textDecoration: 'none',
+    display: 'inline-block',
+    fontFamily: 'Roboto Mono, monospace',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+    boxShadow: '0 4px 12px rgba(47, 136, 238, 0.3)',
+  },
   newTripBtn: {
     background: '#fff',
     color: '#2f88ee',
@@ -484,29 +555,34 @@ const styles: Record<string, React.CSSProperties> = {
   },
   /* ── Promo ── */
   promoCard: {
-    background: 'rgba(255,255,255,0.15)',
-    border: '1px solid rgba(255,255,255,0.3)',
+    background: 'linear-gradient(135deg, rgba(47, 136, 238, 0.15) 0%, rgba(0, 198, 255, 0.1) 100%)',
+    border: '2px solid rgba(47, 136, 238, 0.4)',
     borderRadius: 16,
-    padding: '20px 26px',
+    padding: '24px 26px',
     marginBottom: 32,
     display: 'flex',
     alignItems: 'center',
     gap: 16,
+    boxShadow: '0 8px 32px rgba(47, 136, 238, 0.12)',
+    backdropFilter: 'blur(8px)',
   },
   promoEmoji: {
-    fontSize: 32,
+    fontSize: 48,
     flexShrink: 0,
+    lineHeight: 1,
   },
   promoText: {
-    color: 'rgba(255,255,255,0.9)',
-    fontSize: 15,
-    lineHeight: 1.6,
+    color: 'rgba(255,255,255,0.95)',
+    fontSize: 16,
+    lineHeight: 1.7,
     margin: 0,
+    fontWeight: 500,
   },
   promoLink: {
     color: '#fff',
     fontWeight: 700,
     textDecoration: 'underline',
+    transition: 'opacity 0.2s',
   },
   /* ── Misc ── */
   backLink: {
