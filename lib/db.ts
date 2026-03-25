@@ -138,7 +138,7 @@ export async function listRecentStoredItineraries(
   await ensureTable()
   const safeLimit = Math.max(1, Math.min(500, Math.round(limit)))
   const rows = await sql`
-    SELECT id, city, days, month, itinerary, created_at
+    SELECT id, city, days, month, travel_style, interests, itinerary, created_at
     FROM itineraries
     ORDER BY created_at DESC
     LIMIT ${safeLimit}
@@ -161,7 +161,7 @@ export async function listAllItinerarySummaries(): Promise<ItinerarySummary[]> {
   const sql = getClient()
   await ensureTable()
   const rows = await sql`
-    SELECT id, city, days, month, created_at
+    SELECT id, city, days, month, travel_style, interests, created_at
     FROM itineraries
     ORDER BY created_at DESC
   `
