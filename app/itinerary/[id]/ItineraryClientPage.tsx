@@ -3,7 +3,6 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
 interface Props {
@@ -78,130 +77,155 @@ function CopyLinkButton() {
   )
 }
 
-function PDFDownloadButton({ contentRef, fileName }: { contentRef: React.RefObject<HTMLDivElement>; fileName: string }) {
-  const [isDownloading, setIsDownloading] = useState(false)
+function stripMarkdownForPdf(text: string) {
+  return text
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+    .replace(/^#{1,6}\s*/gm, '')
+    .replace(/[*_`~]/g, '')
+    .replace(/^>\s?/gm, '')
+    .trim()
+}
 
-  const sanitizeColorsInElement = (element: Element) => {
-    // Get all elements in the tree
-    const allElements = [element as HTMLElement, ...Array.from(element.querySelectorAll('*'))] as HTMLElement[]
-    
-    allElements.forEach((htmlEl) => {
-      // Get computed style
-      const style = window.getComputedStyle(htmlEl)
-      
-      // Check all color-related properties and override with safe colors if needed
-      const colorProperties = [
-        { prop: 'backgroundColor', css: 'background-color', fallback: '#ffffff' },
-        { prop: 'color', css: 'color', fallback: '#000000' },
-        { prop: 'borderColor', css: 'border-color', fallback: '#cccccc' },
-        { prop: 'borderTopColor', css: 'border-top-color', fallback: '#cccccc' },
-        { prop: 'borderRightColor', css: 'border-right-color', fallback: '#cccccc' },
-        { prop: 'borderBottomColor', css: 'border-bottom-color', fallback: '#cccccc' },
-        { prop: 'borderLeftColor', css: 'border-left-color', fallback: '#cccccc' },
-        { prop: 'outlineColor', css: 'outline-color', fallback: '#cccccc' },
-      ]
-      
-      colorProperties.forEach(({ prop, css, fallback }) => {
-        const value = style.getPropertyValue(css)
-        
-        // Check if the value contains oklch or other unsupported color functions
-        if (value && (value.includes('oklch') || value.includes('lch(') || value.includes('lab('))) {
-          // Force set the inline style to the fallback color
-          htmlEl.style.setProperty(css, fallback, 'important')
-        }
-      })
-      
-      // Also handle inline style attributes that might have oklch
-      const inlineStyle = htmlEl.getAttribute('style')
-      if (inlineStyle && inlineStyle.includes('oklch')) {
-        const newStyle = inlineStyle
-          .replace(/oklch\([^)]*\)/g, '#ffffff')
-          .replace(/lch\([^)]*\)/g, '#ffffff')
-          .replace(/lab\([^)]*\)/g, '#ffffff')
-        htmlEl.setAttribute('style', newStyle)
-      }
-    })
+async function loadImageAsDataUrl(url: string) {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error('Unable to load image for PDF export')
   }
 
+  const blob = await response.blob()
+  return await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result as string)
+    reader.onerror = () => reject(new Error('Unable to read image for PDF export'))
+    reader.readAsDataURL(blob)
+  })
+}
+
+function PDFDownloadButton({
+  fileName,
+  itinerary,
+  dayImages,
+}: {
+  fileName: string
+  itinerary: StoredItinerary
+  dayImages: DayImage[]
+}) {
+  const [isDownloading, setIsDownloading] = useState(false)
+
   const handleDownloadPDF = async () => {
-    if (!contentRef.current) return
-    
     setIsDownloading(true)
     try {
-      // Clone the element to avoid modifying the original
-      const clonedElement = contentRef.current.cloneNode(true) as HTMLDivElement
-      
-      // Create a temporary container
-      const tempContainer = document.createElement('div')
-      tempContainer.style.position = 'fixed'
-      tempContainer.style.left = '-9999px'
-      tempContainer.style.top = '-9999px'
-      tempContainer.style.width = contentRef.current.offsetWidth + 'px'
-      tempContainer.style.backgroundColor = '#ffffff'
-      tempContainer.style.zIndex = '-9999'
-      tempContainer.appendChild(clonedElement)
-      document.body.appendChild(tempContainer)
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      })
+      const pageWidth = pdf.internal.pageSize.getWidth()
+      const pageHeight = pdf.internal.pageSize.getHeight()
+      const marginX = 16
+      const marginTop = 18
+      const marginBottom = 18
+      const contentWidth = pageWidth - marginX * 2
+      let cursorY = marginTop
 
-      try {
-        // Wait for DOM to settle
-        await new Promise(resolve => setTimeout(resolve, 150))
-        
-        // First pass: sanitize visible styles
-        sanitizeColorsInElement(clonedElement)
-        
-        // Wait again after sanitization
-        await new Promise(resolve => setTimeout(resolve, 100))
+      const addPageIfNeeded = (requiredHeight: number) => {
+        if (cursorY + requiredHeight <= pageHeight - marginBottom) return
+        pdf.addPage()
+        cursorY = marginTop
+      }
 
-        const canvas = await html2canvas(clonedElement, {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-          backgroundColor: '#ffffff',
-          allowTaint: true,
-          removeContainer: false,
-          onclone: (clonedDoc) => {
-            // Additional sanitization in the html2canvas clone
-            const allEls = clonedDoc.querySelectorAll('*') as NodeListOf<HTMLElement>
-            allEls.forEach((el) => {
-              const style = el.getAttribute('style') || ''
-              if (style.includes('oklch') || style.includes('lch(') || style.includes('lab(')) {
-                const cleaned = style
-                  .replace(/oklch\([^)]*\)/g, '#ffffff')
-                  .replace(/lch\([^)]*\)/g, '#ffffff')
-                  .replace(/lab\([^)]*\)/g, '#ffffff')
-                el.setAttribute('style', cleaned)
-              }
-            })
+      const addWrappedText = (
+        text: string,
+        options: { fontSize: number; color: [number, number, number]; lineHeight: number; bold?: boolean }
+      ) => {
+        const lines = pdf.splitTextToSize(text, contentWidth)
+        const blockHeight = Math.max(lines.length, 1) * options.lineHeight
+        addPageIfNeeded(blockHeight)
+        pdf.setFont('helvetica', options.bold ? 'bold' : 'normal')
+        pdf.setFontSize(options.fontSize)
+        pdf.setTextColor(...options.color)
+        pdf.text(lines, marginX, cursorY)
+        cursorY += blockHeight
+      }
+
+      pdf.setFillColor(16, 84, 122)
+      pdf.roundedRect(marginX, cursorY, contentWidth, 30, 5, 5, 'F')
+      pdf.setFont('helvetica', 'bold')
+      pdf.setFontSize(22)
+      pdf.setTextColor(255, 255, 255)
+      pdf.text(`${itinerary.days} days in ${itinerary.city}`, marginX + 6, cursorY + 11)
+      pdf.setFont('helvetica', 'normal')
+      pdf.setFontSize(10)
+      pdf.text(`Month: ${itinerary.month}    Created: ${formatDateUTC(itinerary.created_at)}`, marginX + 6, cursorY + 19)
+      if (itinerary.travel_style) {
+        pdf.text(`Travel style: ${itinerary.travel_style}`, marginX + 6, cursorY + 25)
+      }
+      cursorY += 38
+
+      if (itinerary.interests) {
+        addWrappedText(`Interests: ${itinerary.interests}`, {
+          fontSize: 11,
+          color: [55, 65, 81],
+          lineHeight: 6,
+          bold: true,
+        })
+        cursorY += 2
+      }
+
+      const daySections = parseItineraryDays(itinerary.itinerary)
+
+      for (let index = 0; index < daySections.length; index += 1) {
+        const dayText = stripMarkdownForPdf(daySections[index].replace(/^\s*\d+\s*/, ''))
+
+        addPageIfNeeded(18)
+        pdf.setFillColor(239, 246, 255)
+        pdf.setDrawColor(147, 197, 253)
+        pdf.roundedRect(marginX, cursorY, contentWidth, 12, 3, 3, 'FD')
+        pdf.setFont('helvetica', 'bold')
+        pdf.setFontSize(13)
+        pdf.setTextColor(30, 64, 175)
+        pdf.text(`Day ${index + 1}`, marginX + 5, cursorY + 8)
+        cursorY += 16
+
+        const imageUrl = dayImages[index]?.url
+        if (imageUrl) {
+          try {
+            const imageDataUrl = await loadImageAsDataUrl(imageUrl)
+            const imageHeight = 42
+            addPageIfNeeded(imageHeight + 4)
+            pdf.addImage(imageDataUrl, 'JPEG', marginX, cursorY, contentWidth, imageHeight)
+            cursorY += imageHeight + 5
+          } catch (imageError) {
+            console.error('Unable to embed itinerary image in PDF:', imageError)
           }
-        })
-
-        const imgData = canvas.toDataURL('image/png')
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'mm',
-          format: 'a4',
-        })
-
-        const imgWidth = 210 - 20 // A4 width minus margins
-        const imgHeight = (canvas.height * imgWidth) / canvas.width
-        let heightLeft = imgHeight
-        let position = 10 // Top margin
-
-        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
-        heightLeft -= 297 - 20 // A4 height minus margins
-
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight
-          pdf.addPage()
-          pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
-          heightLeft -= 297 - 20
         }
 
-        pdf.save(`${fileName}.pdf`)
-      } finally {
-        // Clean up temporary container
-        document.body.removeChild(tempContainer)
+        const paragraphs = dayText.split(/\n\s*\n/).filter(Boolean)
+        for (const paragraph of paragraphs) {
+          addWrappedText(paragraph.trim(), {
+            fontSize: 11,
+            color: [31, 41, 55],
+            lineHeight: 5.5,
+          })
+          cursorY += 1.5
+        }
+
+        cursorY += 4
       }
+
+      addPageIfNeeded(24)
+      pdf.setFillColor(255, 247, 237)
+      pdf.setDrawColor(251, 191, 36)
+      pdf.roundedRect(marginX, cursorY, contentWidth, 18, 4, 4, 'FD')
+      pdf.setFont('helvetica', 'bold')
+      pdf.setFontSize(12)
+      pdf.setTextColor(146, 64, 14)
+      pdf.text('Stay Recommendation', marginX + 5, cursorY + 7)
+      pdf.setFont('helvetica', 'normal')
+      pdf.setFontSize(10)
+      pdf.text('VillasMediterranean.com for stylish short-term Mallorca villa rentals.', marginX + 5, cursorY + 13)
+
+      pdf.save(`${fileName}.pdf`)
     } catch (error) {
       console.error('Error generating PDF:', error)
       alert('Unable to generate PDF. Please try again or check your browser console for details.')
@@ -351,7 +375,11 @@ export default function ItineraryClientPage({ params }: Props) {
         )}
         <div style={styles.heroActions}>
           <CopyLinkButton />
-          <PDFDownloadButton contentRef={contentRef} fileName={`${data.city}-itinerary-${data.days}days-by-VillasMediterranean.com`} />
+          <PDFDownloadButton
+            fileName={`${data.city}-itinerary-${data.days}days-by-VillasMediterranean.com`}
+            itinerary={data}
+            dayImages={dayImages}
+          />
           <a href="/" style={styles.newTripBtn}>+ New itinerary</a>
         </div>
       </div>
