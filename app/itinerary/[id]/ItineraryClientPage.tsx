@@ -77,6 +77,12 @@ function splitInterests(interests?: string) {
     .filter(Boolean)
 }
 
+function getPreferenceValue(preferences: string[], prefix: string) {
+  const normalizedPrefix = `${prefix}:`
+  const match = preferences.find((value) => value.startsWith(normalizedPrefix))
+  return match ? match.slice(normalizedPrefix.length).trim() : ''
+}
+
 function CopyLinkButton() {
   const [copied, setCopied] = useState(false)
   function handleCopy() {
@@ -359,12 +365,16 @@ export default function ItineraryClientPage({ params }: Props) {
   }
 
   const formattedDate = formatDateUTC(data.created_at)
-  const interestList = splitInterests(data.interests)
+  const allPreferences = splitInterests(data.interests)
+  const tripPace = getPreferenceValue(allPreferences, 'Trip pace')
+  const transportMode = getPreferenceValue(allPreferences, 'Transport')
+  const interestList = allPreferences.filter((value) => !value.startsWith('Trip pace:') && !value.startsWith('Transport:'))
   const heroOptions: HeroOption[] = [
-    { label: 'Destination', value: data.city },
     { label: 'Trip length', value: `${data.days} days` },
     { label: 'Travel month', value: data.month },
     ...(data.travel_style ? [{ label: 'Travel style', value: data.travel_style }] : []),
+    ...(tripPace ? [{ label: 'Trip pace', value: tripPace }] : []),
+    ...(transportMode ? [{ label: 'Getting around', value: transportMode }] : []),
   ]
 
   return (
@@ -401,7 +411,7 @@ export default function ItineraryClientPage({ params }: Props) {
           </div>
           {interestList.length > 0 && (
             <div style={styles.heroInterestSection}>
-              <span style={styles.heroInterestLabel}>Interests added</span>
+              <span style={styles.heroInterestLabel}>Extra filters selected</span>
               <div style={styles.heroInterestList}>
                 {interestList.map((interest) => (
                   <span key={interest} style={styles.heroInterestChip}>{interest}</span>
