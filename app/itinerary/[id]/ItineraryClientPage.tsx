@@ -81,43 +81,107 @@ function CopyLinkButton() {
 function PDFDownloadButton({ contentRef, fileName }: { contentRef: React.RefObject<HTMLDivElement>; fileName: string }) {
   const [isDownloading, setIsDownloading] = useState(false)
 
+  const sanitizeColorsInElement = (element: Element) => {
+    const walker = document.createTreeWalker(
+      element,
+      NodeFilter.SHOW_ELEMENT,
+      null
+    )
+
+    let node: Element | null = element as Element
+    while (node) {
+      const style = window.getComputedStyle(node)
+      const properties = [
+        'backgroundColor',
+        'color',
+        'borderColor',
+        'borderTopColor',
+        'borderRightColor',
+        'borderBottomColor',
+        'borderLeftColor',
+        'outlineColor',
+      ]
+
+      properties.forEach((prop) => {
+        const value = style.getPropertyValue(prop.replace(/([A-Z])/g, '-$1').toLowerCase())
+        if (value && value.includes('oklch')) {
+          // Fallback to a neutral color if oklch is detected
+          const cssProperty = prop.replace(/([A-Z])/g, '-$1').toLowerCase()
+          if (prop === 'backgroundColor') {
+            (node as HTMLElement).style.backgroundColor = '#ffffff'
+          } else if (prop === 'color') {
+            (node as HTMLElement).style.color = '#000000'
+          } else if (prop.includes('borderColor') || prop === 'outlineColor') {
+            (node as HTMLElement).style.borderColor = '#cccccc'
+          }
+        }
+      })
+
+      node = walker.nextNode() as Element | null
+    }
+  }
+
   const handleDownloadPDF = async () => {
     if (!contentRef.current) return
     
     setIsDownloading(true)
     try {
-      const canvas = await html2canvas(contentRef.current, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      })
+      // Clone the element to avoid modifying the original
+      const clonedElement = contentRef.current.cloneNode(true) as HTMLDivElement
+      
+      // Sanitize oklch colors in the cloned element
+      sanitizeColorsInElement(clonedElement)
+      
+      // Create a temporary container
+      const tempContainer = document.createElement('div')
+      tempContainer.style.position = 'fixed'
+      tempContainer.style.left = '-9999px'
+      tempContainer.style.top = '-9999px'
+      tempContainer.style.width = contentRef.current.offsetWidth + 'px'
+      tempContainer.style.backgroundColor = '#ffffff'
+      tempContainer.appendChild(clonedElement)
+      document.body.appendChild(tempContainer)
 
-      const imgData = canvas.toDataURL('image/png')
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      })
+      try {
+        const canvas = await html2canvas(clonedElement, {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#ffffff',
+          allowTaint: true,
+          removeContainer: false,
+        })
 
-      const imgWidth = 210 - 20 // A4 width minus margins
-      const imgHeight = (canvas.height * imgWidth) / canvas.width
-      let heightLeft = imgHeight
-      let position = 10 // Top margin
+        const imgData = canvas.toDataURL('image/png')
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+        })
 
-      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
-      heightLeft -= 297 - 20 // A4 height minus margins
+        const imgWidth = 210 - 20 // A4 width minus margins
+        const imgHeight = (canvas.height * imgWidth) / canvas.width
+        let heightLeft = imgHeight
+        let position = 10 // Top margin
 
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight
-        pdf.addPage()
         pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
-        heightLeft -= 297 - 20
-      }
+        heightLeft -= 297 - 20 // A4 height minus margins
 
-      pdf.save(`${fileName}.pdf`)
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight
+          pdf.addPage()
+          pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
+          heightLeft -= 297 - 20
+        }
+
+        pdf.save(`${fileName}.pdf`)
+      } finally {
+        // Clean up temporary container
+        document.body.removeChild(tempContainer)
+      }
     } catch (error) {
       console.error('Error generating PDF:', error)
+      alert('Unable to generate PDF. Please try again or check your browser console for details.')
     } finally {
       setIsDownloading(false)
     }
