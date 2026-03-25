@@ -386,21 +386,11 @@ export default function ItineraryClientPage({ params }: Props) {
           {data.days} days in {data.city}
           {data.travel_style && <span style={{ fontSize: '0.7em', opacity: 0.9 }}> · {data.travel_style}</span>}
         </h1>
-        <p style={styles.heroMeta}>
-          <span style={styles.badge}>{data.month}</span>
-          <span style={styles.dot}>·</span>
-          <span style={styles.heroMetaText}>{data.days} days</span>
-          <span style={styles.dot}>·</span>
-          {data.travel_style && (
-            <>
-              <span style={styles.heroMetaText}>{data.travel_style}</span>
-              <span style={styles.dot}>·</span>
-            </>
-          )}
+        <p style={styles.heroMeta}>          
           <span style={styles.heroMetaText}>Created {formattedDate}</span>
         </p>
         <div style={styles.heroOptionsPanel}>
-          <p style={styles.heroOptionsIntro}>Built from the trip options you selected</p>
+          <p style={styles.heroOptionsIntro}>Built from the selected trip options</p>
           <div style={styles.heroOptionsGrid}>
             {heroOptions.map((option) => (
               <div key={option.label} style={styles.heroOptionCard}>
