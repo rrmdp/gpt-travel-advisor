@@ -82,42 +82,39 @@ function PDFDownloadButton({ contentRef, fileName }: { contentRef: React.RefObje
   const [isDownloading, setIsDownloading] = useState(false)
 
   const sanitizeColorsInElement = (element: Element) => {
-    const walker = document.createTreeWalker(
-      element,
-      NodeFilter.SHOW_ELEMENT,
-      null
-    )
-
-    let node: Element | null = element as Element
-    while (node) {
-      const style = window.getComputedStyle(node)
-      const properties = [
-        'backgroundColor',
-        'color',
-        'borderColor',
-        'borderTopColor',
-        'borderRightColor',
-        'borderBottomColor',
-        'borderLeftColor',
-        'outlineColor',
-      ]
-
-      properties.forEach((prop) => {
-        const value = style.getPropertyValue(prop.replace(/([A-Z])/g, '-$1').toLowerCase())
+    // Get all elements in the tree
+    const allElements = element.querySelectorAll('*')
+    
+    allElements.forEach((el) => {
+      const htmlEl = el as HTMLElement
+      const style = window.getComputedStyle(htmlEl)
+      
+      // Check for oklch in color properties
+      const colorProps = ['backgroundColor', 'color', 'borderColor', 'outlineColor']
+      
+      colorProps.forEach((prop) => {
+        const cssName = prop.replace(/([A-Z])/g, '-$1').toLowerCase()
+        const value = style.getPropertyValue(cssName)
+        
         if (value && value.includes('oklch')) {
-          // Fallback to a neutral color if oklch is detected
-          const cssProperty = prop.replace(/([A-Z])/g, '-$1').toLowerCase()
+          // Set safe fallback colors
           if (prop === 'backgroundColor') {
-            (node as HTMLElement).style.backgroundColor = '#ffffff'
+            htmlEl.style.backgroundColor = '#ffffff'
           } else if (prop === 'color') {
-            (node as HTMLElement).style.color = '#000000'
-          } else if (prop.includes('borderColor') || prop === 'outlineColor') {
-            (node as HTMLElement).style.borderColor = '#cccccc'
+            htmlEl.style.color = '#000000'
+          } else if (prop === 'borderColor') {
+            htmlEl.style.borderColor = '#cccccc'
+          } else if (prop === 'outlineColor') {
+            htmlEl.style.outlineColor = '#cccccc'
           }
         }
       })
-
-      node = walker.nextNode() as Element | null
+    })
+    
+    // Also check the root element
+    const rootStyle = window.getComputedStyle(element)
+    if (rootStyle.getPropertyValue('background-color').includes('oklch')) {
+      (element as HTMLElement).style.backgroundColor = '#ffffff'
     }
   }
 
@@ -129,9 +126,6 @@ function PDFDownloadButton({ contentRef, fileName }: { contentRef: React.RefObje
       // Clone the element to avoid modifying the original
       const clonedElement = contentRef.current.cloneNode(true) as HTMLDivElement
       
-      // Sanitize oklch colors in the cloned element
-      sanitizeColorsInElement(clonedElement)
-      
       // Create a temporary container
       const tempContainer = document.createElement('div')
       tempContainer.style.position = 'fixed'
@@ -139,10 +133,15 @@ function PDFDownloadButton({ contentRef, fileName }: { contentRef: React.RefObje
       tempContainer.style.top = '-9999px'
       tempContainer.style.width = contentRef.current.offsetWidth + 'px'
       tempContainer.style.backgroundColor = '#ffffff'
+      tempContainer.style.zIndex = '-9999'
       tempContainer.appendChild(clonedElement)
       document.body.appendChild(tempContainer)
 
       try {
+        // Sanitize colors after element is in the DOM so computed styles work
+        await new Promise(resolve => setTimeout(resolve, 100))
+        sanitizeColorsInElement(clonedElement)
+
         const canvas = await html2canvas(clonedElement, {
           scale: 2,
           useCORS: true,
