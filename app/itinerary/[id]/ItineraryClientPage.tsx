@@ -83,39 +83,44 @@ function PDFDownloadButton({ contentRef, fileName }: { contentRef: React.RefObje
 
   const sanitizeColorsInElement = (element: Element) => {
     // Get all elements in the tree
-    const allElements = element.querySelectorAll('*')
+    const allElements = [element as HTMLElement, ...Array.from(element.querySelectorAll('*'))] as HTMLElement[]
     
-    allElements.forEach((el) => {
-      const htmlEl = el as HTMLElement
+    allElements.forEach((htmlEl) => {
+      // Get computed style
       const style = window.getComputedStyle(htmlEl)
       
-      // Check for oklch in color properties
-      const colorProps = ['backgroundColor', 'color', 'borderColor', 'outlineColor']
+      // Check all color-related properties and override with safe colors if needed
+      const colorProperties = [
+        { prop: 'backgroundColor', css: 'background-color', fallback: '#ffffff' },
+        { prop: 'color', css: 'color', fallback: '#000000' },
+        { prop: 'borderColor', css: 'border-color', fallback: '#cccccc' },
+        { prop: 'borderTopColor', css: 'border-top-color', fallback: '#cccccc' },
+        { prop: 'borderRightColor', css: 'border-right-color', fallback: '#cccccc' },
+        { prop: 'borderBottomColor', css: 'border-bottom-color', fallback: '#cccccc' },
+        { prop: 'borderLeftColor', css: 'border-left-color', fallback: '#cccccc' },
+        { prop: 'outlineColor', css: 'outline-color', fallback: '#cccccc' },
+      ]
       
-      colorProps.forEach((prop) => {
-        const cssName = prop.replace(/([A-Z])/g, '-$1').toLowerCase()
-        const value = style.getPropertyValue(cssName)
+      colorProperties.forEach(({ prop, css, fallback }) => {
+        const value = style.getPropertyValue(css)
         
-        if (value && value.includes('oklch')) {
-          // Set safe fallback colors
-          if (prop === 'backgroundColor') {
-            htmlEl.style.backgroundColor = '#ffffff'
-          } else if (prop === 'color') {
-            htmlEl.style.color = '#000000'
-          } else if (prop === 'borderColor') {
-            htmlEl.style.borderColor = '#cccccc'
-          } else if (prop === 'outlineColor') {
-            htmlEl.style.outlineColor = '#cccccc'
-          }
+        // Check if the value contains oklch or other unsupported color functions
+        if (value && (value.includes('oklch') || value.includes('lch(') || value.includes('lab('))) {
+          // Force set the inline style to the fallback color
+          htmlEl.style.setProperty(css, fallback, 'important')
         }
       })
+      
+      // Also handle inline style attributes that might have oklch
+      const inlineStyle = htmlEl.getAttribute('style')
+      if (inlineStyle && inlineStyle.includes('oklch')) {
+        const newStyle = inlineStyle
+          .replace(/oklch\([^)]*\)/g, '#ffffff')
+          .replace(/lch\([^)]*\)/g, '#ffffff')
+          .replace(/lab\([^)]*\)/g, '#ffffff')
+        htmlEl.setAttribute('style', newStyle)
+      }
     })
-    
-    // Also check the root element
-    const rootStyle = window.getComputedStyle(element)
-    if (rootStyle.getPropertyValue('background-color').includes('oklch')) {
-      (element as HTMLElement).style.backgroundColor = '#ffffff'
-    }
   }
 
   const handleDownloadPDF = async () => {
@@ -138,9 +143,14 @@ function PDFDownloadButton({ contentRef, fileName }: { contentRef: React.RefObje
       document.body.appendChild(tempContainer)
 
       try {
-        // Sanitize colors after element is in the DOM so computed styles work
-        await new Promise(resolve => setTimeout(resolve, 100))
+        // Wait for DOM to settle
+        await new Promise(resolve => setTimeout(resolve, 150))
+        
+        // First pass: sanitize visible styles
         sanitizeColorsInElement(clonedElement)
+        
+        // Wait again after sanitization
+        await new Promise(resolve => setTimeout(resolve, 100))
 
         const canvas = await html2canvas(clonedElement, {
           scale: 2,
@@ -149,6 +159,20 @@ function PDFDownloadButton({ contentRef, fileName }: { contentRef: React.RefObje
           backgroundColor: '#ffffff',
           allowTaint: true,
           removeContainer: false,
+          onclone: (clonedDoc) => {
+            // Additional sanitization in the html2canvas clone
+            const allEls = clonedDoc.querySelectorAll('*') as NodeListOf<HTMLElement>
+            allEls.forEach((el) => {
+              const style = el.getAttribute('style') || ''
+              if (style.includes('oklch') || style.includes('lch(') || style.includes('lab(')) {
+                const cleaned = style
+                  .replace(/oklch\([^)]*\)/g, '#ffffff')
+                  .replace(/lch\([^)]*\)/g, '#ffffff')
+                  .replace(/lab\([^)]*\)/g, '#ffffff')
+                el.setAttribute('style', cleaned)
+              }
+            })
+          }
         })
 
         const imgData = canvas.toDataURL('image/png')
