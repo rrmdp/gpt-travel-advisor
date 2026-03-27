@@ -135,115 +135,248 @@ function PDFDownloadButton({
   const handleDownloadPDF = async () => {
     setIsDownloading(true)
     try {
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      })
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
       const pageWidth = pdf.internal.pageSize.getWidth()
       const pageHeight = pdf.internal.pageSize.getHeight()
-      const marginX = 16
-      const marginTop = 18
-      const marginBottom = 18
+      const marginX = 18
+      const marginTop = 16
+      const marginBottom = 24
       const contentWidth = pageWidth - marginX * 2
       let cursorY = marginTop
+      let pageNum = 1
 
-      const addPageIfNeeded = (requiredHeight: number) => {
-        if (cursorY + requiredHeight <= pageHeight - marginBottom) return
+      // ── Palette ────────────────────────────────────────────────────────────
+      const C = {
+        navyDark:  [8,  30,  58]  as [number, number, number],
+        navyMid:   [14, 50,  90]  as [number, number, number],
+        teal:      [0,  180, 210] as [number, number, number],
+        tealLight: [210, 242, 250] as [number, number, number],
+        white:     [255, 255, 255] as [number, number, number],
+        textDark:  [22,  34,  54]  as [number, number, number],
+        textGray:  [75,  90, 115] as [number, number, number],
+        textLight: [140, 155, 175] as [number, number, number],
+        accentBlue:[47, 136, 238] as [number, number, number],
+        divider:   [215, 225, 240] as [number, number, number],
+      }
+
+      // ── Load logo ──────────────────────────────────────────────────────────
+      let logoDataUrl: string | null = null
+      try {
+        logoDataUrl = await loadImageAsDataUrl('/villasmediterranean_logo.png')
+      } catch {
+        // logo is optional; continue without it
+      }
+
+      // ── Footer on current page ─────────────────────────────────────────────
+      const drawFooter = () => {
+        const fy = pageHeight - 8
+        pdf.setDrawColor(...C.divider)
+        pdf.setLineWidth(0.25)
+        pdf.line(marginX, fy - 5, pageWidth - marginX, fy - 5)
+        pdf.setFont('helvetica', 'normal')
+        pdf.setFontSize(7.5)
+        pdf.setTextColor(...C.textLight)
+        pdf.text('VillasMediterranean.com', marginX, fy)
+        pdf.text(String(pageNum), pageWidth - marginX, fy, { align: 'right' })
+        if (logoDataUrl) {
+          const lSize = 7
+          pdf.addImage(logoDataUrl, 'PNG', pageWidth / 2 - lSize / 2, fy - lSize - 1, lSize, lSize)
+        }
+      }
+
+      // ── Page break helper ──────────────────────────────────────────────────
+      const addPageIfNeeded = (h: number) => {
+        if (cursorY + h <= pageHeight - marginBottom) return
+        drawFooter()
         pdf.addPage()
+        pageNum += 1
         cursorY = marginTop
       }
 
-      const addWrappedText = (
-        text: string,
-        options: { fontSize: number; color: [number, number, number]; lineHeight: number; bold?: boolean }
-      ) => {
-        const lines = pdf.splitTextToSize(text, contentWidth)
-        const blockHeight = Math.max(lines.length, 1) * options.lineHeight
-        addPageIfNeeded(blockHeight)
-        pdf.setFont('helvetica', options.bold ? 'bold' : 'normal')
-        pdf.setFontSize(options.fontSize)
-        pdf.setTextColor(...options.color)
-        pdf.text(lines, marginX, cursorY)
-        cursorY += blockHeight
+      // ── COVER HEADER ───────────────────────────────────────────────────────
+      const headerH = 62
+      pdf.setFillColor(...C.navyDark)
+      pdf.rect(0, 0, pageWidth, headerH, 'F')
+      // teal bottom accent
+      pdf.setFillColor(...C.teal)
+      pdf.rect(0, headerH - 2.5, pageWidth, 2.5, 'F')
+      // left teal bar
+      pdf.setFillColor(...C.teal)
+      pdf.rect(0, 0, 4, headerH - 2.5, 'F')
+
+      // Logo in header
+      const logoSize = 30
+      if (logoDataUrl) {
+        pdf.addImage(logoDataUrl, 'PNG', pageWidth - marginX - logoSize, 8, logoSize, logoSize)
       }
 
-      pdf.setFillColor(16, 84, 122)
-      pdf.roundedRect(marginX, cursorY, contentWidth, 30, 5, 5, 'F')
+      // Title
       pdf.setFont('helvetica', 'bold')
-      pdf.setFontSize(22)
-      pdf.setTextColor(255, 255, 255)
-      pdf.text(`${itinerary.days} days in ${itinerary.city}`, marginX + 6, cursorY + 11)
+      pdf.setFontSize(24)
+      pdf.setTextColor(...C.white)
+      const titleMaxW = logoDataUrl ? contentWidth - logoSize - 6 : contentWidth
+      const titleLines = pdf.splitTextToSize(`${itinerary.days} days in ${itinerary.city}`, titleMaxW)
+      pdf.text(titleLines, marginX + 6, 22)
+
+      // Meta row
       pdf.setFont('helvetica', 'normal')
-      pdf.setFontSize(10)
-      pdf.text(`Month: ${itinerary.month}    Created: ${formatDateUTC(itinerary.created_at)}`, marginX + 6, cursorY + 19)
-      if (itinerary.travel_style) {
-        pdf.text(`Travel style: ${itinerary.travel_style}`, marginX + 6, cursorY + 25)
-      }
-      cursorY += 38
+      pdf.setFontSize(9)
+      pdf.setTextColor(160, 200, 235)
+      const metaParts = [
+        itinerary.month,
+        formatDateUTC(itinerary.created_at),
+        ...(itinerary.travel_style ? [itinerary.travel_style] : []),
+      ]
+      pdf.text(metaParts.join('  ·  '), marginX + 6, 36)
 
+      // Interests row
       if (itinerary.interests) {
-        addWrappedText(`Interests: ${itinerary.interests}`, {
-          fontSize: 11,
-          color: [55, 65, 81],
-          lineHeight: 6,
-          bold: true,
-        })
-        cursorY += 2
+        pdf.setFontSize(8.5)
+        pdf.setTextColor(120, 170, 215)
+        const interestSnippet = itinerary.interests.split(',').slice(0, 6).map((s) => s.trim()).join('  ·  ')
+        pdf.text(interestSnippet, marginX + 6, 45)
       }
 
+      // Watermark text
+      pdf.setFontSize(7.5)
+      pdf.setTextColor(70, 110, 155)
+      pdf.text('Generated by VillasMediterranean.com', marginX + 6, headerH - 7)
+
+      cursorY = headerH + 10
+
+      // ── DAY SECTIONS ──────────────────────────────────────────────────────
       const daySections = parseItineraryDays(itinerary.itinerary)
 
       for (let index = 0; index < daySections.length; index += 1) {
-        const dayText = stripMarkdownForPdf(daySections[index].replace(/^\s*\d+\s*/, ''))
+        const rawDay = daySections[index].replace(/^\s*\d+\s*/, '')
+        addPageIfNeeded(22)
 
-        addPageIfNeeded(18)
-        pdf.setFillColor(239, 246, 255)
-        pdf.setDrawColor(147, 197, 253)
-        pdf.roundedRect(marginX, cursorY, contentWidth, 12, 3, 3, 'FD')
+        // Day header band
+        pdf.setFillColor(...C.navyMid)
+        pdf.roundedRect(marginX, cursorY, contentWidth, 11, 2, 2, 'F')
+        // Teal left accent
+        pdf.setFillColor(...C.teal)
+        pdf.roundedRect(marginX, cursorY, 4, 11, 1, 1, 'F')
         pdf.setFont('helvetica', 'bold')
-        pdf.setFontSize(13)
-        pdf.setTextColor(30, 64, 175)
-        pdf.text(`Day ${index + 1}`, marginX + 5, cursorY + 8)
-        cursorY += 16
+        pdf.setFontSize(11.5)
+        pdf.setTextColor(...C.white)
+        pdf.text(`Day ${index + 1}`, marginX + 8, cursorY + 7.5)
+        cursorY += 15
 
+        // Day image
         const imageUrl = dayImages[index]?.url
         if (imageUrl) {
           try {
-            const imageDataUrl = await loadImageAsDataUrl(imageUrl)
-            const imageHeight = 42
-            addPageIfNeeded(imageHeight + 4)
-            pdf.addImage(imageDataUrl, 'JPEG', marginX, cursorY, contentWidth, imageHeight)
-            cursorY += imageHeight + 5
-          } catch (imageError) {
-            console.error('Unable to embed itinerary image in PDF:', imageError)
+            const imgData = await loadImageAsDataUrl(imageUrl)
+            const imgH = 50
+            addPageIfNeeded(imgH + 6)
+            pdf.setDrawColor(...C.divider)
+            pdf.setLineWidth(0.4)
+            pdf.addImage(imgData, 'JPEG', marginX, cursorY, contentWidth, imgH)
+            cursorY += imgH + 6
+          } catch (imgErr) {
+            console.error('Unable to embed itinerary image in PDF:', imgErr)
           }
         }
 
-        const paragraphs = dayText.split(/\n\s*\n/).filter(Boolean)
-        for (const paragraph of paragraphs) {
-          addWrappedText(paragraph.trim(), {
-            fontSize: 11,
-            color: [31, 41, 55],
-            lineHeight: 5.5,
-          })
-          cursorY += 1.5
+        // Day text – line-by-line rendering
+        const textLines = rawDay.split('\n')
+        for (const line of textLines) {
+          const t = line.trim()
+          if (!t) { cursorY += 1.5; continue }
+
+          if (/^#{1,3}\s/.test(t)) {
+            // Heading
+            const heading = t.replace(/^#{1,3}\s+/, '').replace(/[*_`]/g, '')
+            addPageIfNeeded(10)
+            pdf.setFont('helvetica', 'bold')
+            pdf.setFontSize(10.5)
+            pdf.setTextColor(...C.accentBlue)
+            const wrapped = pdf.splitTextToSize(heading, contentWidth - 4)
+            pdf.text(wrapped, marginX + 2, cursorY)
+            cursorY += wrapped.length * 5.8 + 2
+          } else if (/^[-*•]\s/.test(t)) {
+            // Bullet
+            const bullet = t.replace(/^[-*•]\s+/, '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/[*_`]/g, '')
+            addPageIfNeeded(7)
+            pdf.setFont('helvetica', 'normal')
+            pdf.setFontSize(10)
+            pdf.setTextColor(...C.textDark)
+            const wrapped = pdf.splitTextToSize(bullet, contentWidth - 9)
+            pdf.setFillColor(...C.teal)
+            pdf.circle(marginX + 3, cursorY - 1.2, 0.9, 'F')
+            pdf.text(wrapped, marginX + 7, cursorY)
+            cursorY += wrapped.length * 5.2 + 1.5
+          } else if (/^\*\*[^*]+\*\*/.test(t) && t.replace(/\*\*(.+?)\*\*/g, '$1').trim() === t.replace(/\*\*/g, '').trim()) {
+            // Bold-only line (acts as a sub-heading)
+            const bold = t.replace(/\*\*(.+?)\*\*/g, '$1').replace(/[*_`]/g, '')
+            addPageIfNeeded(8)
+            pdf.setFont('helvetica', 'bold')
+            pdf.setFontSize(10.5)
+            pdf.setTextColor(...C.textDark)
+            const wrapped = pdf.splitTextToSize(bold, contentWidth)
+            pdf.text(wrapped, marginX, cursorY)
+            cursorY += wrapped.length * 5.5 + 1
+          } else {
+            // Normal paragraph
+            const clean = t.replace(/\*\*(.+?)\*\*/g, '$1').replace(/[*_`~]/g, '')
+            if (!clean) continue
+            addPageIfNeeded(7)
+            pdf.setFont('helvetica', 'normal')
+            pdf.setFontSize(10)
+            pdf.setTextColor(...C.textDark)
+            const wrapped = pdf.splitTextToSize(clean, contentWidth)
+            pdf.text(wrapped, marginX, cursorY)
+            cursorY += wrapped.length * 5.2 + 2
+          }
         }
 
-        cursorY += 4
+        cursorY += 5
+
+        // Divider between days
+        if (index < daySections.length - 1) {
+          addPageIfNeeded(6)
+          pdf.setDrawColor(...C.divider)
+          pdf.setLineWidth(0.25)
+          pdf.line(marginX + 10, cursorY - 2, pageWidth - marginX - 10, cursorY - 2)
+          cursorY += 3
+        }
       }
 
-      addPageIfNeeded(24)
-      pdf.setFillColor(255, 247, 237)
-      pdf.setDrawColor(251, 191, 36)
-      pdf.roundedRect(marginX, cursorY, contentWidth, 18, 4, 4, 'FD')
+      // ── PROMO BOX ─────────────────────────────────────────────────────────
+      const promoH = logoDataUrl ? 36 : 26
+      addPageIfNeeded(promoH + 8)
+      cursorY += 4
+
+      pdf.setFillColor(...C.tealLight)
+      pdf.setDrawColor(...C.teal)
+      pdf.setLineWidth(0.6)
+      pdf.roundedRect(marginX, cursorY, contentWidth, promoH, 4, 4, 'FD')
+
+      const promoTextX = logoDataUrl ? marginX + 34 : marginX + 6
+      if (logoDataUrl) {
+        pdf.addImage(logoDataUrl, 'PNG', marginX + 4, cursorY + 5, 26, 26)
+      }
+
       pdf.setFont('helvetica', 'bold')
       pdf.setFontSize(12)
-      pdf.setTextColor(146, 64, 14)
-      pdf.text('Stay Recommendation', marginX + 5, cursorY + 7)
+      pdf.setTextColor(...C.navyDark)
+      pdf.text('Plan your Mallorca villa stay', promoTextX, cursorY + 10)
+
       pdf.setFont('helvetica', 'normal')
+      pdf.setFontSize(9.5)
+      pdf.setTextColor(...C.textGray)
+      const desc = 'Travelling as a family? Browse beautiful short-term villa rentals in Mallorca.'
+      const descLines = pdf.splitTextToSize(desc, contentWidth - (logoDataUrl ? 38 : 10))
+      pdf.text(descLines, promoTextX, cursorY + 18)
+
+      pdf.setFont('helvetica', 'bold')
       pdf.setFontSize(10)
-      pdf.text('VillasMediterranean.com for stylish short-term Mallorca villa rentals.', marginX + 5, cursorY + 13)
+      pdf.setTextColor(...C.teal)
+      pdf.text('www.VillasMediterranean.com', promoTextX, cursorY + promoH - 5)
+
+      // ── FINAL FOOTER ──────────────────────────────────────────────────────
+      drawFooter()
 
       pdf.save(`${fileName}.pdf`)
     } catch (error) {
