@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
+import { permanentRedirect } from 'next/navigation'
 import ItineraryClientPage from './ItineraryClientPage'
 import { getItineraryById, Itinerary } from '../../../lib/db'
+import { buildItineraryPath, extractItineraryIdFromSegment } from '../../../lib/itinerary-url'
 
 const SITE_URL = 'https://www.whattodoinmallorca.com'
 const SITE_NAME = 'What to Do in Mallorca'
@@ -24,7 +26,7 @@ function buildDescription(itineraryText: string, city: string, days: number, mon
 }
 
 function buildJsonLd(itinerary: Itinerary) {
-  const canonicalUrl = `${SITE_URL}/itinerary/${itinerary.id}`
+  const canonicalUrl = `${SITE_URL}${buildItineraryPath(itinerary)}`
   const description = buildDescription(itinerary.itinerary, itinerary.city, itinerary.days, itinerary.month, itinerary.travel_style, itinerary.interests)
 
   // Split the itinerary into per-day chunks and build itinerary steps
@@ -85,7 +87,8 @@ export async function generateMetadata({
 }: {
   params: { id: string }
 }): Promise<Metadata> {
-  const itinerary = await getItineraryById(params.id).catch(() => null)
+  const itineraryId = extractItineraryIdFromSegment(params.id)
+  const itinerary = itineraryId ? await getItineraryById(itineraryId).catch(() => null) : null
 
   if (!itinerary) {
     return {
@@ -102,7 +105,7 @@ export async function generateMetadata({
   const styleInTitle = itinerary.travel_style ? ` (${itinerary.travel_style})` : ''
   const title = `${itinerary.days}-Day ${itinerary.city} Itinerary for ${itinerary.month}${styleInTitle} | ${SITE_NAME}`
   const description = buildDescription(itinerary.itinerary, itinerary.city, itinerary.days, itinerary.month, itinerary.travel_style, itinerary.interests)
-  const canonicalUrl = `${SITE_URL}/itinerary/${itinerary.id}`
+  const canonicalUrl = `${SITE_URL}${buildItineraryPath(itinerary)}`
 
   return {
     title,
@@ -127,7 +130,16 @@ export async function generateMetadata({
 }
 
 export default async function ItineraryPage({ params }: { params: { id: string } }) {
-  const itinerary = await getItineraryById(params.id).catch(() => null)
+  const itineraryId = extractItineraryIdFromSegment(params.id)
+  const itinerary = itineraryId ? await getItineraryById(itineraryId).catch(() => null) : null
+
+  if (itinerary) {
+    const canonicalPath = buildItineraryPath(itinerary)
+    if (params.id !== canonicalPath.slice('/itinerary/'.length)) {
+      permanentRedirect(canonicalPath)
+    }
+  }
+
   const jsonLd = itinerary ? buildJsonLd(itinerary) : null
 
   return (

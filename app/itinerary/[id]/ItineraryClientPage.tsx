@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import jsPDF from 'jspdf'
+import { extractItineraryIdFromSegment } from '../../../lib/itinerary-url'
 
 interface Props {
   params: { id: string }
@@ -422,14 +423,21 @@ export default function ItineraryClientPage({ params }: Props) {
   const [hiddenImageIndexes, setHiddenImageIndexes] = useState<number[]>([])
   const [loadedImageIndexes, setLoadedImageIndexes] = useState<number[]>([])
   const contentRef = useRef<HTMLDivElement>(null)
+  const itineraryId = useMemo(() => extractItineraryIdFromSegment(params.id), [params.id])
 
   useEffect(() => {
     async function loadItinerary() {
+      if (!itineraryId) {
+        setData(null)
+        setLoading(false)
+        return
+      }
+
       try {
-        const response = await fetch('/api/itineraries')
+        const response = await fetch(`/api/itinerary/${encodeURIComponent(itineraryId)}`)
         if (!response.ok) { setData(null); return }
-        const itineraries: StoredItinerary[] = await response.json()
-        setData(itineraries.find((item) => item.id === params.id) ?? null)
+        const itinerary: StoredItinerary = await response.json()
+        setData(itinerary)
       } catch (error) {
         console.error('Unable to load itinerary:', error)
         setData(null)
@@ -438,7 +446,7 @@ export default function ItineraryClientPage({ params }: Props) {
       }
     }
     loadItinerary()
-  }, [params.id])
+  }, [itineraryId])
 
   const days = useMemo(() => {
     if (!data) return []

@@ -1,4 +1,5 @@
 import { listAllItinerarySummaries } from '../lib/db'
+import { buildItineraryPath } from '../lib/itinerary-url'
 
 const SITE_URL = 'https://www.whattodoinmallorca.com'
 
@@ -6,7 +7,7 @@ export default async function sitemap() {
   const itineraries = await listAllItinerarySummaries().catch(() => [])
 
   const itineraryEntries = itineraries.map((it) => ({
-    url: `${SITE_URL}/itinerary/${it.id}`,
+    url: `${SITE_URL}${buildItineraryPath(it)}`,
     lastModified: new Date(it.created_at),
     changeFrequency: 'never' as const,
     priority: 0.7,

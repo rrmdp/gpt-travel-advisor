@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useRouter } from 'next/navigation'
+import { buildItineraryPath } from '../lib/itinerary-url'
 
 type ItinerarySummary = {
   id: string
@@ -190,8 +191,14 @@ export default function HomePageClient() {
         setMessage('Unable to save itinerary right now. Please try again.')
         return
       }
-      const { id } = await saveResponse.json()
-      router.push(`/itinerary/${id}`)
+      const { id, path } = await saveResponse.json()
+      router.push(path || buildItineraryPath({
+        id,
+        city: 'Mallorca',
+        days: Number(request.days),
+        month: request.month,
+        travel_style: request.travel_style,
+      }))
     } catch (err) {
       console.log('error: ', err)
       setMessage('')
@@ -357,7 +364,7 @@ export default function HomePageClient() {
                 saved.month
               ].filter(Boolean).join(' · ')
               return (
-                <a key={saved.id} href={`/itinerary/${saved.id}`} style={styles.previousLink}>
+                <a key={saved.id} href={buildItineraryPath(saved)} style={styles.previousLink}>
                   <span>{linkText}</span>
                   <span style={styles.previousDate}>
                     {formatDateUTC(saved.created_at)}

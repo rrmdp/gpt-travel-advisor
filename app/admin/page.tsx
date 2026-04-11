@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
+import { buildItineraryPath } from '../../lib/itinerary-url'
 
 type ApiErrorLog = {
   id: string
@@ -229,7 +230,7 @@ export default function AdminDashboardPage() {
                         </p>
                       </div>
                       <div style={styles.cardActions}>
-                        <a href={`/itinerary/${itinerary.id}`} target="_blank" rel="noreferrer" style={styles.linkButton}>
+                        <a href={buildItineraryPath(itinerary)} target="_blank" rel="noreferrer" style={styles.linkButton}>
                           Open
                         </a>
                         <button

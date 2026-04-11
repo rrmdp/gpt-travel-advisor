@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { saveItinerary } from '../../lib/db'
+import { buildItineraryPath } from '../../lib/itinerary-url'
 
 type Data = {
   id: string
+  path: string
 }
 
 type ErrorResponse = {
@@ -33,7 +35,16 @@ export default async function handler(
       interests || '',
       itinerary
     )
-    return res.status(200).json({ id })
+    return res.status(200).json({
+      id,
+      path: buildItineraryPath({
+        id,
+        city,
+        days: Number(days),
+        month,
+        travel_style: travel_style || '',
+      }),
+    })
   } catch (error) {
     console.error('Unable to save itinerary:', error)
     return res.status(500).json({ message: 'Unable to save itinerary' })
