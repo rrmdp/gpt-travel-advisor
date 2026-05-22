@@ -215,7 +215,7 @@ export default function HomePageClient() {
   }
 
   return (
-    <main>
+    <main className="home-page">
       <div className="app-container">
         <div className="header">
           <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
