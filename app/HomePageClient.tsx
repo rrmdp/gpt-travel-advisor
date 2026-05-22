@@ -48,6 +48,23 @@ const interestOptions = [
   'Wellness',
 ]
 
+const loadingFooterMessages = [
+  {
+    text: "Please don't go - your itinerary is almost ready.",
+  },
+  {
+    text: 'Family trip idea: rent a villa with',
+    linkLabel: 'VillasMediterranean.com',
+    href: 'https://www.villasmediterranean.com/?ref=whattodoinmallorca',
+  },
+  {
+    text: 'Hang tight while we build your day-by-day plan.',
+  },
+  {
+    text: 'Tip: keep this tab open so we can redirect you automatically.',
+  },
+]
+
 function formatDateUTC(dateString: string) {
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
@@ -75,6 +92,7 @@ export default function HomePageClient() {
   const [showOptionalPreferences, setShowOptionalPreferences] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [loadingFooterIndex, setLoadingFooterIndex] = useState(0)
 
   useEffect(() => {
     if (!loading) return
@@ -90,6 +108,23 @@ export default function HomePageClient() {
     return () => {
       window.clearTimeout(firstUpdate)
       window.clearTimeout(secondUpdate)
+    }
+  }, [loading])
+
+  useEffect(() => {
+    if (!loading) {
+      setLoadingFooterIndex(0)
+      return
+    }
+
+    setLoadingFooterIndex(0)
+
+    const footerInterval = window.setInterval(() => {
+      setLoadingFooterIndex((index) => (index + 1) % loadingFooterMessages.length)
+    }, 3200)
+
+    return () => {
+      window.clearInterval(footerInterval)
     }
   }, [loading])
 
@@ -799,6 +834,19 @@ export default function HomePageClient() {
                 <span className="skeleton-shimmer" style={styles.loadingSkeletonLineMedium} />
               </div>
             </div>
+            <p style={styles.loadingFooterMessage}>
+              {loadingFooterMessages[loadingFooterIndex].text}{' '}
+              {loadingFooterMessages[loadingFooterIndex].href && loadingFooterMessages[loadingFooterIndex].linkLabel && (
+                <a
+                  href={loadingFooterMessages[loadingFooterIndex].href}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={styles.loadingFooterMessageLink}
+                >
+                  {loadingFooterMessages[loadingFooterIndex].linkLabel}
+                </a>
+              )}
+            </p>
           </div>
         </div>
       )}
@@ -1217,6 +1265,18 @@ const styles = {
     color: '#5a6d7d',
     fontSize: '13px',
     lineHeight: '1.4',
+  },
+  loadingFooterMessage: {
+    margin: '12px 0 0',
+    fontSize: '12px',
+    lineHeight: '1.35',
+    color: '#6b7c8b',
+    minHeight: '16px',
+  },
+  loadingFooterMessageLink: {
+    color: '#0b62a3',
+    fontWeight: 700,
+    textDecoration: 'underline',
   },
   loadingSkeletonWrap: {
     marginTop: '14px',
