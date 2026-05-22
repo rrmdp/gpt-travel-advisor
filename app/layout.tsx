@@ -1,4 +1,4 @@
-import './globals.css'
+import './globals.css' 
 import { AnalyticsWrapper } from './components/analytics';
 import type { Metadata } from 'next';
 
