@@ -821,19 +821,6 @@ export default function HomePageClient() {
             <p style={styles.loadingTitle}>Generating your itinerary</p>
             <p style={styles.loadingText}>{message || 'Please wait...'}</p>
             <p style={styles.loadingHint}>This may take up to 30 seconds.</p>
-            <div style={styles.loadingSkeletonWrap} aria-hidden="true">
-              <div style={styles.loadingSkeletonDayCard}>
-                <span className="skeleton-shimmer" style={styles.loadingSkeletonHeading} />
-                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineWide} />
-                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineMedium} />
-                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineShort} />
-              </div>
-              <div style={styles.loadingSkeletonDayCard}>
-                <span className="skeleton-shimmer" style={styles.loadingSkeletonHeading} />
-                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineWide} />
-                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineMedium} />
-              </div>
-            </div>
             <p style={styles.loadingFooterMessage}>
               {loadingFooterMessages[loadingFooterIndex].text}{' '}
               {loadingFooterMessages[loadingFooterIndex].href && loadingFooterMessages[loadingFooterIndex].linkLabel && (
@@ -1277,44 +1264,5 @@ const styles = {
     color: '#0b62a3',
     fontWeight: 700,
     textDecoration: 'underline',
-  },
-  loadingSkeletonWrap: {
-    marginTop: '14px',
-    display: 'flex',
-    flexDirection: 'column' as 'column',
-    gap: '10px',
-  },
-  loadingSkeletonDayCard: {
-    borderRadius: '10px',
-    border: '1px solid #e8eef2',
-    background: '#f7fafc',
-    padding: '10px',
-    display: 'flex',
-    flexDirection: 'column' as 'column',
-    gap: '8px',
-  },
-  loadingSkeletonHeading: {
-    display: 'inline-block',
-    height: '12px',
-    width: '90px',
-    borderRadius: '999px',
-  },
-  loadingSkeletonLineWide: {
-    display: 'inline-block',
-    height: '10px',
-    width: '100%',
-    borderRadius: '999px',
-  },
-  loadingSkeletonLineMedium: {
-    display: 'inline-block',
-    height: '10px',
-    width: '82%',
-    borderRadius: '999px',
-  },
-  loadingSkeletonLineShort: {
-    display: 'inline-block',
-    height: '10px',
-    width: '68%',
-    borderRadius: '999px',
   },
 }
