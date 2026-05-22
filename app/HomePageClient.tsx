@@ -70,6 +70,7 @@ export default function HomePageClient() {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
   const [itinerary, setItinerary] = useState<string>('')
   const [previousItineraries, setPreviousItineraries] = useState<ItinerarySummary[]>([])
+  const [isLoadingPreviousItineraries, setIsLoadingPreviousItineraries] = useState(true)
   const [visibleItineraryCount, setVisibleItineraryCount] = useState(10)
   const [showOptionalPreferences, setShowOptionalPreferences] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -101,6 +102,8 @@ export default function HomePageClient() {
         setPreviousItineraries(data)
       } catch (err) {
         console.log('error loading itineraries: ', err)
+      } finally {
+        setIsLoadingPreviousItineraries(false)
       }
     }
 
@@ -361,10 +364,16 @@ export default function HomePageClient() {
             </p>
           )}
         </div>
-        {previousItineraries.length > 0 && (
+        {(isLoadingPreviousItineraries || previousItineraries.length > 0) && (
           <div style={styles.previousContainer}>
             <h2 style={styles.previousTitle}>Previously generated itineraries</h2>
-            {previousItineraries.slice(0, visibleItineraryCount).map((saved) => {
+            {isLoadingPreviousItineraries && Array.from({ length: 4 }).map((_, index) => (
+              <div key={`skeleton-${index}`} style={styles.previousSkeletonRow} aria-hidden="true">
+                <span className="skeleton-shimmer" style={styles.previousSkeletonMain} />
+                <span className="skeleton-shimmer" style={styles.previousSkeletonDate} />
+              </div>
+            ))}
+            {!isLoadingPreviousItineraries && previousItineraries.slice(0, visibleItineraryCount).map((saved) => {
               const linkText = [
                 `${saved.days} days in ${saved.city}`,
                 saved.travel_style || 'itinerary',
@@ -379,7 +388,7 @@ export default function HomePageClient() {
                 </a>
               )
             })}
-            {visibleItineraryCount < previousItineraries.length && (
+            {!isLoadingPreviousItineraries && visibleItineraryCount < previousItineraries.length && (
               <button
                 type="button"
                 onClick={() => setVisibleItineraryCount((count) => count + 10)}
@@ -767,6 +776,28 @@ export default function HomePageClient() {
           </div>
         </div>
       )}
+      <style jsx>{`
+        .skeleton-shimmer {
+          position: relative;
+          overflow: hidden;
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .skeleton-shimmer::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          transform: translateX(-100%);
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.42) 48%, rgba(255, 255, 255, 0) 100%);
+          animation: previousSkeletonShimmer 1.5s infinite;
+        }
+
+        @keyframes previousSkeletonShimmer {
+          100% {
+            transform: translateX(100%);
+          }
+        }
+      `}</style>
     </main>
   )
 }
@@ -945,6 +976,24 @@ const styles = {
     textDecoration: 'none',
     whiteSpace: 'nowrap' as 'nowrap',
     flexShrink: 0,
+  },
+  previousSkeletonRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  previousSkeletonMain: {
+    display: 'inline-block',
+    height: '16px',
+    borderRadius: '999px',
+    width: '72%',
+  },
+  previousSkeletonDate: {
+    display: 'inline-block',
+    height: '12px',
+    borderRadius: '999px',
+    width: '90px',
   },
   loadMoreButton: {
     marginTop: '10px',
