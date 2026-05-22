@@ -76,6 +76,23 @@ export default function HomePageClient() {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
+    if (!loading) return
+
+    const firstUpdate = window.setTimeout(() => {
+      setMessage('Just a minute ...')
+    }, 7000)
+
+    const secondUpdate = window.setTimeout(() => {
+      setMessage('Almost there ...')
+    }, 15000)
+
+    return () => {
+      window.clearTimeout(firstUpdate)
+      window.clearTimeout(secondUpdate)
+    }
+  }, [loading])
+
+  useEffect(() => {
     async function loadPreviousItineraries() {
       try {
         const response = await fetch('/api/itineraries')
@@ -121,16 +138,6 @@ export default function HomePageClient() {
       setMessage('Getting suggestions...')
       setLoading(true)
       setItinerary('')
-
-      setTimeout(() => {
-        if (!loading) return
-        setMessage('Just a minute ...')
-      }, 7000)
-
-      setTimeout(() => {
-        if (!loading) return
-        setMessage('Almost there ...')
-      }, 15000)
 
       const response = await fetch('/api/get-itinerary', {
         method: 'POST',
@@ -201,7 +208,7 @@ export default function HomePageClient() {
       }))
     } catch (err) {
       console.log('error: ', err)
-      setMessage('')
+      setMessage('Something went wrong while generating your itinerary. Please try again.')
       setLoading(false)
     }
   }
@@ -215,7 +222,7 @@ export default function HomePageClient() {
   }
 
   return (
-    <main className="home-page">
+    <main className="home-page" aria-busy={loading}>
       <div className="app-container">
         <div className="header">
           <h1 style={styles.header} className="hero-header">What to do in Mallorca?</h1>
@@ -751,6 +758,15 @@ export default function HomePageClient() {
           )}
         </div>
       </div>
+      {loading && (
+        <div style={styles.loadingOverlay} role="status" aria-live="assertive" aria-label="Generating itinerary">
+          <div style={styles.loadingCard}>
+            <p style={styles.loadingTitle}>Generating your itinerary</p>
+            <p style={styles.loadingText}>{message || 'Please wait...'}</p>
+            <p style={styles.loadingHint}>This may take up to 30 seconds.</p>
+          </div>
+        </div>
+      )}
     </main>
   )
 }
@@ -1086,5 +1102,45 @@ const styles = {
     color: 'rgba(255,255,255,0.85)',
     fontSize: '13px',
     lineHeight: '1.6',
-  }
+  },
+  loadingOverlay: {
+    position: 'fixed' as 'fixed',
+    inset: 0,
+    background: 'rgba(2, 18, 27, 0.74)',
+    backdropFilter: 'blur(3px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999,
+    padding: '20px',
+  },
+  loadingCard: {
+    width: '100%',
+    maxWidth: '430px',
+    borderRadius: '14px',
+    padding: '22px 20px',
+    background: '#ffffff',
+    boxShadow: '0 12px 44px rgba(0,0,0,0.28)',
+    textAlign: 'center' as 'center',
+  },
+  loadingTitle: {
+    margin: 0,
+    color: '#082642',
+    fontSize: '22px',
+    fontWeight: 800,
+    fontFamily: 'Poppins',
+  },
+  loadingText: {
+    margin: '10px 0 0',
+    color: '#0f3a5b',
+    fontSize: '15px',
+    fontWeight: 600,
+    lineHeight: '1.4',
+  },
+  loadingHint: {
+    margin: '10px 0 0',
+    color: '#5a6d7d',
+    fontSize: '13px',
+    lineHeight: '1.4',
+  },
 }
