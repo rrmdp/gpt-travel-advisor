@@ -183,9 +183,6 @@ export default function HomePageClient() {
         return point
       })
 
-      setItinerary(nextItinerary)
-      setLoading(false)
-
       const saveResponse = await fetch('/api/save-itinerary', {
         method: 'POST',
         body: JSON.stringify({
@@ -198,17 +195,33 @@ export default function HomePageClient() {
         })
       })
       if (!saveResponse.ok) {
+        setItinerary(nextItinerary)
         setMessage('Unable to save itinerary right now. Please try again.')
+        setLoading(false)
         return
       }
-      const { id, path } = await saveResponse.json()
-      router.push(path || buildItineraryPath({
+      const payload = await saveResponse.json()
+      const id = String(payload?.id || '')
+      const path = typeof payload?.path === 'string' ? payload.path : ''
+
+      if (!id && !path) {
+        setItinerary(nextItinerary)
+        setMessage('Unable to create itinerary link right now. Please try again.')
+        setLoading(false)
+        return
+      }
+
+      const redirectPath = path || buildItineraryPath({
         id,
         city: 'Mallorca',
         days: Number(request.days),
         month: request.month,
         travel_style: request.travel_style,
-      }))
+      })
+
+      setMessage('Itinerary ready. Redirecting...')
+      router.replace(redirectPath)
+      return
     } catch (err) {
       console.log('error: ', err)
       setMessage('Something went wrong while generating your itinerary. Please try again.')
@@ -773,6 +786,19 @@ export default function HomePageClient() {
             <p style={styles.loadingTitle}>Generating your itinerary</p>
             <p style={styles.loadingText}>{message || 'Please wait...'}</p>
             <p style={styles.loadingHint}>This may take up to 30 seconds.</p>
+            <div style={styles.loadingSkeletonWrap} aria-hidden="true">
+              <div style={styles.loadingSkeletonDayCard}>
+                <span className="skeleton-shimmer" style={styles.loadingSkeletonHeading} />
+                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineWide} />
+                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineMedium} />
+                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineShort} />
+              </div>
+              <div style={styles.loadingSkeletonDayCard}>
+                <span className="skeleton-shimmer" style={styles.loadingSkeletonHeading} />
+                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineWide} />
+                <span className="skeleton-shimmer" style={styles.loadingSkeletonLineMedium} />
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -1191,5 +1217,44 @@ const styles = {
     color: '#5a6d7d',
     fontSize: '13px',
     lineHeight: '1.4',
+  },
+  loadingSkeletonWrap: {
+    marginTop: '14px',
+    display: 'flex',
+    flexDirection: 'column' as 'column',
+    gap: '10px',
+  },
+  loadingSkeletonDayCard: {
+    borderRadius: '10px',
+    border: '1px solid #e8eef2',
+    background: '#f7fafc',
+    padding: '10px',
+    display: 'flex',
+    flexDirection: 'column' as 'column',
+    gap: '8px',
+  },
+  loadingSkeletonHeading: {
+    display: 'inline-block',
+    height: '12px',
+    width: '90px',
+    borderRadius: '999px',
+  },
+  loadingSkeletonLineWide: {
+    display: 'inline-block',
+    height: '10px',
+    width: '100%',
+    borderRadius: '999px',
+  },
+  loadingSkeletonLineMedium: {
+    display: 'inline-block',
+    height: '10px',
+    width: '82%',
+    borderRadius: '999px',
+  },
+  loadingSkeletonLineShort: {
+    display: 'inline-block',
+    height: '10px',
+    width: '68%',
+    borderRadius: '999px',
   },
 }
