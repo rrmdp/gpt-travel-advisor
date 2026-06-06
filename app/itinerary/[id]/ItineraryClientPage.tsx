@@ -615,26 +615,26 @@ export default function ItineraryClientPage({ params }: Props) {
               >
                 {day.replace(/^\s*\d+\s*/, '')}
               </ReactMarkdown>
+              <a
+                href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
+                target="_blank"
+                rel="noreferrer"
+                style={styles.dayPromo}
+              >
+                <img
+                  src="/villasmediterranean_logo.png"
+                  alt="VillasMediterranean logo"
+                  style={styles.dayPromoLogo}
+                  loading="lazy"
+                />
+                <p style={styles.dayPromoText}>
+                  <strong style={styles.dayPromoStrong}>Book a holiday villa in Mallorca.</strong>{' '}
+                  VillasMediterranean.com
+                </p>
+              </a>
             </div>
           </div>
         ))}
-
-        {/* Promo card */}
-        <div style={styles.promoCard}>
-          <span style={styles.promoEmoji}>🏡</span>
-          <p style={styles.promoText}>
-            Travelling as a family? Check out{' '}
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
-              style={styles.promoLink}
-            >
-              Villas Mediterranean
-            </a>{' '}
-            for beautiful short-term villa rentals.
-          </p>
-        </div>
 
         <div style={{ textAlign: 'center', paddingBottom: 60 }}>
           <a href="/" style={styles.backLink}>← Plan another trip</a>
@@ -918,36 +918,32 @@ const styles: Record<string, React.CSSProperties> = {
     textDecorationStyle: 'dotted',
     fontWeight: 500,
   },
-  /* ── Promo ── */
-  promoCard: {
-    background: 'linear-gradient(135deg, rgba(47, 136, 238, 0.15) 0%, rgba(0, 198, 255, 0.1) 100%)',
-    border: '2px solid rgba(47, 136, 238, 0.4)',
-    borderRadius: 16,
-    padding: '24px 26px',
-    marginBottom: 32,
+  dayPromo: {
+    marginTop: 18,
+    padding: '12px 14px',
+    borderRadius: 12,
+    border: '1px solid rgba(47, 136, 238, 0.22)',
+    background: 'linear-gradient(135deg, rgba(47, 136, 238, 0.08) 0%, rgba(0, 198, 255, 0.05) 100%)',
     display: 'flex',
     alignItems: 'center',
-    gap: 16,
-    boxShadow: '0 8px 32px rgba(47, 136, 238, 0.12)',
-    backdropFilter: 'blur(8px)',
+    gap: 10,
+    textDecoration: 'none',
   },
-  promoEmoji: {
-    fontSize: 48,
+  dayPromoLogo: {
+    width: 34,
+    height: 34,
+    objectFit: 'contain',
     flexShrink: 0,
-    lineHeight: 1,
   },
-  promoText: {
-    color: 'rgba(255,255,255,0.95)',
-    fontSize: 16,
-    lineHeight: 1.7,
+  dayPromoText: {
+    color: '#1f2937',
+    fontSize: 14,
+    lineHeight: 1.5,
     margin: 0,
-    fontWeight: 500,
   },
-  promoLink: {
-    color: '#fff',
+  dayPromoStrong: {
+    color: '#0f172a',
     fontWeight: 700,
-    textDecoration: 'underline',
-    transition: 'opacity 0.2s',
   },
   /* ── Misc ── */
   backLink: {
