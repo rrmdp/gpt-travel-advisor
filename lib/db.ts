@@ -47,6 +47,15 @@ export interface CachedImageQueryRow {
   updated_at: string
 }
 
+export interface PdfDownloadLead {
+  id: string
+  name: string
+  email: string
+  itinerary_ids: string[]
+  created_at: string
+  updated_at: string
+}
+
 async function ensureTable(): Promise<void> {
   const sql = getClient()
   await sql`
@@ -101,6 +110,25 @@ async function ensureImageQueryCacheTable(): Promise<void> {
   await sql`
     CREATE INDEX IF NOT EXISTS idx_image_query_cache_expires_at
     ON image_query_cache (expires_at)
+  `
+}
+
+async function ensurePdfDownloadLeadsTable(): Promise<void> {
+  const sql = getClient()
+  await sql`
+    CREATE TABLE IF NOT EXISTS pdf_download_leads (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      itinerary_ids TEXT[] NOT NULL DEFAULT '{}',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `
+
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_pdf_download_leads_updated_at
+    ON pdf_download_leads (updated_at DESC)
   `
 }
 
@@ -254,4 +282,35 @@ export async function upsertCachedImageUrls(
       `
     ))
   )
+}
+
+export async function upsertPdfDownloadLead(
+  name: string,
+  email: string,
+  itineraryId: string
+): Promise<PdfDownloadLead> {
+  const sql = getClient()
+  await ensurePdfDownloadLeadsTable()
+
+  const id = crypto.randomUUID()
+  const normalizedName = name.trim()
+  const normalizedEmail = email.trim().toLowerCase()
+  const normalizedItineraryId = itineraryId.trim()
+
+  const rows = await sql`
+    INSERT INTO pdf_download_leads (id, name, email, itinerary_ids)
+    VALUES (${id}, ${normalizedName}, ${normalizedEmail}, ARRAY[${normalizedItineraryId}]::TEXT[])
+    ON CONFLICT (email)
+    DO UPDATE
+      SET name = EXCLUDED.name,
+          itinerary_ids = CASE
+            WHEN ${normalizedItineraryId} = ANY(pdf_download_leads.itinerary_ids)
+              THEN pdf_download_leads.itinerary_ids
+            ELSE array_append(pdf_download_leads.itinerary_ids, ${normalizedItineraryId})
+          END,
+          updated_at = NOW()
+    RETURNING id, name, email, itinerary_ids, created_at, updated_at
+  `
+
+  return rows[0] as PdfDownloadLead
 }

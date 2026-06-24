@@ -132,9 +132,13 @@ function PDFDownloadButton({
   dayImages: DayImage[]
 }) {
   const [isDownloading, setIsDownloading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isSubmittingLead, setIsSubmittingLead] = useState(false)
+  const [leadName, setLeadName] = useState('')
+  const [leadEmail, setLeadEmail] = useState('')
+  const [formError, setFormError] = useState('')
 
-  const handleDownloadPDF = async () => {
-    setIsDownloading(true)
+  const generatePdf = async () => {
     try {
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
       const pageWidth = pdf.internal.pageSize.getWidth()
@@ -383,15 +387,139 @@ function PDFDownloadButton({
     } catch (error) {
       console.error('Error generating PDF:', error)
       alert('Unable to generate PDF. Please try again or check your browser console for details.')
+    }
+  }
+
+  const handleDownloadPDFClick = () => {
+    if (isDownloading || isSubmittingLead) return
+    setFormError('')
+    setIsModalOpen(true)
+  }
+
+  const handleLeadSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const trimmedName = leadName.trim()
+    const trimmedEmail = leadEmail.trim().toLowerCase()
+
+    if (!trimmedName || !trimmedEmail) {
+      setFormError('Please provide both your name and email to download the PDF.')
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setFormError('Please enter a valid email address.')
+      return
+    }
+
+    setFormError('')
+    setIsSubmittingLead(true)
+
+    try {
+      const response = await fetch('/api/pdf-download-lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: trimmedName,
+          email: trimmedEmail,
+          itineraryId: itinerary.id,
+        }),
+      })
+
+      if (!response.ok) {
+        let message = 'Unable to save your details right now. Please try again.'
+        try {
+          const payload = await response.json()
+          if (typeof payload?.message === 'string' && payload.message.trim()) {
+            message = payload.message
+          }
+        } catch {
+          // keep fallback message
+        }
+        setFormError(message)
+        return
+      }
+
+      setIsModalOpen(false)
+      setIsDownloading(true)
+      await generatePdf()
+    } catch (error) {
+      console.error('Unable to save PDF lead:', error)
+      setFormError('Unable to save your details right now. Please try again.')
     } finally {
+      setIsSubmittingLead(false)
       setIsDownloading(false)
     }
   }
 
   return (
-    <button onClick={handleDownloadPDF} disabled={isDownloading} style={styles.downloadBtn}>
-      {isDownloading ? '⏳ Generating...' : '📥 Download PDF'}
-    </button>
+    <>
+      <button onClick={handleDownloadPDFClick} disabled={isDownloading || isSubmittingLead} style={styles.downloadBtn}>
+        {isDownloading ? 'Generating...' : 'Download PDF'}
+      </button>
+
+      {isModalOpen && (
+        <div style={styles.modalBackdrop} role="dialog" aria-modal="true" aria-labelledby="pdfLeadModalTitle">
+          <div style={styles.modalCard}>
+            <h2 id="pdfLeadModalTitle" style={styles.modalTitle}>Download Your PDF Itinerary</h2>
+            <p style={styles.modalMessage}>
+              Before we generate your PDF, please share your name and email. We use this to keep a record of which itineraries were downloaded.
+            </p>
+
+            <form onSubmit={handleLeadSubmit} style={styles.modalForm}>
+              <label style={styles.modalLabel}>
+                Name
+                <input
+                  type="text"
+                  value={leadName}
+                  onChange={(event) => setLeadName(event.target.value)}
+                  style={styles.modalInput}
+                  placeholder="Your full name"
+                  autoComplete="name"
+                  required
+                />
+              </label>
+
+              <label style={styles.modalLabel}>
+                Email
+                <input
+                  type="email"
+                  value={leadEmail}
+                  onChange={(event) => setLeadEmail(event.target.value)}
+                  style={styles.modalInput}
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  required
+                />
+              </label>
+
+              {formError && <p style={styles.modalError}>{formError}</p>}
+
+              <p style={styles.modalFootnote}>This is required to continue with the PDF download.</p>
+
+              <div style={styles.modalActions}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (isSubmittingLead) return
+                    setFormError('')
+                    setIsModalOpen(false)
+                  }}
+                  style={styles.modalSecondaryBtn}
+                  disabled={isSubmittingLead}
+                >
+                  Cancel
+                </button>
+                <button type="submit" style={styles.modalPrimaryBtn} disabled={isSubmittingLead}>
+                  {isSubmittingLead ? 'Saving...' : 'Continue to Download'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
@@ -944,6 +1072,98 @@ const styles: Record<string, React.CSSProperties> = {
   dayPromoStrong: {
     color: '#0f172a',
     fontWeight: 700,
+  },
+  modalBackdrop: {
+    position: 'fixed',
+    inset: 0,
+    background: 'rgba(6, 18, 34, 0.72)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    zIndex: 2000,
+  },
+  modalCard: {
+    width: '100%',
+    maxWidth: 480,
+    borderRadius: 16,
+    background: '#ffffff',
+    boxShadow: '0 20px 44px rgba(4, 12, 24, 0.35)',
+    padding: '22px 20px 20px',
+  },
+  modalTitle: {
+    margin: '0 0 10px',
+    color: '#0f2743',
+    fontSize: 24,
+    lineHeight: 1.2,
+    fontWeight: 800,
+  },
+  modalMessage: {
+    margin: '0 0 16px',
+    color: '#334155',
+    fontSize: 14,
+    lineHeight: 1.6,
+  },
+  modalForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+  },
+  modalLabel: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 6,
+    color: '#0f172a',
+    fontSize: 13,
+    fontWeight: 700,
+  },
+  modalInput: {
+    width: '100%',
+    border: '1px solid #cbd5e1',
+    borderRadius: 10,
+    padding: '11px 12px',
+    fontSize: 14,
+    color: '#0f172a',
+    background: '#f8fafc',
+    outline: 'none',
+  },
+  modalError: {
+    margin: 0,
+    color: '#b91c1c',
+    fontSize: 13,
+    fontWeight: 600,
+  },
+  modalFootnote: {
+    margin: 0,
+    color: '#64748b',
+    fontSize: 12,
+    lineHeight: 1.5,
+  },
+  modalActions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: 10,
+    marginTop: 4,
+  },
+  modalSecondaryBtn: {
+    border: '1px solid #cbd5e1',
+    background: '#ffffff',
+    color: '#0f172a',
+    borderRadius: 10,
+    padding: '10px 14px',
+    fontSize: 13,
+    fontWeight: 700,
+    cursor: 'pointer',
+  },
+  modalPrimaryBtn: {
+    border: 'none',
+    background: 'linear-gradient(135deg, #2f88ee 0%, #00c6ff 100%)',
+    color: '#ffffff',
+    borderRadius: 10,
+    padding: '10px 14px',
+    fontSize: 13,
+    fontWeight: 700,
+    cursor: 'pointer',
   },
   /* ── Misc ── */
   backLink: {
