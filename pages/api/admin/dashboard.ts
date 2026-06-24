@@ -1,10 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { requireAdminAuth } from '../../../lib/admin-auth'
-import { ApiErrorLog, StoredItinerary, listRecentApiErrors, listRecentStoredItineraries } from '../../../lib/db'
+import {
+  ApiErrorLog,
+  PdfDownloadLead,
+  StoredItinerary,
+  listRecentApiErrors,
+  listRecentPdfDownloadLeads,
+  listRecentStoredItineraries,
+} from '../../../lib/db'
 
 type DashboardResponse = {
   errors: ApiErrorLog[]
   itineraries: StoredItinerary[]
+  leads: PdfDownloadLead[]
 }
 
 type ErrorResponse = {
@@ -34,13 +42,19 @@ export default async function handler(
     ? Math.max(1, Math.min(500, Math.round(rawItinerariesLimit)))
     : 100
 
+  const rawLeadsLimit = Number(req.query.leadsLimit)
+  const leadsLimit = Number.isFinite(rawLeadsLimit)
+    ? Math.max(1, Math.min(1000, Math.round(rawLeadsLimit)))
+    : 200
+
   try {
-    const [errors, itineraries] = await Promise.all([
+    const [errors, itineraries, leads] = await Promise.all([
       listRecentApiErrors(errorsLimit),
       listRecentStoredItineraries(itinerariesLimit),
+      listRecentPdfDownloadLeads(leadsLimit),
     ])
 
-    res.status(200).json({ errors, itineraries })
+    res.status(200).json({ errors, itineraries, leads })
   } catch (error) {
     console.error('Unable to load admin dashboard data:', error)
     res.status(500).json({ message: 'Unable to load admin dashboard data' })

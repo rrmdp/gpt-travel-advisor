@@ -21,13 +21,23 @@ type StoredItinerary = {
   created_at: string
 }
 
+type PdfDownloadLead = {
+  id: string
+  name: string
+  email: string
+  itinerary_ids: string[]
+  created_at: string
+  updated_at: string
+}
+
 type DashboardResponse = {
   errors: ApiErrorLog[]
   itineraries: StoredItinerary[]
+  leads: PdfDownloadLead[]
 }
 
 function isDashboardResponse(value: DashboardResponse | { message: string }): value is DashboardResponse {
-  return 'errors' in value && 'itineraries' in value
+  return 'errors' in value && 'itineraries' in value && 'leads' in value
 }
 
 function toBasicAuth(password: string) {
@@ -71,6 +81,7 @@ export default function AdminDashboardPage() {
   const [submittedPassword, setSubmittedPassword] = useState('')
   const [errors, setErrors] = useState<ApiErrorLog[]>([])
   const [itineraries, setItineraries] = useState<StoredItinerary[]>([])
+  const [leads, setLeads] = useState<PdfDownloadLead[]>([])
   const [loading, setLoading] = useState(false)
   const [deletingId, setDeletingId] = useState('')
   const [message, setMessage] = useState('Enter the admin password to load dashboard data.')
@@ -85,7 +96,7 @@ export default function AdminDashboardPage() {
     setMessage('Loading admin data...')
 
     try {
-      const response = await fetch('/api/admin/dashboard?errorsLimit=100&itinerariesLimit=200', {
+      const response = await fetch('/api/admin/dashboard?errorsLimit=100&itinerariesLimit=200&leadsLimit=500', {
         headers: {
           Authorization: toBasicAuth(nextPassword),
         },
@@ -98,6 +109,7 @@ export default function AdminDashboardPage() {
       if (!response.ok) {
         setErrors([])
         setItineraries([])
+        setLeads([])
         setMessage('message' in json ? json.message : 'Unable to load admin data')
         return
       }
@@ -105,6 +117,7 @@ export default function AdminDashboardPage() {
       if (!isDashboardResponse(json)) {
         setErrors([])
         setItineraries([])
+        setLeads([])
         setMessage('Unable to load admin data')
         return
       }
@@ -112,7 +125,8 @@ export default function AdminDashboardPage() {
       setSubmittedPassword(nextPassword)
       setErrors(json.errors)
       setItineraries(json.itineraries)
-      setMessage(`Loaded ${json.errors.length} errors and ${json.itineraries.length} itineraries.`)
+      setLeads(json.leads)
+      setMessage(`Loaded ${json.errors.length} errors, ${json.itineraries.length} itineraries, and ${json.leads.length} leads.`)
     } catch (error) {
       console.error('Unable to load admin dashboard:', error)
       setMessage('Unable to load admin dashboard.')
@@ -244,6 +258,39 @@ export default function AdminDashboardPage() {
                     </div>
                     <p style={styles.preview}>{safePreview(itinerary.itinerary)}</p>
                     <p style={styles.idText}>{itinerary.id}</p>
+                  </article>
+                ))
+              )}
+            </div>
+          </div>
+
+          <div style={styles.panel}>
+            <div style={styles.panelHeader}>
+              <h2 style={styles.panelTitle}>PDF Download Leads</h2>
+              <span style={styles.counter}>{leads.length}</span>
+            </div>
+            <div style={styles.list}>
+              {leads.length === 0 ? (
+                <p style={styles.emptyState}>No leads loaded.</p>
+              ) : (
+                leads.map((lead) => (
+                  <article key={lead.id} style={styles.leadCard}>
+                    <div style={styles.leadHeader}>
+                      <h3 style={styles.leadName}>{lead.name}</h3>
+                      <span style={styles.leadTimestamp}>Updated {formatDateUTC(lead.updated_at)}</span>
+                    </div>
+                    <p style={styles.leadEmail}>{lead.email}</p>
+                    <p style={styles.leadLabel}>Itinerary IDs ({lead.itinerary_ids.length})</p>
+                    {lead.itinerary_ids.length === 0 ? (
+                      <p style={styles.emptyState}>No itinerary IDs recorded.</p>
+                    ) : (
+                      <div style={styles.idList}>
+                        {lead.itinerary_ids.map((id) => (
+                          <p key={`${lead.id}-${id}`} style={styles.idPill}>{id}</p>
+                        ))}
+                      </div>
+                    )}
+                    <p style={styles.leadCreated}>Created {formatDateUTC(lead.created_at)}</p>
                   </article>
                 ))
               )}
@@ -415,12 +462,75 @@ const styles = {
     background: '#ffffff',
     padding: 16,
   },
+  leadCard: {
+    borderRadius: 18,
+    border: '1px solid #dfe7f5',
+    background: '#ffffff',
+    padding: 16,
+  },
   itineraryHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     gap: 12,
     marginBottom: 10,
+  },
+  leadHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    gap: 10,
+    flexWrap: 'wrap' as const,
+    marginBottom: 8,
+  },
+  leadName: {
+    margin: 0,
+    color: '#13233e',
+    fontSize: 18,
+    fontWeight: 800,
+  },
+  leadTimestamp: {
+    margin: 0,
+    color: '#617086',
+    fontSize: 12,
+  },
+  leadEmail: {
+    margin: '0 0 8px',
+    color: '#144772',
+    fontSize: 14,
+    fontWeight: 700,
+    wordBreak: 'break-all' as const,
+  },
+  leadLabel: {
+    margin: '0 0 8px',
+    color: '#617086',
+    fontSize: 12,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.06em',
+    fontWeight: 700,
+  },
+  idList: {
+    display: 'flex',
+    gap: 8,
+    flexWrap: 'wrap' as const,
+    marginBottom: 10,
+  },
+  idPill: {
+    margin: 0,
+    borderRadius: 999,
+    border: '1px solid #dce9fa',
+    background: '#eef4ff',
+    color: '#355578',
+    padding: '4px 9px',
+    fontSize: 12,
+    fontWeight: 700,
+    maxWidth: '100%',
+    overflowWrap: 'anywhere' as const,
+  },
+  leadCreated: {
+    margin: 0,
+    color: '#7a8da7',
+    fontSize: 12,
   },
   itineraryTitle: {
     margin: 0,

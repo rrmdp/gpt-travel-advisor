@@ -314,3 +314,18 @@ export async function upsertPdfDownloadLead(
 
   return rows[0] as PdfDownloadLead
 }
+
+export async function listRecentPdfDownloadLeads(limit = 200): Promise<PdfDownloadLead[]> {
+  const sql = getClient()
+  await ensurePdfDownloadLeadsTable()
+
+  const safeLimit = Math.max(1, Math.min(1000, Math.round(limit)))
+  const rows = await sql`
+    SELECT id, name, email, itinerary_ids, created_at, updated_at
+    FROM pdf_download_leads
+    ORDER BY updated_at DESC
+    LIMIT ${safeLimit}
+  `
+
+  return rows as PdfDownloadLead[]
+}
