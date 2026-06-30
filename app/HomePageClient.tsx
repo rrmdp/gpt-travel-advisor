@@ -1096,7 +1096,7 @@ const styles = {
     margin: '24px auto 0px',
     padding: '18px 18px 18px 22px',
     borderRadius: '14px',
-    background: 'linear-gradient(135deg, rgba(7, 30, 49, 0.98), rgba(9, 58, 90, 0.98))',
+    //background: 'linear-gradient(135deg, rgba(7, 30, 49, 0.98), rgba(9, 58, 90, 0.98))',
     border: '1px solid rgba(113, 214, 214, 0.22)',
     boxShadow: '0 16px 36px rgba(0, 0, 0, 0.22)',
     overflow: 'hidden' as 'hidden',
@@ -1107,7 +1107,7 @@ const styles = {
     top: 0,
     bottom: 0,
     width: '5px',
-    background: '#1ec7c5',
+    //background: '#1ec7c5',
   },
   promoTopAccent: {
     position: 'absolute' as 'absolute',
