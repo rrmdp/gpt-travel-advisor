@@ -808,6 +808,39 @@ export default function HomePageClient() {
             </p>
           </div>
         </section>
+        <div style={styles.promoCard}>
+          <div style={styles.promoAccentBar} />
+          <div style={styles.promoTopAccent} />
+          <div style={styles.promoContent}>
+            <span style={styles.promoEyebrow}>Family stays</span>
+            <h2 style={styles.promoHeading}>Villas Mediterranean</h2>
+            <p style={styles.promoText}>
+              Travelling as a family? Check out{' '}
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
+                style={styles.promoLink}
+              >
+                VillasMediterranean.com
+              </a>{' '}
+              for beautiful short-term villa rentals in Mallorca.
+            </p>
+          </div>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
+            style={styles.promoLogoLink}
+            aria-label="Visit VillasMediterranean.com"
+          >
+            <img
+              src="/villasmediterranean_logo.png"
+              alt="Villas Mediterranean logo"
+              style={styles.promoLogo}
+            />
+          </a>
+        </div>
         <div className="results-container">
           {itinerary && days.map((day, index) => (
             <div
