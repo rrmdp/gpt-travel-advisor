@@ -448,19 +448,37 @@ export default function HomePageClient() {
           </div>
         )}
         <div style={styles.promoCard}>
-          <span style={styles.promoEmoji}>🏡</span>
-          <p style={styles.promoText}>
-            Travelling as a family? Check out{' '}
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
-              style={styles.promoLink}
-            >
-              Villas Mediterranean
-            </a>{' '}
-            for beautiful short-term villa rentals.
-          </p>
+          <div style={styles.promoAccentBar} />
+          <div style={styles.promoTopAccent} />
+          <div style={styles.promoContent}>
+            <span style={styles.promoEyebrow}>Family stays</span>
+            <h2 style={styles.promoHeading}>Villas Mediterranean</h2>
+            <p style={styles.promoText}>
+              Travelling as a family? Check out{' '}
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
+                style={styles.promoLink}
+              >
+                VillasMediterranean.com
+              </a>{' '}
+              for beautiful short-term villa rentals in Mallorca.
+            </p>
+          </div>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
+            style={styles.promoLogoLink}
+            aria-label="Visit VillasMediterranean.com"
+          >
+            <img
+              src="/villasmediterranean_logo.png"
+              alt="Villas Mediterranean logo"
+              style={styles.promoLogo}
+            />
+          </a>
         </div>
         <section style={styles.seoSection}>
           <h2 style={styles.seoTitle}>Best things to do in Mallorca</h2>
@@ -1069,14 +1087,60 @@ const styles = {
     cursor: 'pointer',
   },
   promoCard: {
+    position: 'relative' as 'relative',
     display: 'flex',
-    alignItems: 'flex-start',
-    gap: '12px',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '16px',
     maxWidth: '760px',
     margin: '24px auto 0px',
-    padding: '16px 18px',
-    borderRadius: '10px',
-    background: 'rgba(255, 255, 255, 0.12)',
+    padding: '18px 18px 18px 22px',
+    borderRadius: '14px',
+    background: 'linear-gradient(135deg, rgba(7, 30, 49, 0.98), rgba(9, 58, 90, 0.98))',
+    border: '1px solid rgba(113, 214, 214, 0.22)',
+    boxShadow: '0 16px 36px rgba(0, 0, 0, 0.22)',
+    overflow: 'hidden' as 'hidden',
+  },
+  promoAccentBar: {
+    position: 'absolute' as 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: '5px',
+    background: '#1ec7c5',
+  },
+  promoTopAccent: {
+    position: 'absolute' as 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    height: '2.5px',
+    background: '#1ec7c5',
+  },
+  promoContent: {
+    position: 'relative' as 'relative',
+    zIndex: 1,
+    flex: 1,
+    minWidth: 0,
+  },
+  promoEyebrow: {
+    display: 'inline-block',
+    marginBottom: '8px',
+    padding: '4px 10px',
+    borderRadius: '999px',
+    background: 'rgba(30, 199, 197, 0.16)',
+    color: '#a8f2f1',
+    fontSize: '12px',
+    fontWeight: 700,
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase' as 'uppercase',
+  },
+  promoHeading: {
+    margin: '0 0 8px',
+    color: '#fff',
+    fontSize: '20px',
+    lineHeight: '1.2',
+    fontFamily: 'Poppins',
   },
   promoEmoji: {
     fontSize: '24px',
@@ -1084,7 +1148,7 @@ const styles = {
   },
   promoText: {
     margin: 0,
-    color: 'rgba(255,255,255,0.95)',
+    color: 'rgba(255,255,255,0.92)',
     fontSize: '14px',
     lineHeight: '1.6',
   },
@@ -1092,6 +1156,24 @@ const styles = {
     color: '#fff',
     fontWeight: 700,
     textDecoration: 'underline',
+  },
+  promoLogoLink: {
+    position: 'relative' as 'relative',
+    zIndex: 1,
+    flexShrink: 0,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '10px',
+    borderRadius: '12px',
+    background: 'rgba(255, 255, 255, 0.96)',
+    boxShadow: '0 10px 22px rgba(0, 0, 0, 0.18)',
+    textDecoration: 'none',
+  },
+  promoLogo: {
+    display: 'block',
+    width: '104px',
+    height: 'auto',
   },
   seoSection: {
     maxWidth: '760px',
