@@ -447,7 +447,7 @@ export default function HomePageClient() {
             )}
           </div>
         )}
-        <div style={styles.promoCard}>
+        <div className="villas-banner" style={styles.promoCard}>
           <div style={styles.promoAccentBar} />
           <div style={styles.promoTopAccent} />
           <div style={styles.promoContent}>
@@ -471,6 +471,7 @@ export default function HomePageClient() {
             rel="noreferrer"
             href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
             style={styles.promoLogoLink}
+            className="villas-banner-logo-link"
             aria-label="Visit VillasMediterranean.com"
           >
             <img
@@ -808,7 +809,7 @@ export default function HomePageClient() {
             </p>
           </div>
         </section>
-        <div style={styles.promoCard}>
+        <div className="villas-banner" style={styles.promoCard}>
           <div style={styles.promoAccentBar} />
           <div style={styles.promoTopAccent} />
           <div style={styles.promoContent}>
@@ -832,6 +833,7 @@ export default function HomePageClient() {
             rel="noreferrer"
             href="https://www.villasmediterranean.com/?ref=whattodoinmallorca"
             style={styles.promoLogoLink}
+            className="villas-banner-logo-link"
             aria-label="Visit VillasMediterranean.com"
           >
             <img
@@ -889,6 +891,36 @@ export default function HomePageClient() {
         </div>
       )}
       <style jsx>{`
+        @media (max-width: 640px) {
+          .villas-banner {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            margin: 20px auto 0;
+          }
+
+          .villas-banner-logo-link {
+            align-self: stretch;
+            width: 100%;
+            padding: 8px 10px;
+            justify-content: flex-start;
+          }
+
+          .villas-banner-logo-link img {
+            width: 92px;
+          }
+
+          .villas-banner h2 {
+            font-size: 18px;
+          }
+
+          .villas-banner p {
+            font-size: 13px;
+            line-height: 1.5;
+          }
+        }
+
         .skeleton-shimmer {
           position: relative;
           overflow: hidden;
