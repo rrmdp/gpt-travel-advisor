@@ -1018,7 +1018,7 @@ const styles = {
   },
   optionalPanel: {
     width: '100%',
-    marginBottom: '16px',
+    marginBottom: '5px',
     borderRadius: '10px',
     background: 'rgba(255, 255, 255, 0.12)',
   },
@@ -1029,7 +1029,8 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     padding: '12px 14px',
-    border: 'none',
+    border: '1px solid #fff',
+    borderRadius: '8px',
     background: 'transparent',
     color: '#fff',
     fontSize: '15px',
