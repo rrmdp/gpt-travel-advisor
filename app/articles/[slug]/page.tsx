@@ -119,6 +119,104 @@ const articles: Record<string, Article> = {
       'If you are only staying four days, do not try to see the entire island in one move. Mallorca is easiest to appreciate when you build in a slower rhythm.'
     ],
   },
+  'best-area-to-stay-in-mallorca': {
+    slug: 'best-area-to-stay-in-mallorca',
+    title: 'Best area to stay in Mallorca for first-time visitors',
+    summary:
+      'A practical guide to choosing where to stay in Mallorca, including the best areas for beaches, families, couples, nightlife, and low-stress first-time trips.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'The best area to stay in Mallorca depends on what kind of holiday you want. Mallorca is not one single type of destination: some travellers want a sandy beach resort, others want a walkable city, and many prefer the quiet villages and mountain scenery of the west coast. The right base can make a big difference to how easy and enjoyable the trip feels.',
+    sections: [
+      {
+        heading: 'The first decision: beach holiday or city break?',
+        text: [
+          'A lot of first-time visitors choose their Mallorca base based on whether they want beach time or cultural sightseeing. If your priority is sea, sand, and easy swimming, the north and east coasts are usually the simplest choice. If your priority is restaurants, historic streets, and a compact city base, Palma is the strongest option.',
+          'That decision matters because the island feels very different depending on where you stay. A resort-style base can feel relaxed and practical, while a small village base can feel slower and more atmospheric, but less convenient for night life or daily errands.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Beach holiday in Mallorca',
+      },
+      {
+        heading: 'Palma: best for culture, food and easy city access',
+        text: [
+          'Palma is the best area for travellers who want a city break with a strong food scene, historic architecture, and easy airport access. It works especially well for couples, short stays, and visitors who do not want to hire a car for the whole trip.',
+          'Palma is also a good base if you want to mix beach time with a bit of urban exploring. You can spend a morning in the old town, have lunch in a local restaurant, and then head to a nearby beach in the afternoon. It is not the easiest area for a classic resort-style holiday, but it is one of the most practical bases for a flexible first trip.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Palma city and cathedral area',
+      },
+      {
+        heading: 'Alcúdia and Playa de Muro: best for families and classic beach days',
+        text: [
+          'If you are travelling with children or want a straightforward beach holiday, Alcúdia and Playa de Muro are among the strongest choices. They offer long sandy beaches, easy access to restaurants, and a relaxed family-friendly atmosphere.',
+          'This is one of the easiest areas to plan a low-stress trip around because you can stay close to the beach and not spend every day in the car. The north coast also tends to feel a little less intense than the busiest west-coast resort zones during peak summer.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Sandy beach in Mallorca',
+      },
+      {
+        heading: 'Cala d Or, Santa Ponsa and Palmanova: best for resort convenience',
+        text: [
+          'For holiday makers who want a settled beach base with plenty of restaurants, shops, and straightforward logistics, Cala d Or, Santa Ponsa and Palmanova are all very practical. These areas suit families, couples, and mixed groups who prefer fewer transfers and a more polished resort feel.',
+          'They are particularly good for travellers who want to spend much of the trip by the sea without constantly moving around the island. If your plan is to swim, relax, and have dinner nearby, this kind of base often makes the holiday feel simpler and less tiring.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1493558103817-58b2924b5715?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Harbour and beach resort area in Mallorca',
+      },
+      {
+        heading: 'Port de Soller and the west coast: best for scenery and a slower rhythm',
+        text: [
+          'The west coast of Mallorca is ideal if you want scenic drives, mountain views, and a more atmospheric holiday. Port de Soller is one of the best bases for this kind of trip because it combines harbour charm, easy access to the Tramuntana, and a slower pace.',
+          'This style of stay suits couples and travellers who enjoy strolling, day trips, and scenic lunch stops. It is less convenient if you want a big resort, nightlife, or very easy beach access every day, but it is excellent for a more memorable and quieter Mallorca holiday.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Mallorca west coast and Tramuntana scenery',
+      },
+      {
+        heading: 'What is best without a car?',
+        text: [
+          'Without a car, Palma is the easiest option by far. It is walkable, well served by public transport, and close to restaurants, beaches, and day-trip options. If you want to stay outside Palma but avoid hiring a car, look for a resort area with restaurants and good local access, such as Palmanova or a beach zone close to a bus route.',
+          'A car makes a huge difference for the west coast, mountain villages, and the best scenic routes. Without one, you should aim for a simpler trip and avoid planning too many day trips in different directions.'
+        ],
+      },
+      {
+        heading: 'Best area by traveller type',
+        text: [
+          'For families: Alcúdia, Playa de Muro, Santa Ponsa, and Cala d Or are all practical choices because they combine beaches, restaurants, and easy logistics.',
+          'For couples: Palma, Port de Soller, and more scenic west-coast villages work beautifully if you want restaurants, walks, and a more romantic atmosphere.',
+          'For first-time visitors: Palma plus one beach base is usually the easiest and most balanced option if you have just a few days.',
+          'For a quieter stay: Deia, Valldemossa, or a smaller west-coast village offer a more relaxed feel, although they are less convenient for daily beach access.'
+        ],
+      },
+    ],
+    checklist: [
+      'Choose Palma if you want a walkable city break and easier access to restaurants without a car.',
+      'Choose Alcúdia or Playa de Muro if your main priority is a beach holiday with children or a simple family base.',
+      'Choose Port de Soller or the west coast if you want scenery, slower days, and mountain-village exploration.',
+      'Choose Cala d Or or Santa Ponsa if you want a resort-style beach base with straightforward dining and swimming logistics.',
+      'If you are staying only a few days, avoid moving hotels and keep your base simple.'
+    ],
+    whereToStay: [
+      'Palma for culture, food, and easy city living.',
+      'Alcúdia or Playa de Muro for family beaches and low-stress coastal days.',
+      'Port de Soller for scenic mountain-town vibes and slower travel.',
+      'Cala d Or or Santa Ponsa for a resort-style beach holiday with a range of dining and services.'
+    ],
+    practicalTips: [
+      'May, June, September and early October are often easier for comfortable weather and fewer crowds than peak July and August.',
+      'A car is the most useful if you plan to explore the west coast or the Serra de Tramuntana.',
+      'Remember that parking can be difficult in the most scenic villages, especially in high season.',
+      'For a first trip, a simple two-base plan often feels better than trying to move hotels every few nights.',
+      'Book your accommodation early if you are visiting in summer and want a beach property or a good villa close to the sea.'
+    ],
+  },
   'family-friendly-things-to-do-in-mallorca': {
     slug: 'family-friendly-things-to-do-in-mallorca',
     title: 'Family-friendly things to do in Mallorca',
