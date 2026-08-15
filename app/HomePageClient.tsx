@@ -504,6 +504,16 @@ export default function HomePageClient() {
               </Link>
             </li>
             <li style={styles.seoListItem}>
+              <Link href="/articles/best-time-to-visit-mallorca" style={{ color: '#fff', textDecoration: 'underline' }}>
+                Best time to visit Mallorca
+              </Link>
+            </li>
+            <li style={styles.seoListItem}>
+              <Link href="/articles/best-beaches-in-mallorca" style={{ color: '#fff', textDecoration: 'underline' }}>
+                Best beaches in Mallorca
+              </Link>
+            </li>
+            <li style={styles.seoListItem}>
               <Link href="/articles/family-friendly-things-to-do-in-mallorca" style={{ color: '#fff', textDecoration: 'underline' }}>
                 Family-friendly things to do in Mallorca
               </Link>

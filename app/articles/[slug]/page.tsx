@@ -217,6 +217,135 @@ const articles: Record<string, Article> = {
       'Book your accommodation early if you are visiting in summer and want a beach property or a good villa close to the sea.'
     ],
   },
+  'best-time-to-visit-mallorca': {
+    slug: 'best-time-to-visit-mallorca',
+    title: 'Best time to visit Mallorca',
+    summary:
+      'A practical guide to the best months to visit Mallorca, including warm-weather advice, crowd levels, beach conditions, and the easiest time for families, couples, and first-time visitors.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'Mallorca works well across much of the year, but the best time to visit depends on what kind of holiday you want. Some travellers want hot beach days and long swims, while others prefer easier sightseeing, lower hotel prices, and less crowded villages and beaches.',
+    sections: [
+      {
+        heading: 'Best months for beach weather and easy holiday planning',
+        text: [
+          'For most holiday makers, the sweet spot is late May, June, September, and early October. The weather is usually warm enough for swimming and outdoor days, but the island is usually less intense than the peak-summer months. This is the time when beaches, restaurants, and scenic drives tend to feel more manageable.',
+          'July and August are the hottest and busiest months. They are ideal if you want the fullest beach holiday experience and do not mind busy centres, higher prices, and more crowded coastal spots. If you plan to travel then, book early and keep your days simple.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Beach weather and summer conditions in Mallorca',
+      },
+      {
+        heading: 'Spring: best for walking, villages and city breaks',
+        text: [
+          'April, May and early June are excellent if you prefer sunny conditions without the full intensity of peak summer. This is a very good period for Palma, historic streets, village walks, and scenic drives. It also suits people who want to travel without fighting for beach loungers or restaurant tables.',
+          'Sea temperatures are still not at their warmest in spring, but the island is very pleasant for exploring and for shorter, more comfortable sightseeing days.'
+        ],
+      },
+      {
+        heading: 'Summer: best for full beach holidays and families',
+        text: [
+          'From mid-June to late August, Mallorca is at its classic holiday mode. Beaches are busy, waters are warm, and resort areas feel lively. This is often the easiest time for families who want a conventional beach trip with lots of swimming, boat days, and easy dining nearby.',
+          'The downside is heat, crowds and higher prices. If you visit in summer, start early, book restaurants in advance, and keep your schedule flexible on the hottest afternoons.'
+        ],
+      },
+      {
+        heading: 'Autumn: best all-round balance for many travellers',
+        text: [
+          'September and early October are often the best months for a well-balanced Mallorca trip. The sea is still warm, the weather is usually very good, and the island feels less crowded than July and August. It is one of the easiest choices for couples, families and first-time visitors who want beaches and scenery without the peak-season rush.',
+          'This is also a strong period for hiking, day trips, and slower travel because it is easier to enjoy village walks and coastal drives without the busiest conditions.'
+        ],
+      },
+      {
+        heading: 'Winter: best for quieter stays and city breaks',
+        text: [
+          'Mallorca is not a classic winter-sun destination in the same way as some other Mediterranean islands, but it can still be a very pleasant place to visit outside peak season. December to February is quieter and often more relaxed, which works well for people who want a calmer city break or a slower coastal stay.',
+          'The weather is usually mild rather than hot, and many travellers use this as a time to explore Palma, take local walks, and enjoy a more relaxed pace without the summer crowds.'
+        ],
+      },
+    ],
+    checklist: [
+      'Choose late May to early June for warm weather, lower crowd levels, and a comfortable first trip.',
+      'Choose September or early October for the best mix of beach weather and fewer peak-season pressures.',
+      'Choose July or August if you want the fullest beach holiday and do not mind busier resort areas.',
+      'Choose winter if you prefer quieter streets, lower prices, and a more relaxed pace over hot-weather beach time.',
+    ],
+    whereToStay: [
+      'Palma for city walks, restaurants and shorter day trips in spring or autumn.',
+      'Alcudia or Playa de Muro for long beach days in summer.',
+      'Port de Soller or west-coast villages for slower scenery in shoulder season.',
+      'Cala d Or or Santa Ponsa for a classic family holiday in the warmest months.',
+    ],
+    practicalTips: [
+      'Book ahead if you are visiting in July and August, especially for beach clubs, villa stays and restaurants near the coast.',
+      'For the easiest holiday rhythm, aim for shoulder season if you want beaches without peak-summer intensity.',
+      'Check the sea temperature and wind conditions before planning boat trips or swimming-heavy days.',
+      'In any month, keep one flexible day in case the weather changes or the beaches become too crowded.',
+    ],
+  },
+  'best-beaches-in-mallorca': {
+    slug: 'best-beaches-in-mallorca',
+    title: 'Best beaches in Mallorca',
+    summary:
+      'A practical guide to Mallorca’s best beaches, from long family-friendly sands to quiet coves, with advice on where to go by trip style and travel season.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'Mallorca is known for having a wide range of beaches, from huge sandy stretches to small coves with clear water and a much quieter feel. The best beach for you depends on whether you want a full family beach day, a romantic cove, or a resort area with easy food and facilities nearby.',
+    sections: [
+      {
+        heading: 'The best beaches for easy family holidays',
+        text: [
+          'Playa de Muro and Alcúdia beach are two of the strongest choices for families. They offer long stretches of sand, easier swimming, and lots of nearby services. These are often the simplest beach bases if you want to spend time by the water without needing to move around too much during the day.',
+          'For families with children, a beach with shallow water, shade, and quick access to restaurants is usually more useful than a more scenic but harder-to-reach cove.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Long sandy beaches in Mallorca',
+      },
+      {
+        heading: 'The best beaches for couples and relaxed swimming',
+        text: [
+          'If you prefer a quieter beach feel, look toward small coves along the west or north coast. These beaches are less dramatic in size but often feel more atmospheric and peaceful. They work well for couples, slow afternoons, and people who want a more relaxed swimming day rather than a busy resort-style beach scene.',
+          'In many cases, the most enjoyable beaches are the ones where you can arrive early, settle in, and spend the day without feeling like you need to leave as soon as the sun gets intense.'
+        ],
+      },
+      {
+        heading: 'The best beach areas by travel style',
+        text: [
+          'For a classic beach holiday: Alcúdia, Playa de Muro, Santa Ponsa, and Cala d Or are among the most practical bases.',
+          'For a quieter, less resort-style trip: smaller coves and west-coast beaches around the Tramuntana area can be much more peaceful.',
+          'For a family-first plan: choose beaches with easy parking, toilet access, and lots of nearby food options.'
+        ],
+      },
+      {
+        heading: 'Beaches to consider for first-time visitors',
+        text: [
+          'A first trip to Mallorca usually works best if you choose one large sandy beach and one quieter cove or harbour area. This gives you both the classic holiday feeling and a more scenic side of the island. A day on a wide beach gives you the full Mallorca experience, while a smaller cove often feels more memorable and less crowded.',
+          'The better approach is not to chase every famous beach in one week, but to choose two or three that suit your travel style and fit the area where you are staying.'
+        ],
+      },
+    ],
+    checklist: [
+      'Choose a wide sandy beach if you want a classic holiday with easy swimming and family logistics.',
+      'Choose a smaller cove if you want a quieter day and a more relaxed pace.',
+      'Get there early in the summer if you want shade, parking, and a calmer beach experience.',
+      'Check the wind and sea conditions before booking beach clubs or boat trips.',
+    ],
+    whereToStay: [
+      'Alcúdia or Playa de Muro for long sandy stretches and family-friendly beaches.',
+      'Cala d Or or Santa Ponsa for a resort-style beach holiday with easy services.',
+      'West-coast or smaller cove areas for quieter swimming and a slower atmosphere.',
+    ],
+    practicalTips: [
+      'Carry water and sunscreen, especially during the hottest summer months.',
+      'The busiest beach periods are usually midday and July or August weekends.',
+      'For the easiest beach days, stay in a location with restaurant access close to the shore.',
+      'If you want a calmer day, plan beach time early or later in the afternoon rather than midday.',
+    ],
+  },
   'family-friendly-things-to-do-in-mallorca': {
     slug: 'family-friendly-things-to-do-in-mallorca',
     title: 'Family-friendly things to do in Mallorca',

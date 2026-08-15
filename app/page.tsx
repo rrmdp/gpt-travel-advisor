@@ -59,9 +59,11 @@ const itemListSchema = {
   name: 'Popular Mallorca trip ideas',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: '4-day Mallorca itinerary for first-time visitors' },
-    { '@type': 'ListItem', position: 2, name: 'Family-friendly things to do in Mallorca' },
-    { '@type': 'ListItem', position: 3, name: 'Best beaches and calas in Majorca' },
-    { '@type': 'ListItem', position: 4, name: 'Scenic day trips to Soller, Valldemossa, and Deia' },
+    { '@type': 'ListItem', position: 2, name: 'Best area to stay in Mallorca for first-time visitors' },
+    { '@type': 'ListItem', position: 3, name: 'Best time to visit Mallorca' },
+    { '@type': 'ListItem', position: 4, name: 'Best beaches in Mallorca' },
+    { '@type': 'ListItem', position: 5, name: 'Family-friendly things to do in Mallorca' },
+    { '@type': 'ListItem', position: 6, name: 'Scenic day trips to Soller, Valldemossa, and Deia' },
   ],
 }
 
