@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useRouter } from 'next/navigation'
@@ -492,10 +493,26 @@ export default function HomePageClient() {
           </p>
           <h3 style={styles.seoSubTitle}>Popular Mallorca (Majorca) trip ideas</h3>
           <ul style={styles.seoList}>
-            <li style={styles.seoListItem}>4-day Mallorca itinerary for first-time visitors</li>
-            <li style={styles.seoListItem}>Family-friendly things to do in Mallorca</li>
-            <li style={styles.seoListItem}>Best beaches and calas in Majorca</li>
-            <li style={styles.seoListItem}>Scenic day trips: Soller, Valldemossa, and Deia</li>
+            <li style={styles.seoListItem}>
+              <Link href="/articles/4-day-mallorca-itinerary-for-first-time-visitors" style={{ color: '#fff', textDecoration: 'underline' }}>
+                4-day Mallorca itinerary for first-time visitors
+              </Link>
+            </li>
+            <li style={styles.seoListItem}>
+              <Link href="/articles/family-friendly-things-to-do-in-mallorca" style={{ color: '#fff', textDecoration: 'underline' }}>
+                Family-friendly things to do in Mallorca
+              </Link>
+            </li>
+            <li style={styles.seoListItem}>
+              <Link href="/articles/best-beaches-and-calas-in-majorca" style={{ color: '#fff', textDecoration: 'underline' }}>
+                Best beaches and calas in Majorca
+              </Link>
+            </li>
+            <li style={styles.seoListItem}>
+              <Link href="/articles/scenic-day-trips-soller-valldemossa-deia" style={{ color: '#fff', textDecoration: 'underline' }}>
+                Scenic day trips: Soller, Valldemossa, and Deia
+              </Link>
+            </li>
           </ul>
 
           <h3 style={styles.seoSubTitle}>Where to stay in Mallorca by holiday type</h3>
