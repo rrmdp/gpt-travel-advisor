@@ -24,71 +24,99 @@ const articles: Record<string, Article> = {
     slug: '4-day-mallorca-itinerary-for-first-time-visitors',
     title: '4-day Mallorca itinerary for first-time visitors',
     summary:
-      'A practical four-day Mallorca plan for first-timers, covering Palma, beach time, scenic villages, and a relaxed way to see the island without overloading the trip.',
+      'A practical 4-day Mallorca plan for a first visit, built around Palma, one beach day, one scenic mountain-village day, and one easy coastal finish that works well for real holiday makers.',
     heroImage:
       'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
     intro:
-      'A first trip to Mallorca works best when you balance one city day, one beach day, one mountain-village day, and one easy coastal or harbour day. This route keeps the island varied without forcing too much driving or tight timings.',
+      'Mallorca is one of the easiest Mediterranean islands to visit for a short break because it combines a compact capital city, long sandy beaches, and a dramatic mountain region in a relatively small area. The best first-timer plan is not to chase every famous stop, but to spread the trip across a city day, a beach day, a village-and-viewpoint day, and one more relaxed coastal day.',
     sections: [
       {
-        heading: 'Day 1: Palma and a slow first evening',
+        heading: 'Why this route works for a first visit',
         text: [
-          'Start in Palma, the best base for a first visit if you want walkable restaurants, historic streets, and quick airport access. Spend the afternoon around the old town, then walk through Plaça Major and along the seafront before dinner.',
-          'The cathedral is the obvious starting point, but the real reward is wandering the side streets and stopping for lunch or tapas in one of the traditional bars. A relaxed evening is better than trying to cram in too much on the first day, especially after a flight.',
-          'If you want a beach signal on day one, go to Cala Major or a nearby beach club for a few hours in the late afternoon, then head back into Palma for dinner.'
+          'Most visitors arrive in Mallorca expecting a mix of sea, food, and scenery. The island delivers that best when you keep your itinerary simple and base yourself sensibly. If you stay in Palma, you get city culture, restaurants, and easy airport access. If you add one beach base such as Alcúdia, Playa de Muro, or Cala d Or, you also get a proper holiday feel without needing to move hotels every night.',
+          'The easiest first-time trip is to split the island into four clear themes: one city day, one beach day, one mountain-road day, and one final easy coastal day. That gives you enough of Mallorca without turning the trip into a long drive every time you want to eat or swim.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1544551763-46a013bb70b5?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Aerial view of Mallorca coastline and sea',
+      },
+      {
+        heading: 'Day 1: Palma old town, seafront and the evening meal',
+        text: [
+          'Start in Palma, where the old town is compact enough to enjoy on foot but varied enough to feel like a real city break. Spend the late morning and early afternoon around the central streets, squares and cathedral area rather than trying to do everything in one rush.',
+          'The cathedral is the obvious highlight, but the best part of the first day is usually walking slowly through the old lanes and stopping for a long lunch or a coffee. Palma is a strong first-night base because it gives you good food, a walkable centre, and easy access back if you are tired after travel.',
+          'In the evening, head to the seafront or a central square for dinner. A relaxed first night is more useful than a packed sightseeing day, especially if you landed earlier that morning or arrived late the night before.'
         ],
         image:
           'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80',
         alt: 'Palma old town and seafront in Mallorca',
       },
       {
-        heading: 'Day 2: Beach day in the north or east coast',
+        heading: 'Day 2: Beach day along the north or east coast',
         text: [
-          'For most first-time visitors, beach time is one of the main reasons to come to Mallorca. Choose a base that matches how you want the day to feel: sandy and family-friendly in Alcudia or Playa de Muro, or a more polished beach-and-harbour feel around Cala d Or or Santa Ponsa.',
-          'A simple formula works well: leave Palma early, spend the day by the sea, and return in the evening. That gives you a proper beach holiday feel without losing a city night.'
+          'Mallorca is famous for its beaches, and a first trip should include a proper beach day. For most holiday makers, the easiest choices are Alcúdia or Playa de Muro on the north coast, or a resort area such as Cala d Or or Santa Ponsa on the east or south-west coast.',
+          'The north coast is especially practical for a first beach day because it offers long sandy stretches, easier family logistics, and lots of places to sit, swim, or eat close to the water. Playa de Muro and Alcúdia are good for a classic Mallorca beach experience: easy access, shallow water, and no need to over-plan the day.',
+          'The key is to book a beach club or parking early if you are travelling in July or August, and to keep the day simple. In summer, beaches can fill up quickly, so an early start often makes everything more pleasant.'
         ],
         image:
           'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
         alt: 'Mallorca beach and turquoise water',
       },
       {
-        heading: 'Day 3: Serra de Tramuntana villages and scenic roads',
+        heading: 'Day 3: Serra de Tramuntana villages and scenic driving',
         text: [
-          'This is the day that gives Mallorca its character. The Serra de Tramuntana is the island’s most scenic zone, and the best route is not a huge checklist but a short loop through a few villages.' ,
-          'A reliable first-timer loop is Palma to Valldemossa, then Deia, and finish with a lunch stop in Soller or Port de Soller. These are not just pretty photo stops; they are sensible places to slow down, have a proper lunch, and enjoy the mountain views.' ,
-          'If you want to keep it simpler, do one scenic village plus one harbour stop. Do not try to cram in every viewpoint; the roads are winding and parking can be difficult in peak months.'
+          'The west side of Mallorca is where the island feels most dramatic. This is the day to explore the Serra de Tramuntana, the mountain range that shapes many of the island’s best-known villages and views. A short route works better than a long checklist here, because the roads are steep, the villages are small, and parking can be awkward in high season.',
+          'A good first-timer route is Palma to Valldemossa, then on to Deià, and finally to Soller or Port de Soller for lunch and a harbour stroll. Valldemossa and Deià are very different in feel: Valldemossa is compact and classic, while Deià is more atmospheric and tucked into the mountain slopes. Soller is a useful stop for an easy lunch and a break from mountain driving.',
+          'The roads are scenic but not always quick. If you only want to do one scenic loop, keep it to two or three places rather than trying to visit every lookout and village in the day. This is one of the best ways to enjoy Mallorca without turning the trip into a forced road trip.'
         ],
         image:
           'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80',
         alt: 'Scenic mountain roads in Mallorca',
       },
       {
-        heading: 'Day 4: Coastal harbour, food and a final easy afternoon',
+        heading: 'Day 4: Harbour lunch, one last swim, and a gentle finish',
         text: [
-          'Use your final day for something low-pressure. Port de Soller, Puerto Portals, or a harbour area along the south-west coast is ideal for a relaxed finish. This gives you time for lunch, a last swim, and a slow walk before departure.',
-          'If you have a late flight, keep the morning flexible and do a final beach or marina stroll. If you are leaving early, spend the morning in Palma and stop for one last local lunch before setting off.'
+          'Use your final day for something low-pressure. Port de Soller, Puerto Portals, or another harbour area on the west or south-west coast is ideal because it gives you a nice finish without requiring another big drive. Take a slow morning, have a beach or harbour lunch, then decide whether you want one last swim or just a walk and coffee.',
+          'This is especially useful if you are leaving the island later in the day. It lets you enjoy Mallorca’s slower pace rather than rushing to the airport and losing the last afternoon. If your departure is early, simply spend the morning in Palma and enjoy one final local lunch before you leave.'
         ],
         image:
           'https://images.unsplash.com/photo-1493558103817-58b2924b5715?auto=format&fit=crop&w=1200&q=80',
         alt: 'Harbour and marina in Mallorca',
       },
+      {
+        heading: 'Best areas to stay for a first trip',
+        text: [
+          'The best base depends on what kind of holiday you want. Palma works well for a city-first trip or a short break with restaurants and heritage. Alcúdia and Playa de Muro are among the strongest choices for a classic beach holiday with long sandy beaches and easy logistics. Port de Soller and nearby west-coast villages work better if you value scenery and a slower rhythm over nightlife or resort conveniences.',
+          'If you prefer a more polished beach-and-harbour holiday, Cala d Or, Santa Ponsa, or Palmanova can work very well. These areas are practical for families, couples, and groups who want a beach base without needing to drive every day.'
+        ],
+      },
+      {
+        heading: 'How to travel around Mallorca without losing time',
+        text: [
+          'A car gives you the most flexibility, especially if you want to visit the west coast and mountain villages. Without a car, Mallorca is still manageable, but it is easier to keep your trip centred around Palma and one resort or beach base. For anyone combining city time with a few day trips, a car often makes the difference between a smooth trip and a rushed one.',
+          'Avoid trying to cram in all the famous villages in a single day. Mallorca rewards a slower rhythm, especially in the Tramuntana and in the smaller coastal towns. It is better to have one strong day trip and a relaxed beach day than to spend the holiday moving from place to place every few hours.'
+        ],
+      },
     ],
     checklist: [
-      'Base yourself in Palma for the first night if you want city access, or in Alcudia for a classic beach holiday with easier family logistics.',
-      'Book your beach club, boat trip, or restaurant table early if you are visiting in July or August.',
-      'A car helps for mountain villages and the west coast, but Palma itself is easy without one.',
-      'Keep one day flexible for weather changes, especially if you plan a boat or beach day.',
+      'Stay in Palma for one or two nights if you want a city break and easy airport access, or choose a beach base such as Alcúdia or Cala d Or for a more classic holiday.',
+      'Keep one full day for beach time and one full day for the mountain villages; this gives you the best balance of Mallorca’s biggest strengths.',
+      'Book your beach club, dinner reservation, or car rental early if you are visiting during the summer peak.',
+      'Plan for narrow roads and limited parking in the west coast villages, especially around Valldemossa, Deià, and Soller.',
+      'If you are traveling with children, base yourselves near a calm beach and avoid a very busy day trip schedule.'
     ],
     whereToStay: [
-      'Palma if you want a city break with food, nightlife, and easy transit.',
-      'Alcudia or Playa de Muro if your priority is a long sandy beach and family-friendly amenities.',
-      'Port de Soller or a west-coast village if you want slower scenery and a more relaxed base.',
+      'Palma for a city base with restaurants, heritage, and easy day-to-day walking.',
+      'Alcúdia or Playa de Muro for long sandy beaches and a classic family-friendly holiday feel.',
+      'Port de Soller or a west-coast village if you want mountain scenery, a slower pace, and a more local atmosphere.',
+      'Cala d Or or Santa Ponsa if you want a convenient beach-and-harbour base with a wider range of restaurants and tourist services.'
     ],
     practicalTips: [
-      'May, June, September, and early October are often the easiest months for comfortable weather and less intensity in busy beach areas.',
-      'Use a car for the west coast and mountain villages; otherwise, stick to Palma and one resort base.',
-      'Try local dishes such as ensaïmada, pa amb oli, fresh grilled fish, and simple tapas in small neighbourhood bars rather than only resort restaurants.',
-      'Carry water and start early in summer if you are visiting village viewpoints or hiking routes, as heat builds quickly.'
+      'May, June, September, and early October are often the most comfortable months for a first trip, with warm weather but less peak-season intensity.',
+      'Summer heat can build quickly in the mountain villages, so leave early and carry water if you plan to explore by car or on foot.',
+      'Keep a simple lunch plan for west-coast days, because good options can be limited if you arrive too late or during midday peaks.',
+      'For a more local experience, mix tourist beach days with small neighbourhood restaurants in Palma or along the coast rather than only choosing resort dining.',
+      'If you are only staying four days, do not try to see the entire island in one move. Mallorca is easiest to appreciate when you build in a slower rhythm.'
     ],
   },
   'family-friendly-things-to-do-in-mallorca': {
