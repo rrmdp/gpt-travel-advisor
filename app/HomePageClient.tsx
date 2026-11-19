@@ -581,7 +581,7 @@ export default function HomePageClient() {
             </div>
           </div>
 
-          <Link href="/articles/south-west-mallorca-short-term-rentals">
+          <Link href="/articles/south-west-mallorca-short-term-rentals" style={{ textDecoration: 'underline' }}>
             <h3 style={styles.seoSubTitle}>The South West of Mallorca (Majorca)</h3>
           </Link>
           <p style={styles.seoText}>
