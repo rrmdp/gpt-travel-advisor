@@ -548,6 +548,462 @@ const articles: Record<string, Article> = {
       'Join local expat or holiday-maker Facebook groups to get recommendations and insider tips from recent visitors.'
     ],
   },
+  'santa-ponsa-mallorca': {
+    slug: 'santa-ponsa-mallorca',
+    title: 'Santa Ponsa Mallorca: family-friendly beach destination',
+    summary:
+      'A practical guide to Santa Ponsa, one of the most established and family-friendly resort areas on the south-west coast, with long sandy beaches, good restaurants, and convenient short-term rentals.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'Santa Ponsa is one of the most popular and practical beach destinations on the south-west coast of Mallorca. It combines long, calm sandy beaches with a well-developed resort infrastructure, making it ideal for families, couples, and groups who want a straightforward beach holiday without needing to explore remote areas.',
+    sections: [
+      {
+        heading: 'Why Santa Ponsa works for a beach holiday',
+        text: [
+          'Santa Ponsa is one of the oldest and best-established resort areas on the south-west coast. The main beach is long, sandy, and gently sloping, which makes it safe for children and comfortable for relaxation. The area has a full range of water sports, beach clubs, and rental equipment, so a beach day here does not require extensive planning.',
+          'The town centre is walkable and has good shops, restaurants, and local services. This means you can stay self-catering in an apartment and still have easy access to dining, supplies, and activities without needing a car for every errand.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Santa Ponsa main beach and calm waters',
+      },
+      {
+        heading: 'Short-term rentals in Santa Ponsa',
+        text: [
+          'Santa Ponsa has a wide range of short-term rental properties, from simple beachfront apartments to larger family villas with pools. Many rental properties are located in apartment complexes with shared facilities such as pools, gardens, and parking. Prices tend to be moderate compared to more upscale areas like Puerto Portals or Port d\'Andratx.',
+          'Most rentals in Santa Ponsa are on or near the beach, so proximity to swimming and water activities is rarely a concern. For families booking a week or more, the area offers good value and consistent quality across a range of budget levels.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Modern apartment complex in Santa Ponsa',
+      },
+      {
+        heading: 'Beaches and water activities',
+        text: [
+          'The main Santa Ponsa beach is about 1.5 km long and is lined with sunbed rentals, water sports operators, and beach clubs. During summer, the beach fills up by mid-morning, so an early start is recommended if you want prime sun-bed positions. The water is usually calm and clear, making it ideal for swimming and snorkeling.',
+          'Water sports available include jet skis, paddleboards, kayaking, and parasailing. Several beach clubs serve lunch and drinks directly on the sand, so you can order food without leaving your lounger.'
+        ],
+      },
+      {
+        heading: 'Restaurants and dining',
+        text: [
+          'Santa Ponsa has a good mix of beachfront restaurants and cafés that range from casual to mid-range pricing. Most beach clubs serve fish, paella, and Mediterranean fare during the day. In the town centre, you will find a wider range of cuisines including international restaurants, pizzerias, and tapas bars.',
+          'For evening dining, beachfront restaurants offer sunset views and are popular for romantic dinners. During peak summer, booking ahead is advisable if you want to dine at the most popular spots.'
+        ],
+      },
+      {
+        heading: 'Getting around Santa Ponsa',
+        text: [
+          'Santa Ponsa is compact and walkable, so you can easily reach the beach, shops, and restaurants on foot. If you want to explore other parts of the south-west coast or visit the Serra de Tramuntana, a car rental is useful but not essential for staying within Santa Ponsa.',
+          'Public buses connect Santa Ponsa to Palma and other resort areas, so you can take a day trip without a car if you plan ahead. Parking in Santa Ponsa is generally straightforward, with both street parking and paid car parks near the beach and town centre.'
+        ],
+      },
+      {
+        heading: 'Best time to visit Santa Ponsa',
+        text: [
+          'May, June, September, and early October are ideal for visiting Santa Ponsa. The weather is warm, the sea is swimmable, and the beach is less crowded than in July and August. During peak summer, the beach can be very busy and restaurant tables hard to find.',
+          'If you prefer a quieter experience but still want good beach weather, avoid July and August and visit in May or September instead.'
+        ],
+      },
+    ],
+    checklist: [
+      'Book your beach club or water sports activity in advance during summer.',
+      'Bring sun protection and plan for mid-day shade during July and August.',
+      'Book restaurants ahead if you want to dine at popular beachfront spots in peak season.',
+      'Confirm your apartment has air conditioning, especially if visiting in summer.',
+      'Check whether your rental includes beach towels and sun beds or if you need to rent them separately.'
+    ],
+    whereToStay: [
+      'Beachfront apartments for direct beach access and sea views.',
+      'Town-centre apartments for walkable access to restaurants and shops.',
+      'Family villas with private pools for more space and privacy.',
+      'Resort-style hotels with shared facilities for convenience and service.'
+    ],
+    practicalTips: [
+      'The main beach fills up by mid-morning in summer; arrive early for best sun-bed spots.',
+      'Many apartments require a one-week minimum stay in summer; negotiate for shorter stays in shoulder seasons.',
+      'Parking near the beach is metered during summer; check signage or use paid car parks.',
+      'The water is warmest in August and September; June and May are cooler but pleasant.',
+      'Consider renting a parasol or beach club lounger to avoid bringing your own shade.'
+    ],
+  },
+  'palmanova-magaluf-mallorca': {
+    slug: 'palmanova-magaluf-mallorca',
+    title: 'Palmanova and Magaluf Mallorca: compact resort beaches',
+    summary:
+      'A guide to Palmanova and Magaluf, two walkable beach resort areas on the south-west coast known for compact centres, beachfront apartments, and lively evening scenes.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'Palmanova and Magaluf are neighbouring compact resort towns on the south-west coast. Palmanova is quieter and more family-focused, while Magaluf has a more energetic nightlife scene. Both are ideal for travellers who want walkable beach access, easy restaurant options, and straightforward logistics without needing a car.',
+    sections: [
+      {
+        heading: 'Palmanova: family-friendly and quieter',
+        text: [
+          'Palmanova is a small, well-organised resort town with a crescent-shaped beach that is protected and calm. The town centre is entirely walkable, with restaurants, shops, and services all within a short stroll of the beach. Palmanova suits families and couples who want convenience without the intensity of busier resort areas.',
+          'The main beach is sandy, clean, and gently sloping, making it ideal for children. The town is compact enough that you can go from your apartment to the beach in under 5 minutes on foot.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Palmanova crescent beach and calm waters',
+      },
+      {
+        heading: 'Magaluf: lively nightlife and water sports',
+        text: [
+          'Magaluf is next to Palmanova but larger and more energetic. It is known for a wide range of water sports, beach clubs, and a lively evening scene with bars and clubs. If you want beach days combined with an active nightlife, Magaluf is a stronger choice than Palmanova.',
+          'Magaluf also has more beachfront development, with a full range of water activities including banana boats, jet skis, and diving schools. The town is busier and noisier than Palmanova, especially in the evening and at night.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Magaluf main beach and resort development',
+      },
+      {
+        heading: 'Short-term rentals in Palmanova and Magaluf',
+        text: [
+          'Both areas have many short-term rental apartments, most located in multi-storey apartment blocks with shared pools, common areas, and parking. Rentals are typically smaller and more affordable than standalone villas in other areas. Many have direct beach access or are only a few minutes walk from the shore.',
+          'Because both towns are compact, being slightly back from the beach is less of a concern here than in larger resort areas. You can still reach the beach in a short walk from any rental.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Apartment buildings in Palmanova resort area',
+      },
+      {
+        heading: 'Dining and entertainment',
+        text: [
+          'Both towns have a good range of restaurants and cafés, from casual beachfront eateries to more formal dining. Palmanova tends to have more family-oriented restaurants, while Magaluf has more international options and beach clubs with DJs and evening entertainment.',
+          'Magaluf is particularly known for beach clubs and evening bars along the seafront. If nightlife is a priority, Magaluf offers more options than Palmanova.'
+        ],
+      },
+      {
+        heading: 'Walkability and logistics',
+        text: [
+          'The main advantage of both Palmanova and Magaluf is their compact size. Everything is within walking distance, so a car is optional rather than essential. This makes both towns ideal for travellers who prefer not to hire a car or who want to avoid driving on unfamiliar roads.',
+          'Public buses connect both towns to Palma and other nearby areas, so day trips are possible without a car. However, distances to other south-west destinations like Santa Ponsa or Port d\'Andratx require either a car or a longer bus journey.'
+        ],
+      },
+    ],
+    checklist: [
+      'Choose Palmanova if you prefer a quieter, family-focused atmosphere.',
+      'Choose Magaluf if nightlife and water sports are priorities.',
+      'Book water sports or beach clubs in advance if visiting during peak summer.',
+      'Confirm your apartment includes air conditioning and parking.',
+      'Note that apartment buildings can be tall and tightly packed; request a higher floor or sea view if these matter to you.'
+    ],
+    whereToStay: [
+      'Beachfront or near-beach apartments for walkable access to the shore.',
+      'Apartments with shared pools and communal areas for added facilities.',
+      'Town-centre apartments for proximity to restaurants and shops.',
+      'Quieter residential apartments slightly back from the beach if you prefer a calmer setting.'
+    ],
+    practicalTips: [
+      'Both towns are very compact; a car is not necessary if you plan to stay within the town.',
+      'The beaches fill up early in summer; aim for a morning or late-afternoon swim to avoid crowds.',
+      'Palmanova is better for families; Magaluf is livelier for young adults and groups.',
+      'Many restaurants close between 3 and 7 PM during shoulder seasons; plan your siesta time accordingly.',
+      'Book restaurants in advance during peak summer if you want specific dining times.'
+    ],
+  },
+  'port-andratx-camp-de-mar-mallorca': {
+    slug: 'port-andratx-camp-de-mar-mallorca',
+    title: 'Port d\'Andratx and Camp de Mar: upscale coastal villages',
+    summary:
+      'A guide to Port d\'Andratx and Camp de Mar, premium destinations on the south-west coast known for luxury villas, scenic surroundings, and exclusive upscale dining.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'Port d\'Andratx and Camp de Mar are neighbouring upscale coastal villages on the south-west coast. Both are known for scenic beauty, luxury villa rentals, and a more polished, quieter atmosphere than the busier resort areas. They appeal to travellers who value exclusivity, natural surroundings, and premium dining.',
+    sections: [
+      {
+        heading: 'Port d\'Andratx: scenic harbour village',
+        text: [
+          'Port d\'Andratx is a charming small harbour town built around a protected cove. The main village is compact, with waterfront restaurants, boutique shops, and a marina full of private boats. The scenery is dramatic, with steep hillsides coming down to the water, making it one of the most visually striking locations on the south-west coast.',
+          'Unlike larger resort areas, Port d\'Andratx does not have a main beach; instead, it has small rocky coves and areas with sun beds on platforms. The focus here is on harbour walks, waterfront dining, and scenic beauty rather than on a classic sand-and-sea beach day.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Port d\'Andratx harbour and waterfront',
+      },
+      {
+        heading: 'Camp de Mar: exclusive cove and village',
+        text: [
+          'Camp de Mar is a very exclusive, small settlement centred around a beautiful cove with a small beach and a historic watchtower. The village is even more remote and exclusive than Port d\'Andratx, with limited commercial development and a more private feel. Most accommodation is high-end villa rentals rather than apartment blocks.',
+          'Camp de Mar is ideal for travellers seeking seclusion, privacy, and a more authentic small-village atmosphere. The main activities are swimming, walking, and dining at the small number of local restaurants.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Camp de Mar exclusive cove and beach',
+      },
+      {
+        heading: 'Villa rentals and accommodation',
+        text: [
+          'Both Port d\'Andratx and Camp de Mar are known for luxury villa rentals rather than apartment blocks. Properties typically feature private pools, sea views, and high-end finishes. Rental prices are higher than in the busier resort areas, but the exclusivity and privacy justify the cost for many travellers.',
+          'Many villas are set back from the main villages, offering privacy while still providing easy access to village restaurants and shops. For couples or groups seeking a premium experience, the villa rental options here are among the best in Mallorca.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Luxury villa with pool and sea views',
+      },
+      {
+        heading: 'Dining and local character',
+        text: [
+          'Port d\'Andratx has several excellent waterfront restaurants known for fresh fish and Mediterranean cuisine. The harbour setting makes evening dining particularly atmospheric. During summer, booking ahead is essential if you want a good table with a sea view.',
+          'Camp de Mar has fewer restaurant options but those available tend to be high-quality. The small size of the village means you are never far from dining, but the range is more limited than in larger resort areas.'
+        ],
+      },
+      {
+        heading: 'Scenic walks and activities',
+        text: [
+          'Both villages are excellent bases for scenic coastal walks. The hills around Port d\'Andratx offer hiking trails with views down to the water and across to surrounding coves. Camp de Mar is smaller but equally scenic, with walks along the cliffs and down to quieter neighbouring coves.',
+          'If you enjoy hiking, scenic photography, and exploring small villages, these areas offer much more appeal than the larger resort beaches. Swimming is possible at designated coves, but this is not a beach-focused destination.'
+        ],
+      },
+    ],
+    checklist: [
+      'Book villa rentals well in advance; availability is limited.',
+      'Confirm your villa has the amenities you need (private pool, sea view, garden, etc.).',
+      'Book restaurants in Port d\'Andratx ahead of time if you want a specific waterfront table.',
+      'Plan for a car; both villages are remote and not easily accessible by public transport.',
+      'Bring comfortable walking shoes if you plan to explore the coastal paths.'
+    ],
+    whereToStay: [
+      'Luxury villas with private pools and sea views in Port d\'Andratx.',
+      'Exclusive villas in Camp de Mar for the most private setting.',
+      'Waterfront properties in Port d\'Andratx for harbour views and easy restaurant access.',
+      'Hillside villas overlooking the coast for scenic views and seclusion.'
+    ],
+    practicalTips: [
+      'A car is essential; public transport is limited.',
+      'The area is quieter and less touristy than larger resorts; plan accordingly if you want nightlife or shopping.',
+      'Hiking and walking are strong activities here; bring appropriate footwear.',
+      'The waterfront restaurants are excellent but pricey; book ahead.',
+      'Consider visiting in May or June for fewer crowds and pleasant weather without peak summer heat.'
+    ],
+  },
+  'puerto-portals-portals-nous-mallorca': {
+    slug: 'puerto-portals-portals-nous-mallorca',
+    title: 'Puerto Portals and Portals Nous: upscale marina village',
+    summary:
+      'A guide to Puerto Portals, an exclusive marina village close to Palma known for yacht culture, high-end dining, luxury beach clubs, and premium short-term rentals.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'Puerto Portals (also known as Portals Nous or Puerto Portals) is an upscale marina village located between Palma and the main resort areas of the south-west coast. It is known for its yacht marina, luxury beach clubs, high-end restaurants, and exclusive boutique shopping. Puerto Portals attracts affluent travellers and yacht enthusiasts who value style and cosmopolitan atmosphere.',
+    sections: [
+      {
+        heading: 'The Puerto Portals experience: yachts and beach clubs',
+        text: [
+          'Puerto Portals is built around a working yacht marina where luxury sailing boats are moored. The waterfront is lined with restaurants, beach clubs, and designer shops, creating a sophisticated, Mediterranean atmosphere. The area attracts a more cosmopolitan crowd than typical beach resort towns.',
+          'The main beach is small and exclusive, with private beach clubs where guests can rent sunbeds, order food, and enjoy premium service. This is not a traditional public beach but rather a curated experience designed for affluent visitors.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Puerto Portals marina and yacht boats',
+      },
+      {
+        heading: 'Premium villa and apartment rentals',
+        text: [
+          'Rentals in Puerto Portals are predominantly high-end apartments and villas with sea views, private terraces, and access to exclusive facilities. Many properties overlook the marina or the small beach. Prices are at the premium end of the Mallorca rental market, but the quality and location justify the cost.',
+          'Unlike the apartment blocks of busier resort areas, Puerto Portals rentals tend to be in smaller, more exclusive developments or standalone properties. Many include concierge services, private parking, and access to beach clubs.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Modern luxury apartment in Puerto Portals',
+      },
+      {
+        heading: 'Upscale dining and beach clubs',
+        text: [
+          'Puerto Portals is known for its collection of high-end restaurants and beach clubs with trained chefs and comprehensive wine lists. The waterfront setting makes evening dining especially appealing. Prices are higher than in other resort areas, but the quality of food and service reflects this.',
+          'The beach clubs are particularly popular for relaxed daytime dining with sea views. Many offer signature cocktails, fresh seafood, and DJ entertainment in the afternoons and evenings.'
+        ],
+      },
+      {
+        heading: 'Proximity to Palma and the south-west',
+        text: [
+          'Puerto Portals is located conveniently between Palma and the main south-west resort areas. It is about 15 minutes by car from Palma\'s old town, making it ideal for travellers who want beach access and resort facilities while maintaining easy connection to Palma\'s culture and restaurants.',
+          'The location also makes Puerto Portals a good base for exploring both Palma and the broader south-west coast. You can have a beach day in Puerto Portals and visit Palma or other destinations the same evening.'
+        ],
+      },
+      {
+        heading: 'Boutique shopping and local character',
+        text: [
+          'The marina area has a range of designer shops, galleries, and boutiques catering to affluent visitors. While selection is smaller than in Palma, the quality is high and the browsing experience is relaxed and uncrowded.',
+          'Unlike large resort centres, Puerto Portals maintains an air of exclusivity and calm. The atmosphere is more similar to an upscale Mediterranean harbour village than to a typical beach resort.'
+        ],
+      },
+    ],
+    checklist: [
+      'Book restaurants and beach clubs in advance; popular spots fill quickly.',
+      'Confirm your apartment has premium amenities and beach club access.',
+      'Budget for higher meal prices; this is a premium dining destination.',
+      'Book water sports or yacht excursions in advance if these interest you.',
+      'Note that parking can be limited; check parking availability with your rental.'
+    ],
+    whereToStay: [
+      'Marina-view apartments for direct yacht and waterfront views.',
+      'Exclusive villas with private pools and sea access.',
+      'Beach club properties with guaranteed beach and restaurant access.',
+      'Town-centre apartments within walking distance of shops and restaurants.'
+    ],
+    practicalTips: [
+      'Puerto Portals is more upscale and quieter than busier resort areas; this is by design.',
+      'A car is useful but not essential; Palma is accessible by bus and there is local transport.',
+      'The area attracts a mature, affluent clientele; the atmosphere is sophisticated rather than party-focused.',
+      'Restaurant reservations are essential during peak season.',
+      'If you prefer a lively nightlife scene, other resort areas like Magaluf may suit you better.'
+    ],
+  },
+  'cala-vinyes-mallorca': {
+    slug: 'cala-vinyes-mallorca',
+    title: 'Cala Vinyes Mallorca: calm cove resort area',
+    summary:
+      'A guide to Cala Vinyes, a quieter cove-style resort area on the south-west coast known for calm waters, family-friendly atmosphere, and peaceful accommodation options.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'Cala Vinyes is a small, calm cove-style resort area on the south-west coast, offering a more relaxed and peaceful alternative to the busier beach resort centres. The cove is protected and the waters are typically calm, making it ideal for families who want a quiet, easy beach day without the crowds and energy of larger resort towns.',
+    sections: [
+      {
+        heading: 'Why Cala Vinyes: calm waters and quieter atmosphere',
+        text: [
+          'Cala Vinyes is one of the quieter beach areas on the south-west coast. The small cove is naturally protected, so the waters are very calm and clear. Unlike the long public beaches of Santa Ponsa or Palmanova, Cala Vinyes feels more intimate and less crowded.',
+          'The area is ideal for families with young children, couples seeking a relaxed beach day, and travellers who prefer not to compete for sun-bed space or navigate busy beach scenes.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Cala Vinyes calm cove and clear waters',
+      },
+      {
+        heading: 'Beach character and facilities',
+        text: [
+          'Cala Vinyes is a small sandy beach surrounded by low-rise holiday homes and villas. The beach has limited commercial facilities compared to larger resort areas, but basic sun-bed rentals and a small beach bar are available. The relaxed atmosphere means there is no high-pressure sales or crowded nightlife scene.',
+          'The small size means you can rent sun-beds easily without needing to arrive very early. The water is exceptionally clear and calm, making it one of the best areas on the south-west coast for swimming with children.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Small sandy beach in Cala Vinyes',
+      },
+      {
+        heading: 'Accommodation and local rentals',
+        text: [
+          'Cala Vinyes is predominantly made up of holiday villas and low-rise apartment blocks rather than tall resort hotels. Many rentals are spacious family villas with private pools, making them excellent for groups or families wanting more independence than a hotel provides.',
+          'The area is less developed for tourism than Santa Ponsa or Palmanova, which is both a strength (quieter, more authentic) and a limitation (fewer services and restaurants immediately on-site).'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Holiday villas in Cala Vinyes',
+      },
+      {
+        heading: 'Dining and local services',
+        text: [
+          'Cala Vinyes has a small number of local restaurants and cafés near the beach and in the surrounding area. Options are more limited than in larger resort centres, but this contributes to the quieter, less touristy character. Most visitors self-cater or eat at nearby restaurants in Santa Ponsa or other nearby areas.',
+          'A small supermarket and basic shops serve the local area, so you can buy supplies without needing to travel far.'
+        ],
+      },
+      {
+        heading: 'Getting to and around Cala Vinyes',
+        text: [
+          'Cala Vinyes is a short drive from Santa Ponsa and other south-west resort areas. Without a car, public transport is limited, so a rental vehicle is recommended if you want flexibility to explore beyond your accommodation.',
+          'Within Cala Vinyes itself, everything is close together and easily walkable, so once you have driven to the area, you can explore on foot.'
+        ],
+      },
+    ],
+    checklist: [
+      'Book a villa rental with a private pool if you want maximum comfort and independence.',
+      'Bring groceries or plan to eat at nearby restaurants; on-site dining options are limited.',
+      'Hire a car if you want to explore other parts of the south-west coast.',
+      'Arrive early for good sun-bed spots during peak summer.',
+      'Confirm your rental is near the beach; some villas are set back from the cove.'
+    ],
+    whereToStay: [
+      'Family villas with private pools for space and independence.',
+      'Beachfront or near-beach apartments for direct cove access.',
+      'Low-rise residential properties for a quieter, more authentic setting.',
+      'Holiday homes suitable for groups or multi-family stays.'
+    ],
+    practicalTips: [
+      'Cala Vinyes is perfect for families seeking a calm, relaxed beach day.',
+      'The small cove and clear water make it ideal for snorkeling and swimming with children.',
+      'On-site dining is minimal; consider self-catering or planning trips to Santa Ponsa for restaurant choices.',
+      'The area is quieter than larger resorts; plan accordingly if nightlife is important.',
+      'Peak summer crowds are minimal compared to Santa Ponsa, even during July and August.',
+      'The calm water and small size make Cala Vinyes less suitable for water sports enthusiasts.'
+    ],
+  },
+  'el-toro-port-adriano-mallorca': {
+    slug: 'el-toro-port-adriano-mallorca',
+    title: 'El Toro and Port Adriano Mallorca: modern marina resort',
+    summary:
+      'A guide to El Toro and Port Adriano, a modern upscale marina development on the south-west coast known for contemporary design, luxury villas, and exclusive waterfront dining.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'El Toro and Port Adriano are modern, upscale developments on the south-west coast. Port Adriano is a contemporary marina village with designer shops, luxury restaurants, and waterfront promenades. El Toro is the residential area surrounding the marina, known for high-end villa rentals and a sophisticated, contemporary atmosphere.',
+    sections: [
+      {
+        heading: 'Port Adriano: ultra-modern marina village',
+        text: [
+          'Port Adriano is a recently developed marina complex designed by renowned architect Philippe Starck. The design is contemporary, with clean lines, modern materials, and careful attention to aesthetics. It is one of the most architecturally distinctive locations on Mallorca.',
+          'The marina hosts a mix of private yachts and commercial boats. The surrounding promenade has high-end restaurants, bars, and boutique shops. The overall atmosphere is sophisticated and upscale, designed to appeal to affluent visitors and yacht owners.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Port Adriano modern marina and waterfront',
+      },
+      {
+        heading: 'Contemporary villas and rentals',
+        text: [
+          'El Toro is a residential area with modern villas designed to complement Port Adriano\'s contemporary aesthetic. Most villas are spacious, with private pools, terraces, and high-end finishes. The architecture is distinctly modern, with clean lines and minimalist design.',
+          'Villa rentals in El Toro are expensive but offer cutting-edge comfort and design. Many properties are suitable for groups or multi-family stays and come with premium amenities such as home cinemas, smart home systems, and designer kitchens.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Modern villa with pool in El Toro',
+      },
+      {
+        heading: 'Upscale dining and shopping',
+        text: [
+          'Port Adriano is known for its selection of high-end restaurants and bars with Michelin stars and celebrity chefs. The waterfront dining experience is excellent, with sea views and sophisticated menus. Prices are premium, but the quality justifies the cost.',
+          'The small marina area also has designer shops and galleries catering to affluent visitors. The selection is curated rather than extensive, maintaining the exclusive feel of the development.'
+        ],
+      },
+      {
+        heading: 'Beach access and water activities',
+        text: [
+          'El Toro and Port Adriano are marina-focused rather than beach-focused destinations. The main waterfront is paved marina promenade rather than a sandy beach. However, small beach areas and rocky coves nearby provide swimming options.',
+          'Water activities such as boat rentals, yacht charters, and water sports are available through the marina. This is particularly appealing for travellers with boating interests or those seeking a yacht-based holiday.'
+        ],
+      },
+      {
+        heading: 'Contemporary atmosphere and lifestyle',
+        text: [
+          'The overall character of El Toro and Port Adriano is contemporary and cosmopolitan. The focus is on design, cuisine, and lifestyle rather than on traditional beach resort activities. This appeals to design-conscious travellers and those seeking a sophisticated Mediterranean experience.',
+          'The area attracts affluent travellers, yacht owners, and international visitors. English is widely spoken, and the cultural atmosphere is diverse and worldly.'
+        ],
+      },
+    ],
+    checklist: [
+      'Book restaurants well in advance; popular spots fill quickly.',
+      'Book villa rentals early; demand is high for the best properties.',
+      'Budget for premium prices across dining, shopping, and accommodation.',
+      'Confirm your villa has the specific modern amenities you desire.',
+      'Consider arranging boat charters or yacht rentals in advance.'
+    ],
+    whereToStay: [
+      'Ultra-modern villas with private pools and high-end finishes.',
+      'Spacious properties suitable for groups or multi-family stays.',
+      'Waterfront apartments in Port Adriano for marina and restaurant views.',
+      'Residential villas in El Toro with access to Port Adriano amenities.'
+    ],
+    practicalTips: [
+      'This is one of the most upscale and contemporary destinations on the south-west coast.',
+      'The area is ideal for design enthusiasts and those seeking sophisticated dining and lifestyle.',
+      'Public transport is limited; a car is recommended for exploring beyond the immediate marina area.',
+      'The atmosphere is more cosmopolitan and less Spanish-focused than traditional resort towns.',
+      'If you have an interest in sailing or yachting, Port Adriano offers excellent marina facilities and boat charter options.',
+      'Book restaurants in advance; popular spots have limited capacity.'
+    ],
+  },
 }
 
 export function generateStaticParams() {
