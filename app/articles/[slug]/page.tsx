@@ -515,6 +515,13 @@ const articles: Record<string, Article> = {
           'If your rental includes off-street parking, that simplifies car hire significantly. If parking is street-only or uncertain, ask the property manager before booking. During summer peak season, parking can be difficult in the busiest resort areas, so this is worth clarifying in advance.'
         ],
       },
+      {
+        heading: 'Holiday Villas in the South West of Mallorca',
+        text: [
+          'For travellers looking for premium villa properties in the south-west, Holiday Villas offer a curated selection of high-quality short-term rental villas across Santa Ponsa, Port d\'Andratx, Puerto Portals, and other sought-after locations. Their collection includes properties with private pools, sea views, and exclusive amenities tailored for families, couples, and groups seeking a luxurious Mallorca experience.',
+          'Holiday Villas specializes in vetted properties that meet high standards for comfort and service, making it easier to find the right villa for your south-west Mallorca stay without spending hours comparing listings on multiple platforms.'
+        ],
+      },
     ],
     checklist: [
       'Confirm the exact location and distance to the beach or sea access before booking.',
@@ -618,11 +625,37 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                 />
               ) : null}
 
-              {section.text.map((paragraph) => (
-                <p key={paragraph} style={{ margin: '0 0 14px', fontSize: 16, lineHeight: 1.8, color: 'rgba(255,255,255,0.9)' }}>
-                  {paragraph}
-                </p>
-              ))}
+              {section.heading === 'Holiday Villas in the South West of Mallorca' ? (
+                <div>
+                  {section.text.map((paragraph, index) => (
+                    <p key={index} style={{ margin: '0 0 14px', fontSize: 16, lineHeight: 1.8, color: 'rgba(255,255,255,0.9)' }}>
+                      {index === 0 ? (
+                        <>
+                          For travellers looking for premium villa properties in the south-west,{' '}
+                          <a
+                            href="https://www.villasmediterranean.com/villas-in-the-south-west-of-mallorca"
+                            rel="dofollow"
+                            style={{ color: '#7dd3fc', textDecoration: 'underline', fontWeight: 500 }}
+                          >
+                            Holiday Villas
+                          </a>
+                          {' '}offer a curated selection of high-quality short-term rental villas across Santa Ponsa, Port d&apos;Andratx, Puerto Portals, and other sought-after locations. Their collection includes properties with private pools, sea views, and exclusive amenities tailored for families, couples, and groups seeking a luxurious Mallorca experience.
+                        </>
+                      ) : (
+                        paragraph
+                      )}
+                    </p>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  {section.text.map((paragraph) => (
+                    <p key={paragraph} style={{ margin: '0 0 14px', fontSize: 16, lineHeight: 1.8, color: 'rgba(255,255,255,0.9)' }}>
+                      {paragraph}
+                    </p>
+                  ))}
+                </>
+              )}
             </section>
           ))}
 
