@@ -581,7 +581,7 @@ export default function HomePageClient() {
             </div>
           </div>
 
-          <Link href="/articles/south-west-mallorca-short-term-rentals" style={{ textDecoration: 'underline' }}>
+          <Link href="/articles/south-west-mallorca-short-term-rentals" style={{ color: '#fff', textDecoration: 'underline', textDecorationColor: '#fff' }}>
             <h3 style={styles.seoSubTitle}>The South West of Mallorca (Majorca)</h3>
           </Link>
           <p style={styles.seoText}>
@@ -591,48 +591,60 @@ export default function HomePageClient() {
             access from Palma airport.
           </p>
           <div style={styles.areaGrid}>
-            <div style={styles.areaCard}>
-              <h4 style={styles.areaTitle}>Santa Ponsa</h4>
-              <p style={styles.areaText}>
-                Popular for families and groups thanks to practical beaches,
-                walkable services, golf nearby, and straightforward logistics.
-              </p>
-            </div>
-            <div style={styles.areaCard}>
-              <h4 style={styles.areaTitle}>Palmanova and Magaluf</h4>
-              <p style={styles.areaText}>
-                Good for travellers who want sandy beaches, resort facilities, and
-                a wider nightlife range close to Palma.
-              </p>
-            </div>
-            <div style={styles.areaCard}>
-              <h4 style={styles.areaTitle}>Port d&apos;Andratx and Camp de Mar</h4>
-              <p style={styles.areaText}>
-                Better for a more polished atmosphere, marina dining, sunset views,
-                and a quieter premium-style base.
-              </p>
-            </div>
-            <div style={styles.areaCard}>
-              <h4 style={styles.areaTitle}>Portals Nous and Puerto Portals</h4>
-              <p style={styles.areaText}>
-                Strong option for couples and luxury-focused stays, with stylish
-                beach clubs, yacht marina walks, and quick access to Palma.
-              </p>
-            </div>
-            <div style={styles.areaCard}>
-              <h4 style={styles.areaTitle}>Cala Vinyes</h4>
-              <p style={styles.areaText}>
-                Calm cove-style beach area that works well for relaxed sun-and-sea
-                days, especially if you want a quieter base near larger resorts.
-              </p>
-            </div>
-            <div style={styles.areaCard}>
-              <h4 style={styles.areaTitle}>El Toro / Port Adriano</h4>
-              <p style={styles.areaText}>
-                Great for modern marina vibes, waterfront dining, and easy access
-                to nearby beaches and boat-focused activities in the south west.
-              </p>
-            </div>
+            <Link href="/articles/santa-ponsa-mallorca" style={{ textDecoration: 'underline', textDecorationColor: '#fff', color: 'inherit' }}>
+              <div style={styles.areaCard}>
+                <h4 style={styles.areaTitle}>Santa Ponsa</h4>
+                <p style={styles.areaText}>
+                  Popular for families and groups thanks to practical beaches,
+                  walkable services, golf nearby, and straightforward logistics.
+                </p>
+              </div>
+            </Link>
+            <Link href="/articles/palmanova-magaluf-mallorca" style={{ textDecoration: 'underline', textDecorationColor: '#fff', color: 'inherit' }}>
+              <div style={styles.areaCard}>
+                <h4 style={styles.areaTitle}>Palmanova and Magaluf</h4>
+                <p style={styles.areaText}>
+                  Good for travellers who want sandy beaches, resort facilities, and
+                  a wider nightlife range close to Palma.
+                </p>
+              </div>
+            </Link>
+            <Link href="/articles/port-andratx-camp-de-mar-mallorca" style={{ textDecoration: 'underline', textDecorationColor: '#fff', color: 'inherit' }}>
+              <div style={styles.areaCard}>
+                <h4 style={styles.areaTitle}>Port d&apos;Andratx and Camp de Mar</h4>
+                <p style={styles.areaText}>
+                  Better for a more polished atmosphere, marina dining, sunset views,
+                  and a quieter premium-style base.
+                </p>
+              </div>
+            </Link>
+            <Link href="/articles/puerto-portals-portals-nous-mallorca" style={{ textDecoration: 'underline', textDecorationColor: '#fff', color: 'inherit' }}>
+              <div style={styles.areaCard}>
+                <h4 style={styles.areaTitle}>Portals Nous and Puerto Portals</h4>
+                <p style={styles.areaText}>
+                  Strong option for couples and luxury-focused stays, with stylish
+                  beach clubs, yacht marina walks, and quick access to Palma.
+                </p>
+              </div>
+            </Link>
+            <Link href="/articles/cala-vinyes-mallorca" style={{ textDecoration: 'underline', textDecorationColor: '#fff', color: 'inherit' }}>
+              <div style={styles.areaCard}>
+                <h4 style={styles.areaTitle}>Cala Vinyes</h4>
+                <p style={styles.areaText}>
+                  Calm cove-style beach area that works well for relaxed sun-and-sea
+                  days, especially if you want a quieter base near larger resorts.
+                </p>
+              </div>
+            </Link>
+            <Link href="/articles/el-toro-port-adriano-mallorca" style={{ textDecoration: 'underline', textDecorationColor: '#fff', color: 'inherit' }}>
+              <div style={styles.areaCard}>
+                <h4 style={styles.areaTitle}>El Toro / Port Adriano</h4>
+                <p style={styles.areaText}>
+                  Great for modern marina vibes, waterfront dining, and easy access
+                  to nearby beaches and boat-focused activities in the south west.
+                </p>
+              </div>
+            </Link>
           </div>
           <ul style={styles.seoList}>
             <li style={styles.seoListItem}>Best for mixed trips where you want beach time by day and restaurants or bars in the evening.</li>
