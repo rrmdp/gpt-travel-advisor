@@ -1,10 +1,15 @@
 import { listAllItinerarySummaries } from '../lib/db'
 import { buildItineraryPath } from '../lib/itinerary-url'
+import { generateStaticParams as generateArticleParams } from './articles/[slug]/page'
 
 const SITE_URL = 'https://www.whattodoinmallorca.com'
 
 export default async function sitemap() {
   const itineraries = await listAllItinerarySummaries().catch(() => [])
+
+  const articleEntries = generateArticleParams().map(({ slug }) => ({
+    url: `${SITE_URL}/articles/${slug}`,
+  }))
 
   const itineraryEntries = itineraries.map((it) => ({
     url: `${SITE_URL}${buildItineraryPath(it)}`,
@@ -20,6 +25,7 @@ export default async function sitemap() {
       changeFrequency: 'daily' as const,
       priority: 1,
     },
+    ...articleEntries,
     ...itineraryEntries,
   ]
 }
