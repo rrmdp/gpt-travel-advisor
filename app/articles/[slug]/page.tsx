@@ -434,6 +434,113 @@ const articles: Record<string, Article> = {
     whereToStay: ['Port de Soller', 'Deia', 'Soller'],
     practicalTips: ['Parking is limited in peak months', 'Roads are slower than they look', 'Start early to avoid traffic'],
   },
+  'south-west-mallorca-short-term-rentals': {
+    slug: 'south-west-mallorca-short-term-rentals',
+    title: 'South West Mallorca short-term rentals guide',
+    summary:
+      'A practical guide to finding and booking short-term rentals in south-west Mallorca, including Santa Ponsa, Palmanova, Magaluf, Port d\'Andratx, and Puerto Portals for families, couples, and groups.',
+    heroImage:
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    intro:
+      'The south-west coast of Mallorca is one of the most popular areas for short-term rentals because it combines accessible beaches, busy marina areas, and practical logistics for travellers who want flexibility and independence. Whether you are looking for a beachfront apartment, a villa with a pool, or a family-friendly townhouse, the south-west offers a wide range of rental options at different price points and with varying levels of resort facilities.',
+    sections: [
+      {
+        heading: 'Why short-term rentals work well in south-west Mallorca',
+        text: [
+          'Short-term rentals are especially popular in the south-west because the region is designed for tourism and holiday accommodation. Areas like Santa Ponsa, Palmanova, and Puerto Portals have abundant apartment blocks, villa communities, and townhouses that accept weekly or monthly bookings. This means you have more choice than you might find in quieter regions, and you can often find properties with specific amenities such as pools, sea views, or close beach access.',
+          'Renting a property in the south-west also gives you independence from hotel schedules and the ability to self-cater or have more flexible dining options. For families, groups, or longer stays, this often works out as better value than hotels, and it gives you more control over your holiday rhythm.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Modern apartment building in coastal Mallorca',
+      },
+      {
+        heading: 'Santa Ponsa: family-friendly rentals and long beaches',
+        text: [
+          'Santa Ponsa is one of the most established resort areas on the south-west coast, with a wide range of rental properties from simple apartments to larger villas. The area suits families because it has calm, sandy beaches, a good selection of restaurants and shops within walking distance, and properties that often include pool access.',
+          'Short-term rentals in Santa Ponsa tend to be moderately priced compared to more upscale areas, and many are suitable for families who want convenience without paying premium prices. The main beach is busy in summer, but the area remains practical for a straightforward coastal holiday.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1570129477492-45a003537e1f?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Santa Ponsa beach and resort area',
+      },
+      {
+        heading: 'Palmanova and Magaluf: compact beachfront rentals',
+        text: [
+          'Palmanova and Magaluf are compact, walkable resort areas with many short-term rental options close to the beach. Palmanova is slightly quieter and more family-focused, while Magaluf has a more energetic nightlife scene. Both areas work well for travellers who want beachfront or near-beach properties with easy access to restaurants, bars, and water activities.',
+          'Rentals in these areas are often located in apartment blocks with shared facilities such as pools or communal gardens. They are ideal if you want a simple, convenient base and do not need the exclusivity or space of a standalone villa. Walkability is a major advantage here, especially if you do not want to hire a car.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Beach and resort apartments in Palmanova',
+      },
+      {
+        heading: 'Port d\'Andratx and Camp de Mar: upscale villa rentals',
+        text: [
+          'Port d\'Andratx and Camp de Mar are more upscale locations on the south-west coast, known for stylish villas, waterfront properties, and a more premium holiday atmosphere. Short-term rentals here tend to be larger, more expensive, and often include private pools, sea views, and higher-end finishes.',
+          'These areas suit couples and groups who prioritize quality, privacy, and scenic surroundings over budget or walkable convenience. Many villas are set back from the main beach areas but offer greater seclusion and are ideal for longer stays where you want a more exclusive experience.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1512207736139-c5dc13f65d50?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Luxury villa and marina in Port d\'Andratx',
+      },
+      {
+        heading: 'Puerto Portals and Portals Nous: marina-side rentals',
+        text: [
+          'Puerto Portals (also known as Puerto Portals or Portals Nous) is a stylish marina village close to Palma, with upscale restaurants, yacht clubs, and high-end rental properties. Short-term rentals here often come with marina views, waterfront dining access, and a cosmopolitan atmosphere.',
+          'This area is especially popular with couples and affluent groups who enjoy the mix of seafood, yacht culture, and easy access to Palma. Rentals tend to be premium-priced, but the location offers excellent convenience and a lively evening scene with good restaurants and beach clubs.'
+        ],
+        image:
+          'https://images.unsplash.com/photo-1493558103817-58b2924b5715?auto=format&fit=crop&w=1200&q=80',
+        alt: 'Puerto Portals marina and upscale dining',
+      },
+      {
+        heading: 'What to look for in a south-west Mallorca short-term rental',
+        text: [
+          'When booking a short-term rental in the south-west, consider distance to the beach, parking availability, and whether the property includes air conditioning (essential for summer). Many properties advertise pool access, but confirm whether that is a private pool, a shared complex pool, or just nearby pool access.',
+          'Check the property description for Wi-Fi, washing facilities, and kitchen equipment if you plan to self-cater. For families, ground-floor properties or those with direct beach access are often more convenient. For couples or groups, verify the number and type of beds, and read recent reviews to understand the property condition and neighbourhood atmosphere.'
+        ],
+      },
+      {
+        heading: 'Booking platforms and rental seasons',
+        text: [
+          'The main platforms for south-west Mallorca rentals are Airbnb, Booking.com, Vrbo, and holiday-specific sites such as VillasMediterranean. Many properties also have their own websites or can be booked through local property management companies.',
+          'Peak season is June through September, with July and August being the most expensive and busiest. If you are flexible with dates, May, June, and September often offer better value and fewer crowds. Many properties require minimum stays of a week in summer, but off-season bookings (November to April) may be more flexible.'
+        ],
+      },
+      {
+        heading: 'Car hire and getting around from your rental',
+        text: [
+          'Many short-term rentals in the south-west do not require a car if you want to stay close to your property and use local beaches and restaurants. However, a car gives you much more freedom to explore other parts of the island and to escape the busier resort areas when you want.',
+          'If your rental includes off-street parking, that simplifies car hire significantly. If parking is street-only or uncertain, ask the property manager before booking. During summer peak season, parking can be difficult in the busiest resort areas, so this is worth clarifying in advance.'
+        ],
+      },
+    ],
+    checklist: [
+      'Confirm the exact location and distance to the beach or sea access before booking.',
+      'Check whether the property has air conditioning and whether it is included in the rental price or charged separately.',
+      'Verify pool access (private, shared, or communal) and any associated rules or times of use.',
+      'Confirm parking arrangements and whether parking is included in the rental cost.',
+      'Read recent guest reviews and check the cancellation policy before committing.',
+      'Ask about Wi-Fi, washing machine, dryer, and kitchen equipment if these matter for your stay.'
+    ],
+    whereToStay: [
+      'Santa Ponsa for family-friendly rentals with good value and long sandy beaches.',
+      'Palmanova for walkable, beachfront apartments and a quieter resort atmosphere.',
+      'Magaluf for compact rentals with easy beach access and a lively evening scene.',
+      'Port d\'Andratx for upscale villas and a more exclusive, scenic experience.',
+      'Puerto Portals for marina-side rentals and high-end dining and beach clubs.'
+    ],
+    practicalTips: [
+      'Book early if you are visiting during July or August; availability drops quickly and prices rise.',
+      'May, June, and September offer better value and fewer crowds while still having good beach weather.',
+      'Consider staying for a minimum of 3-4 nights to avoid splitting the booking fees and cleaning costs.',
+      'Many properties have strict check-in times; plan your arrival accordingly to avoid early fees.',
+      'Request cleaning service details if the property has a weekly or mid-stay cleaning option.',
+      'Ask for a detailed damage deposit policy and photo documentation of the property condition at check-in.',
+      'Join local expat or holiday-maker Facebook groups to get recommendations and insider tips from recent visitors.'
+    ],
+  },
 }
 
 export function generateStaticParams() {

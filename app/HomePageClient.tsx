@@ -581,7 +581,9 @@ export default function HomePageClient() {
             </div>
           </div>
 
-          <h3 style={styles.seoSubTitle}>The South West of Mallorca (Majorca)</h3>
+          <Link href="/articles/south-west-mallorca-short-term-rentals">
+            <h3 style={styles.seoSubTitle}>The South West of Mallorca (Majorca)</h3>
+          </Link>
           <p style={styles.seoText}>
             The south west of Mallorca is one of the easiest areas for beach days,
             marina evenings, and short scenic drives. It mixes family-friendly
