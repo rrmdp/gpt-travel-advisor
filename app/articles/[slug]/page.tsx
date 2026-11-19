@@ -37,7 +37,7 @@ const articles: Record<string, Article> = {
           'The easiest first-time trip is to split the island into four clear themes: one city day, one beach day, one mountain-road day, and one final easy coastal day. That gives you enough of Mallorca without turning the trip into a long drive every time you want to eat or swim.'
         ],
         image:
-          'https://images.unsplash.com/photo-1544551763-46a013bb70b5?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80',
         alt: 'Aerial view of Mallorca coastline and sea',
       },
       {
@@ -80,7 +80,7 @@ const articles: Record<string, Article> = {
           'This is especially useful if you are leaving the island later in the day. It lets you enjoy Mallorca’s slower pace rather than rushing to the airport and losing the last afternoon. If your departure is early, simply spend the morning in Palma and enjoy one final local lunch before you leave.'
         ],
         image:
-          'https://images.unsplash.com/photo-1493558103817-58b2924b5715?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80',
         alt: 'Harbour and marina in Mallorca',
       },
       {
@@ -166,7 +166,7 @@ const articles: Record<string, Article> = {
           'They are particularly good for travellers who want to spend much of the trip by the sea without constantly moving around the island. If your plan is to swim, relax, and have dinner nearby, this kind of base often makes the holiday feel simpler and less tiring.'
         ],
         image:
-          'https://images.unsplash.com/photo-1493558103817-58b2924b5715?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80',
         alt: 'Harbour and beach resort area in Mallorca',
       },
       {
@@ -461,7 +461,7 @@ const articles: Record<string, Article> = {
           'Short-term rentals in Santa Ponsa tend to be moderately priced compared to more upscale areas, and many are suitable for families who want convenience without paying premium prices. The main beach is busy in summer, but the area remains practical for a straightforward coastal holiday.'
         ],
         image:
-          'https://images.unsplash.com/photo-1570129477492-45a003537e1f?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80',
         alt: 'Santa Ponsa beach and resort area',
       },
       {
@@ -481,7 +481,7 @@ const articles: Record<string, Article> = {
           'These areas suit couples and groups who prioritize quality, privacy, and scenic surroundings over budget or walkable convenience. Many villas are set back from the main beach areas but offer greater seclusion and are ideal for longer stays where you want a more exclusive experience.'
         ],
         image:
-          'https://images.unsplash.com/photo-1512207736139-c5dc13f65d50?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=1200&q=80',
         alt: 'Luxury villa and marina in Port d\'Andratx',
       },
       {
@@ -491,7 +491,7 @@ const articles: Record<string, Article> = {
           'This area is especially popular with couples and affluent groups who enjoy the mix of seafood, yacht culture, and easy access to Palma. Rentals tend to be premium-priced, but the location offers excellent convenience and a lively evening scene with good restaurants and beach clubs.'
         ],
         image:
-          'https://images.unsplash.com/photo-1493558103817-58b2924b5715?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80',
         alt: 'Puerto Portals marina and upscale dining',
       },
       {
